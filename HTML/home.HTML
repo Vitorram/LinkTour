@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feed estilo TikTok</title>
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    gap: 10px;
+    background-color: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+header input {
+    flex: 1;
+    padding: 8px 12px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+}
+
+.abas {
+    display: flex;
+    justify-content: space-around;
+    background-color: #fff;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+    position: sticky;
+    top: 60px;
+    z-index: 99;
+}
+
+.abas div {
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.feed {
+    padding: 10px;
+}
+
+.poste {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.usuario {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.fotoUsuario {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #ccc;
+    margin-right: 10px;
+}
+
+.infoUsuario {
+    flex: 1;
+}
+
+.nomeUsuario {
+    font-weight: bold;
+}
+
+.postadoem {
+    font-size: 12px;
+    color: #888;
+}
+
+.seguir {
+    padding: 5px 10px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.fotoPubli {
+    width: 100%;
+    height: 250px;
+    background-color: #eee;
+    border-radius: 10px;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.desc {
+    font-size: 14px;
+    color: #333;
+}
+
+.barraInferior {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    background-color: #fff;
+    padding: 10px 0;
+    border-top: 1px solid #ddd;
+}
+</style>
+</head>
+<body>
+
+<header>
+    <input type="text" placeholder="🔍 Busca">
+</header>
+
+<div class="abas">
+    <div>Todos</div>
+    <div>Para você</div>
+    <div>Seguindo</div>
+</div>
+
+<div class="feed">
+    <div class="poste">
+        <div class="usuario">
+            <div style="display:flex; align-items:center;">
+                <div class="fotoUsuario"></div>
+                <div class="infoUsuario">
+                    <div class="nomeUsuario">Paizao_Imbika_events</div>
+                    <div class="postadoem">postado há 2hrs</div>
+                </div>
+            </div>
+            <button class="seguir">Seguir</button>
+        </div>
+        <div class="fotoPubli"></div>
+        <div class="desc">
+            Eventinho bala com o Puto de Paris, mlk mais mais, 19H. aguardando vcs #events #paris #centro.
+            <br>
+            Endereço: R. Alameidas - Bairro: Jardim Goianases - SP - N°: 450
+            <br>
+            Hora: 19 Horas
+            <br>
+            Valor: R$ 50,00
+        </div>
+    </div>
+
+    <div class="poste">
+        <div class="usuario">
+            <div style="display:flex; align-items:center;">
+                <div class="fotoUsuario"></div>
+                <div class="infoUsuario">
+                    <div class="nomeUsuario">IcarosGrau</div>
+                    <div class="postadoem">postado há 3hrs</div>
+                </div>
+            </div>
+            <button class="seguir">Seguir</button>
+        </div>
+        <div class="fotoPubli"></div>
+        <div class="desc">
+            Outro post de exemplo #musica #show
+        </div>
+    </div>
+</div>
+
+<div class="barraInferior">
+    <div>🏠</div>
+    <a href="./mapa.html"><div>📍</div></a>
+    <div>➕</div>
+    <div>📷</div>
+    <div>👤</div>
+</div>
+
+</body>
+</html>

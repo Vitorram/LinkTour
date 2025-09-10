@@ -1,0 +1,279 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    display: flex;
+}
+
+main{
+    margin: 0 auto;
+    margin-top: 200px;
+}
+
+.container {
+    background: white;
+    width: 350px;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    text-align: center;
+}
+
+.logo {
+    width: 120px;
+    margin-bottom: 20px;
+}
+
+h2 {
+    margin-bottom: 30px;
+    color: #333;
+}
+
+input[type="text"], input[type="password"], input[type="email"] {
+    width: 100%;
+    padding: 12px 15px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.btn {
+    width: 100%;
+    background-color: black;
+    color: white;
+    padding: 12px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.btn:hover {
+    background-color: #333;
+}
+
+.social-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    cursor: pointer;
+    text-decoration: none;
+    color: #333;
+    margin-top: 10px;
+}
+
+.social-btn img {
+    width: 20px;
+    margin-right: 10px;
+}
+
+.forgot {
+    font-size: 12px;
+    color: #555;
+    text-decoration: none;
+    display: block;
+    margin-top: 5px;
+}
+
+.forgot:hover {
+    text-decoration: underline;
+}
+
+.switch-form {
+    font-size: 14px;
+    margin-top: 15px;
+}
+
+.switch-form a {
+    text-decoration: none;
+    color: #007BFF;
+    margin-left: 5px;
+}
+
+.switch-form a:hover {
+    text-decoration: underline;
+}
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* busca à esquerda, painel à direita */
+    padding: 10px 20px;
+    background-color: #f5f5f5;
+    gap: 10px;
+}
+
+.busca {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #ffffff;
+}
+
+.painel {
+    display: flex;
+    gap: 10px;
+}
+
+.box {
+    padding: 10px 15px;
+    font-size: medium;
+    background-color: #ffffff;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.box:hover {
+    background-color: #ffffff;
+}
+.poste {
+    width: 400px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 20px auto;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-family: Arial, sans-serif;
+}
+
+.fotoUsuario {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #ccc;
+}
+
+.nomeUsuario {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.postadoem {
+    font-size: 12px;
+    color: #888;
+}
+
+.seguir {
+    align-self: flex-end;
+    padding: 5px 10px;
+    background-color: #1da1f2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.fotoPubli {
+    width: 100%;
+    height: 200px;
+    background-color: #eee;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.desc {
+    font-size: 14px;
+    color: #333;
+}
+.abas {
+    display: flex;
+    justify-content: space-around;
+    background-color: #fff;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+    position: sticky;
+    top: 60px;
+    z-index: 99;
+}
+
+.abas div {
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.feed {
+    padding: 10px;
+}
+
+.poste {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.usuario {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.fotoUsuario {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #ccc;
+    margin-right: 10px;
+}
+
+.infoUsuario {
+    flex: 1;
+}
+
+.nomeUsuario {
+    font-weight: bold;
+}
+
+.postadoem {
+    font-size: 12px;
+    color: #888;
+}
+
+.seguir {
+    padding: 5px 10px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.fotoPubli {
+    width: 100%;
+    height: 250px;
+    background-color: #eee;
+    border-radius: 10px;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.desc {
+    font-size: 14px;
+    color: #333;
+}
+
+.barraInferior {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    background-color: #fff;
+    padding: 10px 0;
+    border-top: 1px solid #ddd;
+}
