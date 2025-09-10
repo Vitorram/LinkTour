@@ -57,16 +57,12 @@ header {
     font-size: 15px;
 }
 
-/* CARROSSEL HORIZONTAL */
-
-
-/* SEÇÕES DE CARDS */
+/* SEÇÕES DE CARDS COM CARROSSEL */
 .secao {
     margin-bottom: 30px;
     max-width: 1000px;
     margin-left: auto;
     margin-right: auto;
-    
 }
 .secao h3 {
     font-size: 18px;
@@ -75,14 +71,20 @@ header {
     color: #333;
 }
 
+/* Carrossel horizontal */
 .cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    display: flex;
+    overflow-x: auto;
     gap: 15px;
     padding: 0 10px;
+    scroll-behavior: smooth;
+}
+.cards::-webkit-scrollbar {
+    display: none; /* esconde a barra de rolagem no Chrome/Safari */
 }
 .card {
-    width: 100%;
+    flex: 0 0 auto; /* mantém o tamanho do card */
+    width: 250px;
     height: 180px;
     border-radius: 12px;
     overflow: hidden;
@@ -127,14 +129,13 @@ header {
 <body>
 
 <header>
-    <div class="search">
-        🔍 <input type="text" placeholder="Buscar parceiros">
+    <div class="search" style="gap: 40px;">
+         <img src="/img/icons8-pesquisa-50.png" alt="" style="width: 30px; height: 30px;"><input type="text" placeholder="Buscar parceiros">
     </div>
 </header>
 
 <div class="titulo">Parceiros</div>
 <button class="btnParceiro">SEJA PARCEIRO</button>
-
 
 <!-- SEÇÕES DE PARCEIROS -->
 <div class="secao">
@@ -168,7 +169,7 @@ header {
 <div class="barraInferior">
   <a href="/HTML/home.HTML"><img src="/img/icons8-casa-48.png" alt=""></a>
   <a href="/HTML/mapa.html"><img src="/img/icons8-mapa-50.png" alt=""></a>
-   <a href="/HTML/add.html"><img src="/img/icons8-mais-50.png" alt="" ></a>
+  <a href="/HTML/add.html"><img src="/img/icons8-mais-50.png" alt=""></a>
   <a href="/HTML/serv.html" class="ativo"><img src="/img/icons8-parceiro-50.png" alt=""></a>
   <a href="/HTML/perfil.html"><img src="/img/icons8-conta-de-teste-50.png" alt=""></a>
 </div>
