@@ -5,14 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Feed estilo TikTok com painel lateral</title>
 
-
 <style>
-    
 body {
-    margin: 0 auto;
+    margin: 0;
     font-family: Arial, sans-serif;
     background-color: #f2f2f2;
-    padding-bottom: 60px; /* espaço pro rodapé não cobrir o conteúdo */
+    padding-bottom: 60px; 
     display: flex;
     justify-content: center;
 }
@@ -27,16 +25,31 @@ body {
     margin-left: 500px;
 }
 
-/* Esconde painel lateral no mobile */
+/* Responsividade */
+@media (max-width: 1200px) {
+    .container {
+        grid-template-columns: 1fr minmax(300px, 600px);
+        margin-left: 0;
+    }
+}
+
 @media (max-width: 768px) {
   .container {
     grid-template-columns: 1fr;
+    margin-left: 0;
   }
   .painelDireita {
     display: none;
   }
+  .feed {
+    padding: 0 10px;
+  }
+  header input {
+    padding: 6px 10px;
+  }
 }
 
+/* Header */
 header {
     display: flex;
     align-items: center;
@@ -55,6 +68,7 @@ header input {
     border: 1px solid #ccc;
 }
 
+/* Abas */
 .abas {
     display: flex;
     justify-content: space-around;
@@ -71,6 +85,7 @@ header input {
     cursor: pointer;
 }
 
+/* Feed e posts */
 .feed {
     padding: 10px;
 }
@@ -98,6 +113,12 @@ header input {
     margin-right: 10px;
 }
 
+.fotoUsuario img{
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
 .infoUsuario {
     flex: 1;
 }
@@ -120,9 +141,10 @@ header input {
     cursor: pointer;
 }
 
+/* Publicação */
 .fotoPubli {
+  position: relative;
   width: 100%;
-  height: 100%;
   border-radius: 10px;
   overflow: hidden;
   margin-bottom: 10px;
@@ -131,49 +153,79 @@ header input {
 
 .fotoPubli img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
   display: block;
+}
+
+/* Botões sobre a imagem */
+.acoesPost {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  display: flex;
+  gap: 12px;
+}
+
+.botaoAcao {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.botaoAcao:hover {
+  transform: scale(1.1);
+}
+
+.botaoAcao img {
+  width: 22px;
+  height: 22px;
 }
 
 .desc {
     font-size: 14px;
     color: #333;
+    margin-top: 10px;
 }
 
-/* RODAPÉ FIXO */
 /* Rodapé fixo */
 .barraInferior {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        background-color: #fff; 
-        padding: 10px 0;
-        border-top: 1px solid #ddd;
-        z-index: 999;
-    }
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #fff; 
+    padding: 10px 0;
+    border-top: 1px solid #ddd;
+    z-index: 999;
+}
 
-    .barraInferior a {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        text-decoration: none;
-    }
+.barraInferior a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+}
 
-    .barraInferior img {
-        width: 30px;
-        height: 30px;
-    }
+.barraInferior img {
+    width: 30px;
+    height: 30px;
+}
 
-    .barraInferior a.ativo img {
-        filter: brightness(1.2);
-    }
-    
-/* PAINEL LATERAL */
+.barraInferior a.ativo img {
+    filter: brightness(1.2);
+}
+
+/* Painel lateral */
 .painelDireita {
     position: sticky;
     top: 10px;
@@ -190,16 +242,12 @@ header input {
     border: 1px solid #ddd;
     margin-bottom: 20px;
 }
+
 .search-box input {
     border: none;
     outline: none;
     flex: 1;
     padding: 5px 8px;
-}
-.fotoUsuario img{
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
 }
 
 .card-sugestoes {
@@ -209,20 +257,24 @@ header input {
     margin-bottom: 20px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
+
 .card-sugestoes h3 {
     margin-top: 0;
     margin-bottom: 10px;
     font-size: 16px;
 }
+
 .sugestao {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 12px;
 }
+
 .sugestao:last-child {
     margin-bottom: 0;
 }
+
 .sugestao .fotoUsuario {
     margin: 0 10px 0 0;
 }
@@ -232,10 +284,10 @@ header input {
 
 <div class="container">
 
-  <!-- FEED PRINCIPAL -->
+  <!-- Feed Principal -->
   <div>
     <header>
-        <input type="text" placeholder="🔍 Busca">
+        <img src="/img/icons8-pesquisa-50.png" alt="" style="width: 30px; height: 30px;"><input type="text" placeholder=" Busca">
     </header>
 
     <div class="abas">
@@ -245,10 +297,11 @@ header input {
     </div>
 
     <div class="feed">
+        <!-- Post 1 -->
         <div class="poste">
             <div class="usuario">
                 <div style="display:flex; align-items:center;">
-                    <div class="fotoUsuario"><img src="https://i.pinimg.com/736x/ee/51/24/ee51240828bdd3114b204ef977373353.jpg" alt="" ></div>
+                    <div class="fotoUsuario"><img src="https://i.pinimg.com/736x/ee/51/24/ee51240828bdd3114b204ef977373353.jpg" alt=""></div>
                     <div class="infoUsuario">
                         <div class="nomeUsuario">Paizao_Imbika_events</div>
                         <div class="postadoem">postado há 2hrs</div>
@@ -256,12 +309,20 @@ header input {
                 </div>
                 <button class="seguir">Seguir</button>
             </div>
+
             <div class="fotoPubli">
               <img src="https://i.pinimg.com/1200x/49/7a/83/497a831f5750e97918b869cdc8409484.jpg" alt="">
+              <div class="acoesPost">
+                <div class="botaoAcao"><img src="https://img.icons8.com/ios/50/000000/checkmark.png"/></div>
+                <div class="botaoAcao"><img src="https://img.icons8.com/ios/50/000000/like--v1.png"/></div>
+                <div class="botaoAcao"><img src="https://img.icons8.com/ios/50/000000/speech-bubble--v1.png"/></div>
+                <div class="botaoAcao"><img src="https://img.icons8.com/ios/50/000000/send.png"/></div>
+              </div>
             </div>
+
             <div class="desc">
                 Eventinho bala com o Puto de Paris, mlk mais mais, 19H. aguardando vcs.
-
+                <br>
                 <br><b> Endereço: R. Alameidas - Bairro: Jardim Goianases - SP - N°: 450
                 <br> Hora: 19 Horas
                 <br> Valor: R$ 50,00
@@ -269,10 +330,11 @@ header input {
             </div>
         </div>
 
+        <!-- Post 2 -->
         <div class="poste">
             <div class="usuario">
                 <div style="display:flex; align-items:center;">
-                    <div class="fotoUsuario"><img src="https://i.pinimg.com/736x/a3/1f/29/a31f29d05c70a414f1d2f1619c9f190f.jpg" alt="" ></div>
+                    <div class="fotoUsuario"><img src="https://i.pinimg.com/736x/a3/1f/29/a31f29d05c70a414f1d2f1619c9f190f.jpg" alt=""></div>
                     <div class="infoUsuario">
                         <div class="nomeUsuario">IcarosGrau</div>
                         <div class="postadoem">postado há 3hrs</div>
@@ -280,9 +342,17 @@ header input {
                 </div>
                 <button class="seguir">Seguir</button>
             </div>
-           <div class="fotoPubli">
-              <img src="https://i.pinimg.com/736x/02/1a/22/021a22681611016993ca752599b6d72a.jpg" alt="" style="width: 100%; height: 100%;">
+
+            <div class="fotoPubli">
+              <img src="https://i.pinimg.com/736x/02/1a/22/021a22681611016993ca752599b6d72a.jpg" alt="">
+              <div class="acoesPost">
+                <div class="botaoAcao"><img src="https://img.icons8.com/ios/50/000000/checkmark.png"/></div>
+                <div class="botaoAcao"><img src="https://img.icons8.com/ios/50/000000/like--v1.png"/></div>
+                <div class="botaoAcao"><img src="https://img.icons8.com/ios/50/000000/speech-bubble--v1.png"/></div>
+                <div class="botaoAcao"><img src="https://img.icons8.com/ios/50/000000/send.png"/></div>
+              </div>
             </div>
+
             <div class="desc">
                 Chega chega rapaize, eventão bala, chama chama 
                <br> (12-919191112)
@@ -291,10 +361,10 @@ header input {
     </div>
   </div>
 
-  <!-- PAINEL DIREITA -->
+  <!-- Painel direita -->
   <div class="painelDireita">
     <div class="search-box">
-      🔍 <input type="text" placeholder="Pesquisar">
+      <img src="/img/icons8-pesquisa-50.png" alt="" style="width: 30px; height: 30px;"> <input type="text" placeholder="Pesquisar">
     </div>
 
     <div class="card-sugestoes">
@@ -321,7 +391,7 @@ header input {
 <div class="barraInferior">
   <a href="/HTML/home.HTML"><img src="/img/icons8-casa-48.png" alt="" > </a>
   <a href="/HTML/mapa.html"><img src="/img/icons8-mapa-50.png" alt="" ></a>
-  <a href="add.html"><img src="/img/icons8-mais-50.png" alt="" ></a>
+  <a href="/HTML/add.html"><img src="/img/icons8-mais-50.png" alt="" ></a>
   <a href="/HTML/serv.html" class="ativo"><img src="/img/icons8-parceiro-50.png" alt="" ></a>
   <a href="/HTML/perfil.html"><img src="/img/icons8-conta-de-teste-50.png" alt="" ></a>
 </div>
