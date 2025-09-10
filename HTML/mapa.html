@@ -6,65 +6,118 @@
   <title>Mapa com Leaflet e Blobs</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
   <style>
-    body, html { margin:0; padding:0; height:100%; }
-    .phone {
-      width:360px; height:700px;
-      margin:20px auto; border:1px solid #ddd; border-radius:12px;
-      overflow:hidden; display:flex; flex-direction:column;
-      font-family:Arial, sans-serif;
-    }
+     body, html { margin:0; padding:0; height:100%; width:100%; font-family:Arial, sans-serif; }
+
+  .phone {
+    width:100%; 
+    min-height:100%;
+    display:flex; 
+    flex-direction:column;
+    padding-bottom: 80px; /* espaço extra para o rodapé fixo */
+    box-sizing: border-box;
+  }
+
     .topbar {
       padding:10px; background:#fafafa; border-bottom:1px solid #eee;
     }
+
     .search {
       display:flex; align-items:center;
       border:1px solid #ccc; border-radius:8px; padding:5px;
     }
+
     .search input { border:none; outline:none; flex:1; }
+
     #map { flex:1; }
+
     .discover { text-align:center; padding:10px; font-weight:bold; }
+
     .carousel { display:flex; overflow-x:auto; gap:10px; padding:10px; }
+
     .card {
       min-width:120px; height:90px; border-radius:10px; overflow:hidden;
       flex-shrink:0; background:#ddd;
     }
+
     .card img { width:100%; height:100%; object-fit:cover; }
-    .bottom {
-      display:flex; justify-content:space-around; padding:10px;
-      border-top:1px solid #eee; background:#fff;
+
+    /* Rodapé fixo igual da home */
+    .barraInferior {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        background-color: #fff; 
+        padding: 10px 0;
+        border-top: 1px solid #ddd;
+        z-index: 999;
+    }
+
+    .barraInferior a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-decoration: none;
+    }
+
+    .barraInferior img {
+        width: 30px;
+        height: 30px;
+    }
+
+    .barraInferior a.ativo img {
+        filter: brightness(1.2);
     }
 
     /* estilo do marcador circular com foto */
-    .blob {
-      width:50px; height:50px;
-      border-radius:50%;
-      overflow:hidden;
-      border:3px solid #ff5a8f; /* cor da borda */
-      box-shadow:0 0 8px rgba(0,0,0,0.3);
-    }
-    .blob img {
-      width:100%; height:100%;
-      object-fit:cover;
-    }
+.blob {
+  width: 50px !important;
+  height: 50px !important;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ccc;
+}
+
+.blob img {
+  width: 100%;          /* ocupa todo o espaço */
+  height: 100%;         /* ocupa todo o espaço */
+  object-fit: cover;    /* preenche o círculo, mesmo cortando */
+  object-position: center;
+
+}
   </style>
 </head>
 <body>
   <div class="phone">
     <div class="topbar">
       <div class="search">
-        🔍 <input type="text" placeholder="...."/>
+        <img src="/img/icons8-pesquisa-50.png" alt="" style="margin-right: 20px;"> <input type="text" placeholder="Pesquisar..."/>
       </div>
     </div>
+
     <div id="map"></div>
+
     <div class="discover">Descubra</div>
     <div class="carousel">
-      <div class="card"><img src="https://picsum.photos/200/100?1"></div>
-      <div class="card"><img src="https://picsum.photos/200/100?2"></div>
-      <div class="card"><img src="https://picsum.photos/200/100?3"></div>
+      <div class="card"><img src="https://i.pinimg.com/736x/02/1a/22/021a22681611016993ca752599b6d72a.jpg"></div>
+      <div class="card"><img src="https://i.pinimg.com/736x/d8/93/2b/d8932bf5bdb46462182e409a8882301a.jpg"></div>
+      <div class="card"><img src="https://i.pinimg.com/1200x/78/d8/35/78d8352dc577d191daf8980ad92523eb.jpg"></div>
     </div>
-    <div class="bottom">
-      🏠 📍 ➕ 📷 👤
-    </div>
+  </div>
+
+  <!-- Rodapé fixo igual da home -->
+  <div class="barraInferior">
+    <a href="/HTML/home.HTML"><img src="/img/icons8-casa-48.png" alt=""></a>
+    <a href="/HTML/mapa.html"><img src="/img/icons8-mapa-50.png" alt=""></a>
+    <a href="add.html"><img src="/img/icons8-mais-50.png" alt=""></a>
+    <a href="/HTML/serv.html" class="ativo"><img src="/img/icons8-parceiro-50.png" alt=""></a>
+    <a href="/HTML/perfil.html"><img src="/img/icons8-conta-de-teste-50.png" alt=""></a>
   </div>
 
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
@@ -72,29 +125,25 @@
     // Centraliza em Caraguatatuba
     var map = L.map('map').setView([-23.6226, -45.4167], 13);
 
-    // Usa tiles gratuitos do OpenStreetMap
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution: '© OpenStreetMap'
     }).addTo(map);
+function blobMarker(lat, lng, imgUrl) {
+  return L.marker([lat, lng], {
+    icon: L.divIcon({
+      className: "", // não precisa de classe extra aqui
+      html: `<div class="blob"><img src="${imgUrl}"></div>`,
+      iconSize: [50, 50],
+      iconAnchor: [25, 25]
+    })
+  }).addTo(map);
+}
 
-    // Função para criar marcador circular com foto
-    function blobMarker(lat, lng, imgUrl) {
-      return L.marker([lat, lng], {
-        icon: L.divIcon({
-          className: "", // sem classe extra
-          html: `<div class="blob"><img src="${imgUrl}"></div>`,
-          iconSize: [50, 50],
-          iconAnchor: [25, 25] // centraliza o ícone no ponto
-        })
-      }).addTo(map);
-    }
-
-    // Adiciona alguns "blobs"
-    blobMarker(-23.6065, -45.4210, "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=200&q=60");
-    blobMarker(-23.6113, -45.4072, "https://images.unsplash.com/photo-1531123414780-f026b1a6b6a2?w=200&q=60");
-    blobMarker(-23.6265, -45.4070, "https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?w=200&q=60");
-    blobMarker(-23.6180, -45.4200, "https://images.unsplash.com/photo-1519340333755-9f5f74d5d8a9?w=200&q=60");
+    blobMarker(-23.636731, -45.430425, "https://i.pinimg.com/1200x/78/d8/35/78d8352dc577d191daf8980ad92523eb.jpg");
+    blobMarker(-23.629219, -45.415384, "https://i.pinimg.com/736x/d8/93/2b/d8932bf5bdb46462182e409a8882301a.jpg");
+    blobMarker(-23.627901, -45.383584, "https://i.pinimg.com/736x/a3/1f/29/a31f29d05c70a414f1d2f1619c9f190f.jpg");
+    blobMarker(-23.624671, -45.420007, "https://i.pinimg.com/736x/bb/23/a4/bb23a47f69c1dbce6d99f53e663e249b.jpg");
   </script>
 </body>
 </html>

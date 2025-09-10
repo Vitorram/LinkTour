@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blobs Parceiros</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #fff;
+    padding-bottom: 80px; /* espaço para o rodapé fixo */
+}
+
+/* HEADER */
+header {
+    padding: 15px;
+}
+
+.search {
+    display: flex;
+    align-items: center;
+    background: #f1f1f1;
+    border-radius: 20px;
+    padding: 10px 15px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+.search input {
+    border: none;
+    outline: none;
+    flex: 1;
+    background: transparent;
+    font-size: 15px;
+}
+
+/* TÍTULO E BOTÃO */
+.titulo {
+    text-align: center;
+    margin: 15px 0;
+    font-weight: bold;
+    font-size: 20px;
+    color: #333;
+}
+
+.btnParceiro {
+    display: block;
+    margin: 0 auto 25px;
+    padding: 12px 25px;
+    background: #3b4cca;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+/* CARROSSEL HORIZONTAL */
+
+
+/* SEÇÕES DE CARDS */
+.secao {
+    margin-bottom: 30px;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    
+}
+.secao h3 {
+    font-size: 18px;
+    margin: 10px;
+    font-weight: bold;
+    color: #333;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    padding: 0 10px;
+}
+.card {
+    width: 100%;
+    height: 180px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #eee;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* RODAPÉ FIXO */
+.barraInferior {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #fff;
+    padding: 12px 0;
+    border-top: 1px solid #ddd;
+    z-index: 100;
+}
+.barraInferior a {
+    text-decoration: none;
+    font-size: 26px;
+    color: #444;
+}
+.barraInferior a.ativo {
+    color: #3b4cca; /* azul para o item ativo */
+}
+.barraInferior img {
+    width: 30px;
+    height: 30px;
+}
+</style>
+</head>
+<body>
+
+<header>
+    <div class="search">
+        🔍 <input type="text" placeholder="Buscar parceiros">
+    </div>
+</header>
+
+<div class="titulo">Parceiros</div>
+<button class="btnParceiro">SEJA PARCEIRO</button>
+
+
+<!-- SEÇÕES DE PARCEIROS -->
+<div class="secao">
+    <h3>Locação</h3>
+    <div class="cards">
+        <div class="card"><img src="https://picsum.photos/500/300?11"></div>
+        <div class="card"><img src="https://picsum.photos/500/300?12"></div>
+        <div class="card"><img src="https://picsum.photos/500/300?13"></div>
+    </div>
+</div>
+
+<div class="secao">
+    <h3>Buffets</h3>
+    <div class="cards">
+        <div class="card"><img src="https://picsum.photos/500/300?21"></div>
+        <div class="card"><img src="https://picsum.photos/500/300?22"></div>
+        <div class="card"><img src="https://picsum.photos/500/300?23"></div>
+    </div>
+</div>
+
+<div class="secao">
+    <h3>Música</h3>
+    <div class="cards">
+        <div class="card"><img src="https://picsum.photos/500/300?31"></div>
+        <div class="card"><img src="https://picsum.photos/500/300?32"></div>
+        <div class="card"><img src="https://picsum.photos/500/300?33"></div>
+    </div>
+</div>
+
+<!-- RODAPÉ FIXO -->
+<div class="barraInferior">
+  <a href="/HTML/home.HTML"><img src="/img/icons8-casa-48.png" alt=""></a>
+  <a href="/HTML/mapa.html"><img src="/img/icons8-mapa-50.png" alt=""></a>
+  <a href="add.html"><img src="/img/icons8-mais-50.png" alt=""></a>
+  <a href="/HTML/serv.html" class="ativo"><img src="/img/icons8-parceiro-50.png" alt=""></a>
+  <a href="/HTML/perfil.html"><img src="/img/icons8-conta-de-teste-50.png" alt=""></a>
+</div>
+
+</body>
+</html>

@@ -3,12 +3,38 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Feed estilo TikTok</title>
+<title>Feed estilo TikTok com painel lateral</title>
+
+
 <style>
+    
 body {
-    margin: 0;
+    margin: 0 auto;
     font-family: Arial, sans-serif;
     background-color: #f2f2f2;
+    padding-bottom: 60px; /* espaço pro rodapé não cobrir o conteúdo */
+    display: flex;
+    justify-content: center;
+}
+
+/* Layout principal */
+.container {
+    display: grid;
+    grid-template-columns: 1fr minmax(300px, 600px) 350px;
+    gap: 20px;
+    width: 100%;
+    max-width: 1600px;
+    margin-left: 500px;
+}
+
+/* Esconde painel lateral no mobile */
+@media (max-width: 768px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+  .painelDireita {
+    display: none;
+  }
 }
 
 header {
@@ -95,12 +121,19 @@ header input {
 }
 
 .fotoPubli {
-    width: 100%;
-    height: 250px;
-    background-color: #eee;
-    border-radius: 10px;
-    object-fit: cover;
-    margin-bottom: 10px;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 10px;
+  background-color: #eee;
+}
+
+.fotoPubli img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .desc {
@@ -108,78 +141,189 @@ header input {
     color: #333;
 }
 
+/* RODAPÉ FIXO */
+/* Rodapé fixo */
 .barraInferior {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        background-color: #fff; 
+        padding: 10px 0;
+        border-top: 1px solid #ddd;
+        z-index: 999;
+    }
+
+    .barraInferior a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-decoration: none;
+    }
+
+    .barraInferior img {
+        width: 30px;
+        height: 30px;
+    }
+
+    .barraInferior a.ativo img {
+        filter: brightness(1.2);
+    }
+    
+/* PAINEL LATERAL */
+.painelDireita {
+    position: sticky;
+    top: 10px;
+    align-self: start;
+    padding: 10px;
+}
+
+.search-box {
+    background: #fff;
+    padding: 8px;
+    border-radius: 20px;
     display: flex;
-    justify-content: space-around;
-    background-color: #fff;
-    padding: 10px 0;
-    border-top: 1px solid #ddd;
+    align-items: center;
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
+}
+.search-box input {
+    border: none;
+    outline: none;
+    flex: 1;
+    padding: 5px 8px;
+}
+.fotoUsuario img{
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.card-sugestoes {
+    background: #fff;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+.card-sugestoes h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+.sugestao {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+.sugestao:last-child {
+    margin-bottom: 0;
+}
+.sugestao .fotoUsuario {
+    margin: 0 10px 0 0;
 }
 </style>
 </head>
 <body>
 
-<header>
-    <input type="text" placeholder="🔍 Busca">
-</header>
+<div class="container">
 
-<div class="abas">
-    <div>Todos</div>
-    <div>Para você</div>
-    <div>Seguindo</div>
-</div>
+  <!-- FEED PRINCIPAL -->
+  <div>
+    <header>
+        <input type="text" placeholder="🔍 Busca">
+    </header>
 
-<div class="feed">
-    <div class="poste">
-        <div class="usuario">
-            <div style="display:flex; align-items:center;">
-                <div class="fotoUsuario"></div>
-                <div class="infoUsuario">
-                    <div class="nomeUsuario">Paizao_Imbika_events</div>
-                    <div class="postadoem">postado há 2hrs</div>
-                </div>
-            </div>
-            <button class="seguir">Seguir</button>
-        </div>
-        <div class="fotoPubli"></div>
-        <div class="desc">
-            Eventinho bala com o Puto de Paris, mlk mais mais, 19H. aguardando vcs #events #paris #centro.
-            <br>
-            Endereço: R. Alameidas - Bairro: Jardim Goianases - SP - N°: 450
-            <br>
-            Hora: 19 Horas
-            <br>
-            Valor: R$ 50,00
-        </div>
+    <div class="abas">
+        <div>Todos</div>
+        <div>Para você</div>
+        <div>Seguindo</div>
     </div>
 
-    <div class="poste">
-        <div class="usuario">
-            <div style="display:flex; align-items:center;">
-                <div class="fotoUsuario"></div>
-                <div class="infoUsuario">
-                    <div class="nomeUsuario">IcarosGrau</div>
-                    <div class="postadoem">postado há 3hrs</div>
+    <div class="feed">
+        <div class="poste">
+            <div class="usuario">
+                <div style="display:flex; align-items:center;">
+                    <div class="fotoUsuario"><img src="https://i.pinimg.com/736x/ee/51/24/ee51240828bdd3114b204ef977373353.jpg" alt="" ></div>
+                    <div class="infoUsuario">
+                        <div class="nomeUsuario">Paizao_Imbika_events</div>
+                        <div class="postadoem">postado há 2hrs</div>
+                    </div>
                 </div>
+                <button class="seguir">Seguir</button>
             </div>
-            <button class="seguir">Seguir</button>
+            <div class="fotoPubli">
+              <img src="https://i.pinimg.com/1200x/49/7a/83/497a831f5750e97918b869cdc8409484.jpg" alt="">
+            </div>
+            <div class="desc">
+                Eventinho bala com o Puto de Paris, mlk mais mais, 19H. aguardando vcs.
+
+                <br><b> Endereço: R. Alameidas - Bairro: Jardim Goianases - SP - N°: 450
+                <br> Hora: 19 Horas
+                <br> Valor: R$ 50,00
+                </b>
+            </div>
         </div>
-        <div class="fotoPubli"></div>
-        <div class="desc">
-            Outro post de exemplo #musica #show
+
+        <div class="poste">
+            <div class="usuario">
+                <div style="display:flex; align-items:center;">
+                    <div class="fotoUsuario"><img src="https://i.pinimg.com/736x/a3/1f/29/a31f29d05c70a414f1d2f1619c9f190f.jpg" alt="" ></div>
+                    <div class="infoUsuario">
+                        <div class="nomeUsuario">IcarosGrau</div>
+                        <div class="postadoem">postado há 3hrs</div>
+                    </div>
+                </div>
+                <button class="seguir">Seguir</button>
+            </div>
+           <div class="fotoPubli">
+              <img src="https://i.pinimg.com/736x/02/1a/22/021a22681611016993ca752599b6d72a.jpg" alt="" style="width: 100%; height: 100%;">
+            </div>
+            <div class="desc">
+                Chega chega rapaize, eventão bala, chama chama 
+               <br> (12-919191112)
+            </div>
         </div>
     </div>
+  </div>
+
+  <!-- PAINEL DIREITA -->
+  <div class="painelDireita">
+    <div class="search-box">
+      🔍 <input type="text" placeholder="Pesquisar">
+    </div>
+
+    <div class="card-sugestoes">
+      <h3>Quem seguir</h3>
+      <div class="sugestao">
+        <div style="display:flex; align-items:center;">
+          <div class="fotoUsuario"><img src="https://i.pinimg.com/736x/99/18/d7/9918d7ad96f25dede0628dc9b12086c8.jpg" alt=""></div>
+          <div>@eventosSP</div>
+        </div>
+        <button class="seguir">Seguir</button>
+      </div>
+      <div class="sugestao">
+        <div style="display:flex; align-items:center;">
+          <div class="fotoUsuario"><img src="https://i.pinimg.com/736x/9a/cc/83/9acc8359bcb7ca9e6b299b0bf3c0517c.jpg" alt=""></div>
+          <div>@festasRJ</div>
+        </div>
+        <button class="seguir">Seguir</button>
+      </div>
+    </div>
+  </div>
 </div>
 
+<!-- Rodapé fixo -->
 <div class="barraInferior">
-    <div>🏠</div>
-    <a href="./mapa.html"><div>📍</div></a>
-    <div>➕</div>
-    <div>📷</div>
-    <div>👤</div>
+  <a href="/HTML/home.HTML"><img src="/img/icons8-casa-48.png" alt="" > </a>
+  <a href="/HTML/mapa.html"><img src="/img/icons8-mapa-50.png" alt="" ></a>
+  <a href="add.html"><img src="/img/icons8-mais-50.png" alt="" ></a>
+  <a href="/HTML/serv.html" class="ativo"><img src="/img/icons8-parceiro-50.png" alt="" ></a>
+  <a href="/HTML/perfil.html"><img src="/img/icons8-conta-de-teste-50.png" alt="" ></a>
 </div>
 
 </body>
