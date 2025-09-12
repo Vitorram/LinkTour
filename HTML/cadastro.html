@@ -14,9 +14,6 @@
       justify-content: center;
       align-items: flex-start;
       min-height: 100vh;
-      background-image: url('/img/ChatGPT Image 10 de set. de 2025, 14_05_52.png');
-      background-size: cover;
-      background-position: center;
     }
 
     .container {
@@ -55,7 +52,6 @@
 
     .preview-box img {
       object-fit: cover;
-      width: 100%;
     }
 
     .preview-box.foto img {
@@ -67,7 +63,7 @@
     .preview-box.banner img {
       width: 100%;
       max-width: 100%;
-      height: auto;
+      height: 120px;
       border-radius: 8px;
     }
 
@@ -137,33 +133,16 @@
     .btn:hover {
       background: #cc0045;
     }
-
-    /* Responsividade */
-    @media (max-width: 600px) {
-      .preview-box.foto img {
-        width: 80px;
-        height: 80px;
-      }
-
-      .preview-box.banner img {
-        max-height: 120px;
-      }
-
-      .container {
-        padding: 15px;
-        margin: 10px;
-      }
-    }
   </style>
 </head>
 <body>
   <div class="container">
     <h2>Crie seu cadastro</h2>
-    <p>Saiba que este web é apenas um modelo visual de teste.<br>Equipe LINKTOUR</p>
+    <p>Este web é apenas um modelo visual de teste.<br>Equipe LINKTOUR</p>
 
     <!-- Banner -->
     <div class="preview-box banner">
-      <img id="preview-banner" src="https://via.placeholder.com/300x100?text=Banner" alt="Banner">
+      <img id="preview-banner" src="https://via.placeholder.com/300x120?text=Banner" alt="Banner">
       <label for="banner">Escolher Banner</label>
       <input type="file" id="banner" accept="image/*">
     </div>
@@ -198,12 +177,18 @@
     const previewFoto = document.getElementById("preview-foto");
     const previewBanner = document.getElementById("preview-banner");
 
+    let fotoData = previewFoto.src;
+    let bannerData = previewBanner.src;
+
     // Preview Foto
     fotoInput.addEventListener("change", () => {
       const file = fotoInput.files[0];
-      if (file) {
+      if(file){
         const reader = new FileReader();
-        reader.onload = e => previewFoto.src = e.target.result;
+        reader.onload = e => {
+          previewFoto.src = e.target.result;
+          fotoData = e.target.result;
+        };
         reader.readAsDataURL(file);
       }
     });
@@ -211,9 +196,12 @@
     // Preview Banner
     bannerInput.addEventListener("change", () => {
       const file = bannerInput.files[0];
-      if (file) {
+      if(file){
         const reader = new FileReader();
-        reader.onload = e => previewBanner.src = e.target.result;
+        reader.onload = e => {
+          previewBanner.src = e.target.result;
+          bannerData = e.target.result;
+        };
         reader.readAsDataURL(file);
       }
     });
@@ -222,9 +210,9 @@
     document.getElementById("cadastro-form").addEventListener("submit", (e) => {
       e.preventDefault();
 
-      // Sempre pega a imagem atual (ou placeholder)
-      const foto = previewFoto.src;
-      const banner = previewBanner.src;
+      // Usa a imagem escolhida ou o placeholder
+      const foto = fotoData || previewFoto.src;
+      const banner = bannerData || previewBanner.src;
 
       // Salva os dados no localStorage
       localStorage.setItem("usuario", document.getElementById("nome").value);

@@ -4,290 +4,116 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Home</title>
-
 <style>
 body {
     margin: 0;
     font-family: Arial, sans-serif;
     background-color: #f2f2f2;
-    padding-bottom: 60px; 
-    display: flex;
-    justify-content: center;
+    padding-bottom: 60px;
 }
-
-/* Layout principal */
 .container {
     display: grid;
     grid-template-columns: 1fr minmax(300px, 600px) 350px;
     gap: 20px;
     width: 100%;
     max-width: 1600px;
-    margin-left: 500px;
+    margin: 0 auto;
 }
-
-/* Responsividade */
-@media (max-width: 1200px) {
-    .container {
-        grid-template-columns: 1fr minmax(300px, 600px);
-        margin-left: 0;
-    }
-}
-
-@media (max-width: 768px) {
-  .container {
-    grid-template-columns: 1fr;
-    margin-left: 0;
-  }
-  .painelDireita {
-    display: none;
-  }
-  .feed {
-    padding: 0 10px;
-  }
-  header input {
-    padding: 6px 10px;
-  }
-}
+@media (max-width: 1200px) { .container { grid-template-columns: 1fr minmax(300px, 600px); } }
+@media (max-width: 768px) { .container { grid-template-columns: 1fr; } .painelDireita { display: none; } }
 
 /* Header */
-header {
-    display: flex;
-    align-items: center;
-    padding: 10px 15px;
-    gap: 10px;
-    background-color: #fff;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-}
-
-header input {
-    flex: 1;
-    padding: 8px 12px;
-    border-radius: 20px;
-    border: 1px solid #ccc;
-}
+header { display:flex; align-items:center; padding:10px 15px; gap:10px; background-color:#fff; position:sticky; top:0; z-index:100; }
+header input { flex:1; padding:8px 12px; border-radius:20px; border:1px solid #ccc; }
 
 /* Abas */
-.abas {
-    display: flex;
-    justify-content: space-around;
-    background-color: #fff;
-    padding: 10px 0;
-    border-bottom: 1px solid #ddd;
-    position: sticky;
-    top: 60px;
-    z-index: 99;
-}
+.abas { display:flex; justify-content:space-around; background-color:#fff; padding:10px 0; border-bottom:1px solid #ddd; position:sticky; top:60px; z-index:99; }
+.abas div { font-weight:bold; cursor:pointer; }
 
-.abas div {
-    font-weight: bold;
-    cursor: pointer;
-}
+/* Feed */
+.feed { padding:10px; }
+.poste { background-color:#fff; border-radius:10px; padding:10px; margin-bottom:15px; box-shadow:0 2px 5px rgba(0,0,0,0.05); position:relative; }
 
-/* Feed e posts */
-.feed {
-    padding: 10px;
-}
+.usuario { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+.fotoUsuario { width:40px; height:40px; border-radius:50%; background-color:#ccc; margin-right:10px; }
+.fotoUsuario img { width:100%; height:100%; border-radius:50%; }
+.infoUsuario { flex:1; }
+.nomeUsuario { font-weight:bold; }
+.postadoem { font-size:12px; color:#888; }
 
-.poste {
-    background-color: #fff;
-    border-radius: 10px;
-    padding: 10px;
-    margin-bottom: 15px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+/* Botão de 3 pontinhos */
+.menuPost { position:relative; }
+.menuBtn { background:none; border:none; font-size:20px; cursor:pointer; }
+.menuOpcoes { 
+    display:none; 
+    position:absolute; 
+    right:0; 
+    top:25px; 
+    background:#fff; 
+    border:1px solid #ddd; 
+    border-radius:8px; 
+    box-shadow:0 2px 5px rgba(0,0,0,0.1); 
+    overflow:hidden;
+    z-index:10;
 }
-
-.usuario {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
-}
-
-.fotoUsuario {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: #ccc;
-    margin-right: 10px;
-}
-
-.fotoUsuario img{
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-}
-
-.infoUsuario {
-    flex: 1;
-}
-
-.nomeUsuario {
-    font-weight: bold;
-}
-
-.postadoem {
-    font-size: 12px;
-    color: #888;
-}
-
-.seguir {
-    padding: 5px 10px;
-    background-color: #000;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
+.menuOpcoes div { padding:10px 15px; cursor:pointer; font-size:14px; }
+.menuOpcoes div:hover { background:#f2f2f2; }
 
 /* Publicação */
-.fotoPubli {
-  position: relative;
-  width: 100%;
-  border-radius: 10px;
-  overflow: hidden;
-  margin-bottom: 10px;
-  background-color: #eee;
+.fotoPubli { position:relative; width:100%; border-radius:10px; overflow:hidden; margin-bottom:10px; }
+.fotoPubli img { width:100%; height:auto; display:block; }
+.acoesPost { position:absolute; bottom:10px; right:10px; display:flex; gap:12px; }
+.botaoAcao { 
+    width:40px; 
+    height:40px; 
+    border-radius:50%; 
+    background:rgba(255,255,255,0.9); 
+    display:flex; 
+    justify-content:center; 
+    align-items:center; 
+    box-shadow:0 2px 5px rgba(0,0,0,0.1); 
+    cursor:pointer; 
+    transition:transform 0.2s ease; 
 }
+.botaoAcao:hover { transform:scale(1.1); }
+.botaoAcao img { width:22px; height:22px; }
 
-.fotoPubli img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-/* Botões sobre a imagem */
-.acoesPost {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  display: flex;
-  gap: 12px;
-}
-
-.botaoAcao {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.9);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  cursor: pointer;
-  transition: transform 0.2s ease;
-}
-
-.botaoAcao:hover {
-  transform: scale(1.1);
-}
-
-.botaoAcao img {
-  width: 22px;
-  height: 22px;
-}
-
-.desc {
-    font-size: 14px;
-    color: #333;
-    margin-top: 10px;
-}
+.desc { font-size:14px; color:#333; margin-top:10px; }
 
 /* Rodapé fixo */
-.barraInferior {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    background-color: #fff; 
-    padding: 10px 0;
-    border-top: 1px solid #ddd;
-    z-index: 999;
-}
-
-.barraInferior a {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-decoration: none;
-}
-
-.barraInferior img {
-    width: 30px;
-    height: 30px;
-}
-
-.barraInferior a.ativo img {
-    filter: brightness(1.2);
-}
+.barraInferior { position:fixed; bottom:0; left:0; width:100%; display:flex; justify-content:space-around; align-items:center; background-color:#fff; padding:10px 0; border-top:1px solid #ddd; z-index:999; }
+.barraInferior a { display:flex; justify-content:center; align-items:center; text-decoration:none; }
+.barraInferior img { width:30px; height:30px; }
+.barraInferior a.ativo img { filter:brightness(1.2); }
 
 /* Painel lateral */
-.painelDireita {
-    position: sticky;
-    top: 10px;
-    align-self: start;
-    padding: 10px;
-}
+.painelDireita { position:sticky; top:10px; align-self:start; padding:10px; }
+.search-box { background:#fff; padding:8px; border-radius:20px; display:flex; align-items:center; border:1px solid #ddd; margin-bottom:20px; }
+.search-box input { border:none; outline:none; flex:1; padding:5px 8px; }
+.card-sugestoes { background:#fff; border-radius:12px; padding:15px; margin-bottom:20px; box-shadow:0 2px 5px rgba(0,0,0,0.05); }
+.card-sugestoes h3 { margin-top:0; margin-bottom:10px; font-size:16px; }
+.sugestao { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+.sugestao:last-child { margin-bottom:0; }
+.sugestao .fotoUsuario { margin:0 10px 0 0; }
 
-.search-box {
-    background: #fff;
-    padding: 8px;
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
-    border: 1px solid #ddd;
-    margin-bottom: 20px;
-}
-
-.search-box input {
-    border: none;
-    outline: none;
-    flex: 1;
-    padding: 5px 8px;
-}
-
-.card-sugestoes {
-    background: #fff;
-    border-radius: 12px;
-    padding: 15px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-}
-
-.card-sugestoes h3 {
-    margin-top: 0;
-    margin-bottom: 10px;
-    font-size: 16px;
-}
-
-.sugestao {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 12px;
-}
-
-.sugestao:last-child {
-    margin-bottom: 0;
-}
-
-.sugestao .fotoUsuario {
-    margin: 0 10px 0 0;
-}
+/* Modal Edição */
+#modalEditar { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center; z-index:1000; }
+#modalEditar .conteudo { background:#fff; padding:20px; border-radius:12px; width:90%; max-width:400px; box-sizing:border-box; }
+#modalEditar label { display:block; margin-top:10px; font-weight:bold; }
+#modalEditar input, #modalEditar textarea { width:100%; padding:8px; margin-top:5px; border-radius:6px; border:1px solid #ccc; box-sizing:border-box; }
+#modalEditar button { margin-top:15px; padding:10px; border:none; border-radius:8px; background:#e60050; color:white; cursor:pointer; width:100%; }
+#modalEditar button:hover { background:#cc0045; }
 </style>
 </head>
 <body>
 
 <div class="container">
 
-  <!-- Feed Principal -->
+  <!-- Feed central -->
   <div>
     <header>
-        <img src="/img/icons8-pesquisa-50.png" alt="" style="width: 30px; height: 30px;"><input type="text" placeholder=" Busca">
+        <img src="/img/icons8-pesquisa-50.png" alt="" style="width:30px;height:30px;">
+        <input type="text" placeholder="Busca">
     </header>
 
     <div class="abas">
@@ -296,75 +122,14 @@ header input {
         <div>Seguindo</div>
     </div>
 
-    <div class="feed">
-        <!-- Post 1 -->
-        <div class="poste">
-            <div class="usuario">
-                <div style="display:flex; align-items:center;">
-                    <div class="fotoUsuario"><img src="https://i.pinimg.com/736x/ee/51/24/ee51240828bdd3114b204ef977373353.jpg" alt=""></div>
-                    <div class="infoUsuario">
-                        <div class="nomeUsuario">Paizao_Imbika_events</div>
-                        <div class="postadoem">postado há 2hrs</div>
-                    </div>
-                </div>
-                <button class="seguir">Seguir</button>
-            </div>
-
-            <div class="fotoPubli">
-              <img src="https://i.pinimg.com/1200x/49/7a/83/497a831f5750e97918b869cdc8409484.jpg" alt="">
-              <div class="acoesPost">
-                <div class="botaoAcao"><img src="https://img.icons8.com/ios/50/000000/checkmark.png"/></div>
-                <div class="botaoAcao"><img src="https://img.icons8.com/ios/50/000000/like--v1.png"/></div>
-                <div class="botaoAcao"><img src="https://img.icons8.com/ios/50/000000/speech-bubble--v1.png"/></div>
-                <div class="botaoAcao"><img src="https://img.icons8.com/ios/50/000000/send.png"/></div>
-              </div>
-            </div>
-
-            <div class="desc">
-                Eventinho bala com o Puto de Paris, mlk mais mais, 19H. aguardando vcs.
-                <br>
-                <br><b> Endereço: R. Alameidas - Bairro: Jardim Goianases - SP - N°: 450
-                <br> Hora: 19 Horas
-                <br> Valor: R$ 50,00
-                </b>
-            </div>
-        </div>
-
-        <!-- Post 2 -->
-        <div class="poste">
-            <div class="usuario">
-                <div style="display:flex; align-items:center;">
-                    <div class="fotoUsuario"><img src="https://i.pinimg.com/736x/a3/1f/29/a31f29d05c70a414f1d2f1619c9f190f.jpg" alt=""></div>
-                    <div class="infoUsuario">
-                        <div class="nomeUsuario">IcarosGrau</div>
-                        <div class="postadoem">postado há 3hrs</div>
-                    </div>
-                </div>
-                <button class="seguir">Seguir</button>
-            </div>
-
-            <div class="fotoPubli">
-              <img src="https://i.pinimg.com/736x/02/1a/22/021a22681611016993ca752599b6d72a.jpg" alt="">
-              <div class="acoesPost">
-                <div class="botaoAcao"><img src="https://img.icons8.com/ios/50/000000/checkmark.png"/></div>
-                <div class="botaoAcao"><img src="https://img.icons8.com/ios/50/000000/like--v1.png"/></div>
-                <div class="botaoAcao"><img src="https://img.icons8.com/ios/50/000000/speech-bubble--v1.png"/></div>
-                <div class="botaoAcao"><img src="https://img.icons8.com/ios/50/000000/send.png"/></div>
-              </div>
-            </div>
-
-            <div class="desc">
-                Chega chega rapaize, eventão bala, chama chama 
-               <br> (12-919191112)
-            </div>
-        </div>
-    </div>
+    <div class="feed" id="feedHome"></div>
   </div>
 
-  <!-- Painel direita -->
+  <!-- Painel lateral -->
   <div class="painelDireita">
     <div class="search-box">
-      <img src="/img/icons8-pesquisa-50.png" alt="" style="width: 30px; height: 30px;"> <input type="text" placeholder="Pesquisar">
+      <img src="/img/icons8-pesquisa-50.png" alt="" style="width:30px;height:30px;"> 
+      <input type="text" placeholder="Pesquisar">
     </div>
 
     <div class="card-sugestoes">
@@ -385,16 +150,156 @@ header input {
       </div>
     </div>
   </div>
+
 </div>
 
-<!-- Rodapé fixo -->
+<!-- Rodapé -->
 <div class="barraInferior">
-  <a href="/HTML/home.HTML"><img src="/img/icons8-casa-48.png" alt="" > </a>
-  <a href="/HTML/mapa.html"><img src="/img/icons8-mapa-50.png" alt="" ></a>
-  <a href="/HTML/add.html"><img src="/img/icons8-mais-50.png" alt="" ></a>
-  <a href="/HTML/serv.html" class="ativo"><img src="/img/icons8-parceiro-50.png" alt="" ></a>
-  <a href="/HTML/perfil.html"><img src="/img/icons8-conta-de-teste-50.png" alt="" ></a>
+  <a href="/HTML/home.HTML" class="ativo"><img src="/img/icons8-casa-48.png" alt=""></a>
+  <a href="/HTML/mapa.html"><img src="/img/icons8-mapa-50.png" alt=""></a>
+  <a href="/HTML/add.html"><img src="/img/icons8-mais-50.png" alt=""></a>
+  <a href="/HTML/serv.html"><img src="/img/icons8-parceiro-50.png" alt=""></a>
+  <a href="/HTML/perfil.html"><img src="/img/icons8-conta-de-teste-50.png" alt=""></a>
 </div>
+
+<!-- Modal Edição -->
+<div id="modalEditar">
+  <div class="conteudo">
+    <h3>Editar Evento</h3>
+    <label>Nome do Evento</label>
+    <input type="text" id="editar-nome">
+    <label>Descrição</label>
+    <textarea id="editar-desc"></textarea>
+    <label>Endereço</label>
+    <input type="text" id="editar-endereco">
+    <label>Hora</label>
+    <input type="text" id="editar-hora">
+    <label>Valor</label>
+    <input type="text" id="editar-valor">
+    <label>Imagem</label>
+    <input type="file" id="editar-imagem" accept="image/*">
+    <img id="preview-imagem" style="width:100%; margin-top:10px; border-radius:8px;">
+    <button id="salvar-edicao">Salvar</button>
+    <button id="fechar-edicao" style="background:#ccc; color:#000; margin-top:5px;">Cancelar</button>
+  </div>
+</div>
+
+<script>
+// Nome e foto do usuário logado
+const nomeUsuarioLogado = localStorage.getItem("usuario") || "Você";
+const fotoUsuarioLogado = localStorage.getItem("foto") || "https://via.placeholder.com/40";
+
+let eventos = JSON.parse(localStorage.getItem("eventos")) || [];
+
+// Função para criar o HTML do post
+function renderizarEventos() {
+    const feed = document.getElementById("feedHome");
+    feed.innerHTML = "";
+    eventos.forEach((ev, idx) => {
+        const div = document.createElement("div");
+        div.className = "poste";
+        div.innerHTML = `
+            <div class="usuario">
+                <div style="display:flex; align-items:center;">
+                    <div class="fotoUsuario"><img src="${fotoUsuarioLogado}" alt=""></div>
+                    <div class="infoUsuario">
+                        <div class="nomeUsuario">${ev.usuario}</div>
+                        <div class="postadoem">Agora</div>
+                    </div>
+                </div>
+                <div class="menuPost">
+                    <button class="menuBtn">⋮</button>
+                    <div class="menuOpcoes">
+                        <div onclick="editarEvento(${idx})">Editar</div>
+                        <div onclick="apagarEvento(${idx})">Remover</div>
+                    </div>
+                </div>
+            </div>
+            <div class="fotoPubli">
+                <img src="${ev.imagem}" alt="">
+                <div class="acoesPost">
+                    <div class="botaoAcao"><img src="/img/icons8-coração-50.png" alt="Curtir"></div>
+                    <div class="botaoAcao"><img src="/img/icons8-fita-de-bookmark-50.png" alt="Salvar"></div>
+                    <div class="botaoAcao"><img src="/img/icons8-comentários-50.png" alt="Comentar"></div>
+                    <div class="botaoAcao"><img src="/img/icons8-compartilhar-50.png" alt="Compartilhar"></div>
+                </div>
+            </div>
+            <div class="desc">
+                <strong>${ev.nome}</strong><br>
+                ${ev.desc}<br><br>
+                Endereço: ${ev.endereco}<br>
+                Hora: ${ev.hora}<br>
+                Valor: ${ev.valor}
+            </div>
+        `;
+        feed.appendChild(div);
+
+        // Ativar menu de 3 pontinhos
+        const menuBtn = div.querySelector(".menuBtn");
+        const menuOpcoes = div.querySelector(".menuOpcoes");
+        menuBtn.addEventListener("click", () => {
+            menuOpcoes.style.display = menuOpcoes.style.display === "block" ? "none" : "block";
+        });
+        document.addEventListener("click", (e) => {
+            if (!div.contains(e.target)) menuOpcoes.style.display = "none";
+        });
+    });
+}
+
+// Apagar evento
+function apagarEvento(idx){
+    if(confirm("Deseja realmente apagar este evento?")){
+        eventos.splice(idx,1);
+        localStorage.setItem("eventos", JSON.stringify(eventos));
+        renderizarEventos();
+    }
+}
+
+// Editar evento
+let eventoEditarIdx = null;
+function editarEvento(idx){
+    eventoEditarIdx = idx;
+    const ev = eventos[idx];
+    document.getElementById("editar-nome").value = ev.nome;
+    document.getElementById("editar-desc").value = ev.desc;
+    document.getElementById("editar-endereco").value = ev.endereco;
+    document.getElementById("editar-hora").value = ev.hora;
+    document.getElementById("editar-valor").value = ev.valor;
+    document.getElementById("preview-imagem").src = ev.imagem;
+    document.getElementById("modalEditar").style.display = "flex";
+}
+
+document.getElementById("fechar-edicao").addEventListener("click", () => {
+    document.getElementById("modalEditar").style.display = "none";
+});
+
+document.getElementById("editar-imagem").addEventListener("change", e => {
+    const file = e.target.files[0];
+    if(file){
+        const reader = new FileReader();
+        reader.onload = e => document.getElementById("preview-imagem").src = e.target.result;
+        reader.readAsDataURL(file);
+    }
+});
+
+document.getElementById("salvar-edicao").addEventListener("click", () => {
+    if(eventoEditarIdx !== null){
+        const ev = eventos[eventoEditarIdx];
+        ev.nome = document.getElementById("editar-nome").value;
+        ev.desc = document.getElementById("editar-desc").value;
+        ev.endereco = document.getElementById("editar-endereco").value;
+        ev.hora = document.getElementById("editar-hora").value;
+        ev.valor = document.getElementById("editar-valor").value;
+        ev.imagem = document.getElementById("preview-imagem").src;
+        localStorage.setItem("eventos", JSON.stringify(eventos));
+        renderizarEventos();
+        document.getElementById("modalEditar").style.display = "none";
+    }
+});
+
+// Inicializa feed
+renderizarEventos();
+</script>
 
 </body>
 </html>

@@ -1,68 +1,173 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aviso</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-image: url('/img/Design\ sem\ nome.png');
-      background-size: cover;
-      background-position: center;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      color: #fff;
-      background-color: #ffffff; /* fallback caso a imagem não carregue */
-      flex-direction: column;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Criar Evento</title>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0 15px 60px 15px;
+    background-color: #f2f2f2;
+}
 
-    p {
-      font-size: 18px;
-      max-width: 90%;
-      background: rgba(0,0,0,0.6);
-      padding: 15px 20px;
-      border-radius: 12px;
-      margin-bottom: 80px; /* espaço para não colar no rodapé */
-    }
+h2 { text-align: center; margin-top: 15px; }
 
-    /* RODAPÉ FIXO */
-    .barraInferior {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      background-color: #fff;
-      padding: 12px 0;
-      border-top: 1px solid #ddd;
-      z-index: 100;
-    }
-    .barraInferior a img {
-      width: 30px;
-      height: 30px;
-    }
-    .barraInferior a.ativo img {
-      filter: brightness(1.2);
-    }
-  </style>
+form {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    max-width: 500px;
+    margin: 20px auto;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+label { display: block; margin-top: 10px; font-weight: bold; }
+
+input, textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+button {
+    margin-top: 15px;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    background: #e60050;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+}
+
+button:hover { background: #cc0045; }
+
+.preview-img {
+    margin-top: 10px;
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* Rodapé fixo */
+.barraInferior {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #fff; 
+    padding: 10px 0;
+    border-top: 1px solid #ddd;
+    z-index: 999;
+}
+
+.barraInferior a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+}
+
+.barraInferior img {
+    width: 30px;
+    height: 30px;
+}
+
+.barraInferior a.ativo img {
+    filter: brightness(1.2);
+}
+</style>
 </head>
 <body>
-  <p>Ainda não temos nada por aqui. <br> Agradecemos por ter entrado no nosso aplicativo!</p>
 
-  <!-- RODAPÉ -->
-  <div class="barraInferior">
-    <a href="/HTML/home.HTML"><img src="/img/icons8-casa-48.png" alt="Home"></a>
-    <a href="/HTML/mapa.html"><img src="/img/icons8-mapa-50.png" alt="Mapa"></a>
-    <a href="/HTML/add.html"><img src="/img/icons8-mais-50.png" alt="Adicionar"></a>
-    <a href="/HTML/serv.html" class="ativo"><img src="/img/icons8-parceiro-50.png" alt="Serviços"></a>
-    <a href="/HTML/perfil.html"><img src="/img/icons8-conta-de-teste-50.png" alt="Perfil"></a>
-  </div>
+<h2>Criar Evento</h2>
+
+<form id="formEvento">
+  <label>Nome do Evento</label>
+  <input type="text" id="nomeEvento" required>
+
+  <label>Descrição</label>
+  <textarea id="descEvento" rows="3" required></textarea>
+
+  <label>Endereço</label>
+  <input type="text" id="enderecoEvento" required>
+
+  <label>Hora</label>
+  <input type="time" id="horaEvento" required>
+
+  <label>Valor</label>
+  <input type="text" id="valorEvento">
+
+  <label>Foto do Evento</label>
+  <input type="file" id="fotoEvento" accept="image/*" required>
+  <img id="previewFoto" class="preview-img" src="https://via.placeholder.com/300x150">
+
+  <button type="submit">Criar Evento</button>
+</form>
+
+<script>
+const form = document.getElementById("formEvento");
+const fotoInput = document.getElementById("fotoEvento");
+const preview = document.getElementById("previewFoto");
+
+let imagemBase64 = "";
+
+// Preview da imagem
+fotoInput.addEventListener("change", () => {
+  const file = fotoInput.files[0];
+  if(file){
+    const reader = new FileReader();
+    reader.onload = e => {
+      preview.src = e.target.result;
+      imagemBase64 = e.target.result; // 🔥 salva em base64
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
+// Criar evento
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const eventos = JSON.parse(localStorage.getItem("eventos")) || [];
+
+  const novoEvento = {
+    usuario: localStorage.getItem("usuario") || "Você",
+    nome: document.getElementById("nomeEvento").value,
+    desc: document.getElementById("descEvento").value,
+    endereco: document.getElementById("enderecoEvento").value,
+    hora: document.getElementById("horaEvento").value,
+    valor: document.getElementById("valorEvento").value || "Gratuito",
+    imagem: imagemBase64, // 🔥 mesmo nome que a home espera
+    postadoem: "agora mesmo"
+  };
+
+  eventos.unshift(novoEvento); // adiciona no início
+  localStorage.setItem("eventos", JSON.stringify(eventos));
+
+  alert("Evento criado com sucesso!");
+  window.location.href = "/HTML/home.HTML"; // cuidado com maiúscula/minúscula
+});
+</script>
+
+<!-- Rodapé fixo -->
+<div class="barraInferior">
+  <a href="/HTML/home.html"><img src="/img/icons8-casa-48.png" alt=""></a>
+  <a href="/HTML/mapa.html"><img src="/img/icons8-mapa-50.png" alt=""></a>
+  <a href="/HTML/add.html" class="ativo"><img src="/img/icons8-mais-50.png" alt=""></a>
+  <a href="/HTML/serv.html"><img src="/img/icons8-parceiro-50.png" alt=""></a>
+  <a href="/HTML/perfil.html"><img src="/img/icons8-conta-de-teste-50.png" alt=""></a>
+</div>
+
 </body>
 </html>
