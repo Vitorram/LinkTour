@@ -225,17 +225,19 @@
     });
 
     document.getElementById("cadastro-form").addEventListener("submit", (e) => {
-      e.preventDefault();
-      // Salva os dados no localStorage (apenas para teste)
-      localStorage.setItem("usuario", document.getElementById("nome").value);
-      localStorage.setItem("arroba", document.getElementById("arroba").value);
-      localStorage.setItem("descricao", document.getElementById("descricao").value);
-      localStorage.setItem("foto", previewFoto.src);
-      localStorage.setItem("banner", previewBanner.src);
+  e.preventDefault();
 
-      alert("Cadastro realizado! (modelo visual apenas)");
-      // window.location.href = "perfil.html"; // opcional: redireciona para perfil
-    });
+  // Salva os dados no localStorage (apenas para teste)
+  localStorage.setItem("usuario", document.getElementById("nome").value);
+  localStorage.setItem("arroba", document.getElementById("arroba").value);
+  localStorage.setItem("descricao", document.getElementById("descricao").value);
+  localStorage.setItem("foto", previewFoto.src);
+  localStorage.setItem("banner", previewBanner.src);
+
+  // Redireciona para a home
+  window.location.href = "/HTML/home.HTML";
+});
+
   </script>
 </body>
 </html>
