@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro - LinkTour</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      background-image: url('/img/ChatGPT Image 10 de set. de 2025, 14_05_52.png');
+      background-size: cover;
+      background-position: center;
+    }
+
+    .container {
+      background: #fff;
+      padding: 20px;
+      margin: 20px;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 500px;
+      text-align: center;
+      box-sizing: border-box;
+    }
+
+    .container h2 {
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .container p {
+      color: #cfacac;
+      margin-bottom: 20px;
+    }
+
+    .preview-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+      border: 2px dashed #ccc;
+      border-radius: 12px;
+      padding: 10px;
+      position: relative;
+    }
+
+    .preview-box img {
+      display: none; /* esconde até o usuário adicionar */
+      object-fit: cover;
+      width: 100%;
+    }
+
+    .preview-box.foto img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+    }
+
+    .preview-box.banner img {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+
+    .preview-box label {
+      background: #007bff;
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: 0.3s;
+    }
+
+    .preview-box label:hover {
+      background: #0056b3;
+    }
+
+    .preview-box input {
+      display: none;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      text-align: left;
+    }
+
+    label {
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #333;
+    }
+
+    input, textarea {
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      outline: none;
+      width: 100%;
+      box-sizing: border-box;
+      transition: border 0.2s;
+    }
+
+    input:focus, textarea:focus {
+      border: 1px solid #e60050;
+    }
+
+    textarea {
+      resize: none;
+      height: 80px;
+    }
+
+    .btn {
+      background: #e60050;
+      color: #fff;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+      text-align: center;
+    }
+
+    .btn:hover {
+      background: #cc0045;
+    }
+
+    /* Responsividade */
+    @media (max-width: 600px) {
+      .preview-box.foto img {
+        width: 80px;
+        height: 80px;
+      }
+
+      .preview-box.banner img {
+        max-height: 120px;
+      }
+
+      .container {
+        padding: 15px;
+        margin: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Crie seu cadastro</h2>
+    <p>Saiba que este web é apenas um modelo visual de teste.<br>Equipe LINKTOUR</p>
+
+    <!-- Banner -->
+    <div class="preview-box banner">
+      <img id="preview-banner" alt="Banner">
+      <label for="banner">Escolher Banner</label>
+      <input type="file" id="banner" accept="image/*">
+    </div>
+
+    <!-- Foto -->
+    <div class="preview-box foto">
+      <img id="preview-foto" alt="Foto">
+      <label for="foto">Escolher Foto</label>
+      <input type="file" id="foto" accept="image/*">
+    </div>
+
+    <form id="cadastro-form">
+      <div>
+        <label for="nome">Nome *</label>
+        <input type="text" id="nome" required>
+      </div>
+      <div>
+        <label for="arroba">@username *</label>
+        <input type="text" id="arroba" placeholder="@usuario" required>
+      </div>
+      <div>
+        <label for="descricao">Descrição *</label>
+        <textarea id="descricao" placeholder="Fale um pouco sobre você"></textarea>
+      </div>
+      <button class="btn" type="submit">Cadastrar-se</button>
+    </form>
+  </div>
+
+  <script>
+    const fotoInput = document.getElementById("foto");
+    const bannerInput = document.getElementById("banner");
+    const previewFoto = document.getElementById("preview-foto");
+    const previewBanner = document.getElementById("preview-banner");
+
+    // Função para mostrar preview
+    fotoInput.addEventListener("change", () => {
+      const file = fotoInput.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = e => {
+          previewFoto.src = e.target.result;
+          previewFoto.style.display = "block";
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    bannerInput.addEventListener("change", () => {
+      const file = bannerInput.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = e => {
+          previewBanner.src = e.target.result;
+          previewBanner.style.display = "block";
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    document.getElementById("cadastro-form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      // Salva os dados no localStorage (apenas para teste)
+      localStorage.setItem("usuario", document.getElementById("nome").value);
+      localStorage.setItem("arroba", document.getElementById("arroba").value);
+      localStorage.setItem("descricao", document.getElementById("descricao").value);
+      localStorage.setItem("foto", previewFoto.src);
+      localStorage.setItem("banner", previewBanner.src);
+
+      alert("Cadastro realizado! (modelo visual apenas)");
+      // window.location.href = "perfil.html"; // opcional: redireciona para perfil
+    });
+  </script>
+</body>
+</html>

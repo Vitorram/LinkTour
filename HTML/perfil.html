@@ -4,8 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Perfil</title>
-
-
   <style>
     body {
       margin: 0;
@@ -17,9 +15,10 @@
     .banner {
       width: 100%;
       height: 180px;
-      background: url("https://i.pinimg.com/736x/9f/42/e0/9f42e0e93eb99c78b59094754c3d7de8.jpg");
+      background: #ccc;
+      background-size: cover;
+      background-position: center;
       position: relative;
-      size: 50%;
     }
 
     /* Foto de perfil */
@@ -32,7 +31,13 @@
       bottom: -50px;
       left: 50%;
       transform: translateX(-50%);
-      
+      overflow: hidden;
+    }
+
+    .perfil-foto img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
     /* Info principal */
@@ -66,7 +71,7 @@
       font-size: 16px;
     }
 
-    /* Abas (grid, etc) */
+    /* Abas */
     .abas {
       display: flex;
       justify-content: center;
@@ -78,13 +83,9 @@
       margin-bottom: 10px;
     }
 
-    .abas div {
-      cursor: pointer;
-      font-size: 18px;
-    }
     .abas img{
-        width: 30px;
-        height: 30px;
+      width: 30px;
+      height: 30px;
     }
 
     /* Grid de posts */
@@ -102,76 +103,87 @@
     }
 
     /* Rodapé fixo */
-   .barraInferior {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    display: flex;
-    justify-content: space-around;
-    background-color: #fff;
-    padding: 10px 0;
-    border-top: 1px solid #ddd;
-    z-index: 200;
-}
-.barraInferior a {
-    text-decoration: none;
-    font-size: 22px;
-    color: #333;
-}
-.barraInferior img{
- width: 30px;
- height: 30px;
-}
+    .barraInferior {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+      background-color: #fff;
+      padding: 10px 0;
+      border-top: 1px solid #ddd;
+      z-index: 200;
+    }
+    .barraInferior img{
+      width: 30px;
+      height: 30px;
+    }
   </style>
 </head>
 <body>
 
   <!-- Banner e foto -->
-  <div class="banner"><img src="" alt="">
-    <div class="perfil-foto"><img src="https://i.pinimg.com/736x/3c/b6/ed/3cb6edae9d2d300cd86b291604a4530d.jpg" alt="" style="width: 100%; height: 100%; border-radius: 50%;" ></div>
+  <div class="banner" id="perfil-banner">
+    <div class="perfil-foto">
+      <img id="perfil-foto" src="https://via.placeholder.com/100" alt="Foto de Perfil">
+    </div>
   </div>
 
   <!-- Info perfil -->
   <div class="perfil-info">
-    <h2>TIAGO_KABRINHA</h2>
-    <p>@kabral_A</p>
-    <p>"Dinheiro vai, dinheiro vem. E uns falam que é nós só pelas de cem"</p>
+    <h2 id="perfil-nome">Usuário</h2>
+    <p id="perfil-arroba">@usuario</p>
+    <p id="perfil-desc">Descrição do perfil</p>
   </div>
 
   <!-- Stats -->
   <div class="stats">
     <div>
-      <strong>140</strong>
+      <strong>0</strong>
       Seguindo
     </div>
     <div>
-      <strong>250</strong>
+      <strong>0</strong>
       Seguidores
     </div>
   </div>
 
   <!-- Abas -->
-  <div class="abas" style="gap: 60px;" >
+  <div class="abas" style="gap: 60px;">
     <div><img src="/img/icons8-fotos-50.png" alt=""></div>
     <div><img src="/img/icons8-mais-30.png" alt=""></div>
   </div>
 
   <!-- Grid de posts -->
-  <div class="grid">
-    <img src="https://i.pinimg.com/736x/94/d8/1d/94d81dd34f8b860debf392eb5d4ede68.jpg" alt="post1">
-    <img src="https://i.pinimg.com/736x/d9/31/a8/d931a8763d9bf8590a4639e1175c004a.jpg" alt="post2">
-    <img src="https://i.pinimg.com/736x/db/b4/dd/dbb4ddf2e2885ec9d6b959fc2d4955bb.jpg" alt="post3">
-    <img src="https://i.pinimg.com/1200x/75/ee/7f/75ee7fc01f948adfa4e6e279b616854e.jpg" alt="post4">
-  </div>
 
   <!-- Rodapé -->
- <div class="barraInferior">
-  <a href="/HTML/home.HTML"><img src="/img/icons8-casa-48.png" alt=""> </a>
-  <a href="/HTML/mapa.html"><img src="/img/icons8-mapa-50.png" alt="" ></a>
-  <a href="/HTML/add.html"><img src="/img/icons8-mais-50.png" alt="" ></a>
-  <a href="/HTML/serv.html" class="ativo"><img src="/img/icons8-parceiro-50.png" alt="" ></a>
-  <a href="/HTML/perfil.html"><img src="/img/icons8-conta-de-teste-50.png" alt="" ></a>
-</div>
+  <div class="barraInferior">
+    <a href="/HTML/home.HTML"><img src="/img/icons8-casa-48.png" alt=""></a>
+    <a href="/HTML/mapa.html"><img src="/img/icons8-mapa-50.png" alt=""></a>
+    <a href="/HTML/add.html"><img src="/img/icons8-mais-50.png" alt=""></a>
+    <a href="/HTML/serv.html"><img src="/img/icons8-parceiro-50.png" alt=""></a>
+    <a href="/HTML/perfil.htmlS"><img src="/img/icons8-conta-de-teste-50.png" alt=""></a>
+  </div>
 
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      const usuario = localStorage.getItem("usuario") || "Usuário";
+      const arroba = localStorage.getItem("arroba") || "@usuario";
+      const descricao = localStorage.getItem("descricao") || "Sem descrição";
+      const foto = localStorage.getItem("foto");
+      const banner = localStorage.getItem("banner");
+
+      document.getElementById("perfil-nome").textContent = usuario;
+      document.getElementById("perfil-arroba").textContent = arroba;
+      document.getElementById("perfil-desc").textContent = descricao;
+
+      if (foto) {
+        document.getElementById("perfil-foto").src = foto;
+      }
+      if (banner) {
+        document.getElementById("perfil-banner").style.backgroundImage = `url(${banner})`;
+      }
+    });
+  </script>
 </body>
 </html>
