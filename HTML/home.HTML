@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Home</title>
+<title>Home - LinkTour</title>
 <style>
 body {
     margin: 0;
@@ -96,13 +96,36 @@ header input { flex:1; padding:8px 12px; border-radius:20px; border:1px solid #c
 .sugestao:last-child { margin-bottom:0; }
 .sugestao .fotoUsuario { margin:0 10px 0 0; }
 
-/* Modal Edição */
-#modalEditar { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center; z-index:1000; }
-#modalEditar .conteudo { background:#fff; padding:20px; border-radius:12px; width:90%; max-width:400px; box-sizing:border-box; }
+/* Modal Edição - corrigido */
+#modalEditar {
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.5);
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+}
+#modalEditar .conteudo {
+    background:#fff;
+    padding:20px;
+    border-radius:12px;
+    width:90%;
+    max-width:450px;
+    max-height:90%;
+    overflow-y:auto;
+    box-sizing:border-box;
+}
+#modalEditar h3 { margin-top:0; text-align:center; }
 #modalEditar label { display:block; margin-top:10px; font-weight:bold; }
 #modalEditar input, #modalEditar textarea { width:100%; padding:8px; margin-top:5px; border-radius:6px; border:1px solid #ccc; box-sizing:border-box; }
 #modalEditar button { margin-top:15px; padding:10px; border:none; border-radius:8px; background:#e60050; color:white; cursor:pointer; width:100%; }
 #modalEditar button:hover { background:#cc0045; }
+#modalEditar #fechar-edicao { background:#ccc; color:#000; margin-top:5px; }
+
 </style>
 </head>
 <body>
@@ -180,7 +203,7 @@ header input { flex:1; padding:8px 12px; border-radius:20px; border:1px solid #c
     <input type="file" id="editar-imagem" accept="image/*">
     <img id="preview-imagem" style="width:100%; margin-top:10px; border-radius:8px;">
     <button id="salvar-edicao">Salvar</button>
-    <button id="fechar-edicao" style="background:#ccc; color:#000; margin-top:5px;">Cancelar</button>
+    <button id="fechar-edicao">Cancelar</button>
   </div>
 </div>
 
