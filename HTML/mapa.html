@@ -14,8 +14,7 @@ body, html {
     font-family: Arial, sans-serif;
     overflow-x:hidden;
 }
-
-/* HEADER COM BOTÕES */
+/* HEADER */
 header {
     display:flex;
     justify-content:center;
@@ -38,34 +37,26 @@ header {
     cursor:pointer;
 }
 .headerBtn.ativo { background:#222; }
-
 /* MAPA */
 #mapContainer {
     position: absolute;
-    top: 60px; /* altura do header */
-    bottom: 60px; /* altura do rodapé */
+    top: 60px;
+    bottom: 60px;
     left: 0;
     right: 0;
 }
 #map { width:100%; height:100%; }
-
-/* DISCOVER - estilo Pinterest */
+/* DISCOVER */
 #discoverSection {
     display:none;
-    column-count: 2;         /* número de colunas no mobile */
+    column-count: 2;
     column-gap: 12px;
     padding:15px;
 }
-
-@media(min-width:600px){
-  #discoverSection { column-count: 3; } /* tablets */
-}
-@media(min-width:900px){
-  #discoverSection { column-count: 4; } /* desktop */
-}
-
+@media(min-width:600px){ #discoverSection { column-count: 3; } }
+@media(min-width:900px){ #discoverSection { column-count: 4; } }
 #discoverSection .card {
-    break-inside: avoid;     /* evita corte estranho */
+    break-inside: avoid;
     margin-bottom: 12px;
     cursor:pointer;
     border-radius:12px;
@@ -73,7 +64,6 @@ header {
     background:#fff;
     box-shadow:0 2px 6px rgba(0,0,0,0.1);
 }
-
 #discoverSection .card img {
     width:100%;
     height:auto;
@@ -81,20 +71,16 @@ header {
     border-radius:12px;
     object-fit:cover;
 }
-
-/* MODAL FEED */
+/* MODAL */
 .feedModal {
     display:none;
     position: fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
+    top:0; left:0;
+    width:100%; height:100%;
     background:rgba(255,255,255,0.95);
     z-index:1000;
     flex-direction: column;
     overflow-y:auto;
-    justify-content:flex-start;
     padding:20px;
     box-sizing:border-box;
 }
@@ -113,13 +99,8 @@ header {
     background:none;
     border:none;
 }
-.feedContent {
-    display:flex;
-    flex-direction:column;
-    gap:20px;
-}
-
-/* POSTS */
+.feedContent { display:flex; flex-direction:column; gap:20px; }
+/* POST */
 .poste {
     border:1px solid #ddd;
     border-radius:12px;
@@ -136,29 +117,21 @@ header {
     align-items:center;
     padding:10px;
 }
-.poste .usuario .infoUsuario {
-    margin-left:10px;
-}
-.poste .usuario .infoUsuario .nomeUsuario { font-weight:bold; font-size:14px; }
-.poste .usuario .infoUsuario .postadoem { font-size:12px; color:gray; }
+.poste .usuario .infoUsuario { margin-left:10px; }
+.poste .usuario .nomeUsuario { font-weight:bold; font-size:14px; }
+.poste .usuario .postadoem { font-size:12px; color:gray; }
 .poste .fotoPubli img {
-    width:100%;
-    max-height:300px;
-    object-fit:cover;
-    border-radius:8px;
+    width:100%; max-height:300px;
+    object-fit:cover; border-radius:8px;
 }
 .poste .desc { font-size:14px; padding:10px; }
 .poste .usuario button {
-    font-size:13px;
-    padding:5px 10px;
-    border:none;
-    border-radius:5px;
-    background:#0095f6;
-    color:white;
+    font-size:13px; padding:5px 10px;
+    border:none; border-radius:5px;
+    background:#0095f6; color:white;
     cursor:pointer;
 }
-
-/* RODAPÉ FIXO */
+/* RODAPÉ */
 .barraInferior {
     position: fixed;
     bottom: 0;
@@ -173,21 +146,17 @@ header {
 }
 .barraInferior a img { width:30px; height:30px; }
 .barraInferior a.ativo img { filter: brightness(1.2); }
-
-/* BLOB MARKER */
+/* MARKERS */
 .blob {
-    width: 50px;
-    height: 50px;
+    width: 50px; height: 50px;
     border-radius:100%;
     overflow:hidden;
     display:flex;
     align-items:center;
     justify-content:center;
     background:#000;
-    background-size: 100%;
 }
 .blob img { width:100%; height:100%; object-fit:cover; }
-
 </style>
 </head>
 <body>
@@ -197,53 +166,11 @@ header {
   <button id="btnDescobrir" class="headerBtn">DESCOBRIR</button>
 </header>
 
-<!-- MAPA -->
-<div id="mapContainer">
-  <div id="map"></div>
-</div>
+<div id="mapContainer"><div id="map"></div></div>
 
-<!-- DISCOVER -->
-<div id="discoverSection">
-  <div class="card" data-html='
-    <div class="poste">
-      <div class="usuario">
-        <div style="display:flex; align-items:center;">
-          <div class="fotoUsuario"><img src="https://i.pinimg.com/736x/ee/51/24/ee51240828bdd3114b204ef977373353.jpg" style="width:40px;height:40px;border-radius:50%;"></div>
-          <div class="infoUsuario">
-            <div class="nomeUsuario">Paizao_Imbika_events</div>
-            <div class="postadoem">postado há 2hrs</div>
-          </div>
-        </div>
-        <button>Seguir</button>
-      </div>
-      <div class="fotoPubli">
-        <img src="https://i.pinimg.com/1200x/49/7a/83/497a831f5750e97918b869cdc8409484.jpg">
-      </div>
-      <div class="desc">🔥 Vem aí a melhor festa de Caraguatatuba!</div>
-    </div>
-  '><img src="https://i.pinimg.com/1200x/49/7a/83/497a831f5750e97918b869cdc8409484.jpg" alt="" style="width: 100%; height: 100%; border-radius: 0;"></div>
+<div id="discoverSection"></div>
 
-  <div class="card" data-html='
-    <div class="poste">
-      <div class="usuario">
-        <div style="display:flex; align-items:center;">
-          <div class="fotoUsuario"><img src="https://i.pinimg.com/736x/a3/1f/29/a31f29d05c70a414f1d2f1619c9f190f.jpg" style="width:40px;height:40px;border-radius:50%;"></div>
-          <div class="infoUsuario">
-            <div class="nomeUsuario">Eventos_Litoral</div>
-            <div class="postadoem">postado há 5hrs</div>
-          </div>
-        </div>
-        <button>Seguir</button>
-      </div>
-      <div class="fotoPubli">
-        <img src="https://i.pinimg.com/736x/d8/93/2b/d8932bf5bdb46462182e409a8882301a.jpg">
-      </div>
-      <div class="desc">🌊 Sunset incrível no litoral!</div>
-    </div>
-  '><img src="https://i.pinimg.com/736x/d8/93/2b/d8932bf5bdb46462182e409a8882301a.jpg" alt="" style="width: 100%; height: 100%; border-radius: 0;"> </div>
-</div>
-
-<!-- MODAL FEED -->
+<!-- MODAL -->
 <div id="feedModal" class="feedModal">
   <div class="feedHeader">
     <button id="feedBackBtn" class="feedBackBtn">&#8592;</button>
@@ -252,17 +179,17 @@ header {
   <div class="feedContent" id="feedModalInner"></div>
 </div>
 
-<!-- RODAPÉ -->
 <div class="barraInferior">
   <a href="/HTML/home.HTML"><img src="/img/icons8-casa-48.png" alt=""></a>
-  <a href="/HTML/mapa.html"><img src="/img/icons8-mapa-50.png" alt=""></a>
+  <a href="/HTML/mapa.html" class="ativo"><img src="/img/icons8-mapa-50.png" alt=""></a>
   <a href="/HTML/add.html"><img src="/img/icons8-mais-50.png" alt=""></a>
-  <a href="/HTML/serv.html" class="ativo"><img src="/img/icons8-parceiro-50.png" alt=""></a>
+  <a href="/HTML/serv.html"><img src="/img/icons8-parceiro-50.png" alt=""></a>
   <a href="/HTML/perfil.html"><img src="/img/icons8-conta-de-teste-50.png" alt=""></a>
 </div>
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
+// Referências
 const mapContainer = document.getElementById('mapContainer');
 const discoverSection = document.getElementById('discoverSection');
 const btnMapa = document.getElementById('btnMapa');
@@ -277,39 +204,29 @@ btnMapa.addEventListener('click', ()=>{
 });
 btnDescobrir.addEventListener('click', ()=>{
     mapContainer.style.display='none';
-    discoverSection.style.display='flex';
+    discoverSection.style.display='block';
     btnDescobrir.classList.add('ativo');
     btnMapa.classList.remove('ativo');
 });
 
-// Mapa centralizado
+// Inicia mapa
 var map = L.map('map').setView([-23.6226, -45.4167], 13);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '© OpenStreetMap'
+    maxZoom: 19, attribution: '© OpenStreetMap'
 }).addTo(map);
 
-// Função para criar blob marker
-function blobMarker(lat, lng, imgUrl, publiHtml){
+// Função marker personalizado
+function blobMarker(lat, lng, imgUrl, htmlContent){
     return L.marker([lat,lng],{
         icon: L.divIcon({
             className:"",
             html:`<div class="blob"><img src="${imgUrl}"></div>`,
-            iconSize:[50,50],
-            iconAnchor:[25,25]
+            iconSize:[50,50], iconAnchor:[25,25]
         })
-    }).addTo(map).on('click',()=>openFeed(publiHtml));
+    }).addTo(map).on('click',()=>openFeed(htmlContent));
 }
 
-// Publicações Home
-const publi1 = document.querySelector('#discoverSection .card:nth-child(1)').dataset.html;
-const publi2 = document.querySelector('#discoverSection .card:nth-child(2)').dataset.html;
-
-// Blobs no mapa
-blobMarker(-23.636731, -45.430425, "https://i.pinimg.com/1200x/49/7a/83/497a831f5750e97918b869cdc8409484.jpg", publi1);
-blobMarker(-23.629219, -45.415384, "https://i.pinimg.com/736x/d8/93/2b/d8932bf5bdb46462182e409a8882301a.jpg", publi2);
-
-// Modal Feed
+// Modal
 const feedModal = document.getElementById('feedModal');
 const feedModalInner = document.getElementById('feedModalInner');
 const feedBackBtn = document.getElementById('feedBackBtn');
@@ -319,19 +236,58 @@ function openFeed(html){
     feedModal.style.display = 'flex';
     document.body.style.overflow='hidden';
 }
-
 function closeFeed(){
     feedModal.style.display='none';
     document.body.style.overflow='auto';
 }
-
 feedBackBtn.addEventListener('click',closeFeed);
 
-// Clique nos cards do Discover
-const discoverCards = document.querySelectorAll('#discoverSection .card');
-discoverCards.forEach(card=>{
-    card.addEventListener('click',()=>openFeed(card.dataset.html));
+// Carregar eventos do localStorage
+const eventos = JSON.parse(localStorage.getItem("eventos")) || [];
+
+// Pega a foto do usuário logado
+const fotoUsuarioAtual = localStorage.getItem("foto") || "https://via.placeholder.com/100";
+
+// Renderizar eventos
+eventos.forEach(ev => {
+    const fotoUsuario = ev.fotoUsuario || fotoUsuarioAtual;
+
+    const card = document.createElement("div");
+    card.classList.add("card");
+    card.innerHTML = `<img src="${ev.imagem}" alt="${ev.nome}">`;
+    
+    const htmlPost = `
+    <div class="poste">
+      <div class="usuario">
+        <div style="display:flex; align-items:center;">
+          <div class="fotoUsuario">
+            <img src="${fotoUsuario}" 
+                 style="width:40px;height:40px;border-radius:50%;">
+          </div>
+          <div class="infoUsuario">
+            <div class="nomeUsuario">${ev.usuario}</div>
+            <div class="postadoem">${ev.postadoem}</div>
+          </div>
+        </div>
+        <button>Seguir</button>
+      </div>
+      <div class="fotoPubli">
+        <img src="${ev.imagem}">
+      </div>
+      <div class="desc">
+        <b>${ev.nome}</b><br>${ev.desc}<br>
+        <small>${ev.endereco} - ${ev.hora} - ${ev.valor}</small>
+      </div>
+    </div>`;
+
+    card.addEventListener("click", ()=>openFeed(htmlPost));
+    discoverSection.appendChild(card);
+
+    if(ev.lat && ev.lng){
+        blobMarker(ev.lat, ev.lng, ev.imagem, htmlPost);
+    }
 });
 </script>
+
 </body>
 </html>

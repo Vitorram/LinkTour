@@ -5,202 +5,43 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Perfil</title>
 <style>
-  body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
-  }
+  body { margin: 0; font-family: Arial, sans-serif; background-color: #f9f9f9; }
 
-  /* Banner */
-  .banner {
-    width: 100%;
-    height: 180px;
-    background: #ccc;
-    background-size: cover;
-    background-position: center;
-    position: relative;
-  }
+  .banner { width: 100%; height: 180px; background: #ccc; background-size: cover; background-position: center; position: relative; }
 
-  /* Foto de perfil */
-  .perfil-foto {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    border: 3px solid #fff;
-    position: absolute;
-    bottom: -50px;
-    left: 50%;
-    transform: translateX(-50%);
-    overflow: hidden;
-  }
+  .perfil-foto { width: 100px; height: 100px; border-radius: 50%; border: 3px solid #fff; position: absolute; bottom: -50px; left: 50%; transform: translateX(-50%); overflow: hidden; }
+  .perfil-foto img { width: 100%; height: 100%; object-fit: cover; }
 
-  .perfil-foto img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+  .perfil-info { text-align: center; margin-top: 60px; padding: 10px; }
+  .perfil-info h2 { margin: 5px 0; font-size: 18px; }
+  .perfil-info p { margin: 5px 0; color: #666; font-size: 14px; }
 
-  /* Info principal */
-  .perfil-info {
-    text-align: center;
-    margin-top: 60px;
-    padding: 10px;
-  }
-  .perfil-info h2 {
-    margin: 5px 0;
-    font-size: 18px;
-  }
-  .perfil-info p {
-    margin: 5px 0;
-    color: #666;
-    font-size: 14px;
-  }
+  #editar-perfil { margin-top: 10px; padding: 8px 20px; border: none; border-radius: 8px; background-color: #e60050; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; }
+  #editar-perfil:hover { background-color: #cc0045; }
 
-  /* Botão editar */
-  #editar-perfil {
-    margin-top: 10px;
-    padding: 8px 20px;
-    border: none;
-    border-radius: 8px;
-    background-color: #e60050;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
-  }
-  #editar-perfil:hover {
-    background-color: #cc0045;
-  }
+  .stats { display: flex; justify-content: center; gap: 40px; margin: 15px 0; }
+  .stats div { text-align: center; }
+  .stats strong { display: block; font-size: 16px; }
 
-  /* Estatísticas */
-  .stats {
-    display: flex;
-    justify-content: center;
-    gap: 40px;
-    margin: 15px 0;
-  }
-  .stats div {
-    text-align: center;
-  }
-  .stats strong {
-    display: block;
-    font-size: 16px;
-  }
+  .abas { display: flex; justify-content: center; gap: 15px; border-top: 1px solid #ddd; border-bottom: 1px solid #ddd; padding: 10px 0; background: #fff; margin-bottom: 10px; }
+  .abas img{ width: 30px; height: 30px; }
 
-  /* Abas */
-  .abas {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    border-top: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
-    padding: 10px 0;
-    background: #fff;
-    margin-bottom: 10px;
-  }
-  .abas img{
-    width: 30px;
-    height: 30px;
-  }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; padding: 10px; }
+  .grid img { width: 100%; border-radius: 8px; height: 160px; object-fit: cover; }
 
-  /* Grid de posts */
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 10px;
-    padding: 10px;
-  }
-  .grid img {
-    width: 100%;
-    border-radius: 8px;
-    height: 160px;
-    object-fit: cover;
-  }
+  .barraInferior { position: fixed; bottom: 0; width: 100%; display: flex; justify-content: space-around; background-color: #fff; padding: 10px 0; border-top: 1px solid #ddd; z-index: 200; }
+  .barraInferior img{ width: 30px; height: 30px; }
 
-  /* Rodapé fixo */
-  .barraInferior {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    display: flex;
-    justify-content: space-around;
-    background-color: #fff;
-    padding: 10px 0;
-    border-top: 1px solid #ddd;
-    z-index: 200;
-  }
-  .barraInferior img{
-    width: 30px;
-    height: 30px;
-  }
+  #modalEditar { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000; }
+  #modalEditar .conteudo { background: #fff; padding: 20px; border-radius: 12px; width: 90%; max-width: 400px; box-sizing: border-box; }
 
-  /* Modal de edição */
-  #modalEditar {
-    display: none;
-    position: fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background: rgba(0,0,0,0.5);
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-  }
-
-  #modalEditar .conteudo {
-    background: #fff;
-    padding: 20px;
-    border-radius: 12px;
-    width: 90%;
-    max-width: 400px;
-    box-sizing: border-box;
-  }
-
-  #modalEditar label {
-    display:block;
-    margin-top: 10px;
-    font-weight:bold;
-  }
-
-  #modalEditar input, #modalEditar textarea {
-    width:100%;
-    padding:8px;
-    margin-top:5px;
-    border-radius:6px;
-    border:1px solid #ccc;
-    box-sizing: border-box;
-  }
-
-  #modalEditar button {
-    margin-top:15px;
-    padding: 10px;
-    border:none;
-    border-radius:8px;
-    background:#e60050;
-    color:white;
-    cursor:pointer;
-    width:100%;
-  }
+  #modalEditar label { display:block; margin-top: 10px; font-weight:bold; }
+  #modalEditar input, #modalEditar textarea { width:100%; padding:8px; margin-top:5px; border-radius:6px; border:1px solid #ccc; box-sizing: border-box; }
+  #modalEditar button { margin-top:15px; padding: 10px; border:none; border-radius:8px; background:#e60050; color:white; cursor:pointer; width:100%; }
   #modalEditar button:hover { background:#cc0045; }
 
-  /* Preview das imagens */
-  .preview-img {
-    margin-top: 5px;
-    width: 100%;
-    max-height: 150px;
-    object-fit: cover;
-    border-radius: 8px;
-  }
-
-  .preview-foto {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-top:5px;
-  }
-
+  .preview-img { margin-top: 5px; width: 100%; max-height: 150px; object-fit: cover; border-radius: 8px; }
+  .preview-foto { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin-top:5px; }
 </style>
 </head>
 <body>
@@ -222,14 +63,8 @@
 
   <!-- Stats -->
   <div class="stats">
-    <div>
-      <strong>0</strong>
-      Seguindo
-    </div>
-    <div>
-      <strong>0</strong>
-      Seguidores
-    </div>
+    <div><strong>0</strong> Seguindo</div>
+    <div><strong>0</strong> Seguidores</div>
   </div>
 
   <!-- Abas -->
@@ -239,9 +74,7 @@
   </div>
 
   <!-- Grid de posts -->
-  <div class="grid" id="gridPosts">
-    <!-- Posts podem ser adicionados aqui -->
-  </div>
+  <div class="grid" id="gridPosts"></div>
 
   <!-- Rodapé -->
   <div class="barraInferior">
@@ -279,6 +112,9 @@
     </div>
   </div>
 
+<!-- Lib heic2any -->
+<script src="https://cdn.jsdelivr.net/npm/heic2any/dist/heic2any.min.js"></script>
+
 <script>
   // Carregar dados do localStorage
   window.addEventListener("DOMContentLoaded", () => {
@@ -307,35 +143,42 @@
 
   btnEditar.addEventListener("click", () => {
     modal.style.display = "flex";
-
-    // Preencher campos com os dados atuais
     document.getElementById("editar-nome").value = localStorage.getItem("usuario") || "";
     document.getElementById("editar-arroba").value = localStorage.getItem("arroba") || "";
     document.getElementById("editar-desc").value = localStorage.getItem("descricao") || "";
-
     previewFoto.src = localStorage.getItem("foto") || "https://via.placeholder.com/100";
     previewBanner.src = localStorage.getItem("banner") || "https://via.placeholder.com/300x100?text=Banner";
   });
 
   btnFechar.addEventListener("click", () => modal.style.display = "none");
 
-  // Preview ao selecionar arquivos
-  inputFotoFile.addEventListener("change", () => {
-    const file = inputFotoFile.files[0];
-    if(file){
+  // Função para tratar upload e conversão
+  async function handleImageUpload(file, previewElement){
+    if(!file) return;
+
+    const validTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
+    if(validTypes.includes(file.type)){
       const reader = new FileReader();
-      reader.onload = e => previewFoto.src = e.target.result;
+      reader.onload = e => previewElement.src = e.target.result;
       reader.readAsDataURL(file);
+    } else if(file.type === "image/heic" || file.name.endsWith(".heic")){
+      try {
+        const convertedBlob = await heic2any({ blob: file, toType: "image/jpeg" });
+        previewElement.src = URL.createObjectURL(convertedBlob);
+      } catch(err){
+        alert("Erro ao converter imagem HEIC.");
+      }
+    } else {
+      alert("Formato não suportado. Use JPG, PNG, GIF ou WEBP.");
     }
+  }
+
+  inputFotoFile.addEventListener("change", async () => {
+    await handleImageUpload(inputFotoFile.files[0], previewFoto);
   });
 
-  inputBannerFile.addEventListener("change", () => {
-    const file = inputBannerFile.files[0];
-    if(file){
-      const reader = new FileReader();
-      reader.onload = e => previewBanner.src = e.target.result;
-      reader.readAsDataURL(file);
-    }
+  inputBannerFile.addEventListener("change", async () => {
+    await handleImageUpload(inputBannerFile.files[0], previewBanner);
   });
 
   btnSalvar.addEventListener("click", () => {
