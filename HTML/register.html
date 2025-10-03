@@ -1,245 +1,85 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Painel Admin — Register</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel Admin — LinkTour</title>
 <style>
-  body{font-family:Arial,Helvetica,sans-serif;background:#f4f6f8;margin:0;padding:20px;display:flex;align-items:flex-start;justify-content:center;min-height:100vh}
-  .card{background:#fff;padding:20px;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,.06);width:100%;max-width:720px}
-  h1{margin:0 0 12px;font-size:20px}
-  p.small{color:#666;font-size:13px;margin:8px 0 18px}
-  label{display:block;font-weight:600;margin-bottom:6px}
-  input[type="password"]{width:100%;padding:10px;border-radius:8px;border:1px solid #ccc;box-sizing:border-box}
-  .row{display:flex;gap:12px;align-items:center}
-  button{background:#e60050;color:#fff;border:0;padding:10px 14px;border-radius:8px;cursor:pointer}
-  button.ghost{background:#f0f0f0;color:#333}
-  pre{background:#f7f7f8;padding:12px;border-radius:8px;overflow:auto;max-height:320px}
-  .actions{display:flex;gap:10px;margin-top:12px}
-  .hint{font-size:13px;color:#555;margin-top:10px}
+  body{font-family:Arial,sans-serif;background:#f4f6f8;margin:0;padding:20px;display:flex;justify-content:center;align-items:flex-start;min-height:100vh}
+  .card{background:#fff;padding:20px;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,.06);width:100%;max-width:500px;text-align:center}
+  h1{margin-bottom:15px}
+  input[type="password"]{width:100%;padding:10px;border-radius:8px;border:1px solid #ccc;margin-bottom:12px;box-sizing:border-box}
+  button{width:100%;padding:10px;border-radius:8px;border:none;background:#e60050;color:#fff;font-weight:600;cursor:pointer}
+  #output{margin-top:14px;background:#f7f7f8;padding:12px;border-radius:8px;max-height:320px;overflow:auto;font-family:monospace;text-align:left}
+  #count{margin-top:8px;font-weight:600;text-align:right}
+  #btn-logout{background:#ccc;color:#000;margin-bottom:12px}
 </style>
 </head>
 <body>
-  <div class="card" id="card">
-    <h1>Painel de Registros — Admin</h1>
-    <p class="small">Área restrita — informe a senha de admin para acessar o painel de registros.</p>
-
-    <div id="login-area">
-      <label for="admin-pass">Senha de admin</label>
-      <input id="admin-pass" type="password" placeholder="Digite a senha de admin">
-      <div style="margin-top:10px" class="row">
-        <button id="btn-login">Entrar</button>
-        <button id="btn-clear" class="ghost">Limpar campo</button>
-      </div>
-      <p class="hint">Dica: substitua o hash no código pelo seu hash SHA-256 para definir a senha (veja instruções abaixo).</p>
-    </div>
-
-    <div id="panel" style="display:none">
-      <p class="small">Você está logado como <strong>admin</strong>. Utilize os botões abaixo para recuperar e exportar os registros.</p>
-
-      <div>
-        <button id="btn-fetch">Tentar buscar /api/emails (API)</button>
-        <button id="btn-local">Carregar do localStorage</button>
-        <button id="btn-logout" class="ghost">Logout</button>
-      </div>
-
-      <div style="margin-top:14px">
-        <label>Registros encontrados (JSON):</label>
-        <pre id="output">Nenhum registro carregado.</pre>
-
-        <div class="actions">
-          <button id="btn-download">Baixar como emails_linktour.txt</button>
-          <button id="btn-copy" class="ghost">Copiar para área de transferência</button>
-        </div>
-
-        <p class="hint" style="margin-top:10px">
-          Observação: o botão "Tentar buscar /api/emails" tenta obter um JSON da sua API pública (ex.: Vercel route).  
-          Se sua API não existir, carregue do localStorage (se você estiver salvando os registros no cliente).
-        </p>
-      </div>
-    </div>
-
-    <hr style="margin:18px 0;border:none;border-top:1px solid #eee" />
-
-    <div>
-      <h2 style="font-size:16px;margin:0 0 8px">Como trocar a senha (gerar novo hash)</h2>
-      <p class="small">No código abaixo, substitua <code>STORED_HASH</code> pelo hash SHA-256 da sua senha escolhida.</p>
-      <pre style="font-size:13px">const STORED_HASH = "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9"; /* exemplo: "admin123" */</pre>
-      <p class="small">Para gerar o hash, abra o console do seu navegador e cole:<br>
-<code>await (async s=>{const u=new TextEncoder();const b=await crypto.subtle.digest('SHA-256',u.encode(s));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('')})('suaSenhaAqui')</code>
-      </p>
-    </div>
+<div class="card">
+  <h1>Admin Login</h1>
+  <div id="login-area">
+    <input id="admin-pass" type="password" placeholder="Digite a senha de admin">
+    <button id="btn-login">Entrar</button>
   </div>
 
+  <div id="panel" style="display:none">
+    <button id="btn-logout">Logout</button>
+    <div id="count">Total de emails: 0</div>
+    <pre id="output">Nenhum registro carregado.</pre>
+  </div>
+</div>
+
 <script>
-/*
-  register.html - proteção simples por senha (client-side).
-  Substitua STORED_HASH pelo hash SHA-256 da senha que quiser.
-  Exemplo hash abaixo é SHA-256('admin123').
-*/
-const STORED_HASH = "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9";
+const ADMIN_PASSWORD = "linktouLTDA";
 
 const $login = document.getElementById('login-area');
 const $panel = document.getElementById('panel');
 const $output = document.getElementById('output');
+const $count = document.getElementById('count');
 const $pass = document.getElementById('admin-pass');
 const $btnLogin = document.getElementById('btn-login');
-const $btnClear = document.getElementById('btn-clear');
 const $btnLogout = document.getElementById('btn-logout');
-const $btnFetch = document.getElementById('btn-fetch');
-const $btnLocal = document.getElementById('btn-local');
-const $btnDownload = document.getElementById('btn-download');
-const $btnCopy = document.getElementById('btn-copy');
 
-// util: sha256 (returns hex)
-async function sha256hex(message) {
-  const msgUint8 = new TextEncoder().encode(message);
-  const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map(b => b.toString(16).padStart(2,'0')).join('');
-}
-
-$btnLogin.addEventListener('click', async () => {
-  const val = $pass.value || '';
-  try {
-    const h = await sha256hex(val);
-    if (h === STORED_HASH) {
-      // sucesso
-      localStorage.setItem('linktour_admin_logged', '1');
-      showPanel();
-    } else {
-      alert('Senha incorreta.');
-      $pass.value = '';
-    }
-  } catch (err) {
-    console.error(err);
-    alert('Erro ao verificar senha.');
+$btnLogin.addEventListener('click', () => {
+  if($pass.value === ADMIN_PASSWORD){
+    localStorage.setItem('linktour_admin_logged','1');
+    showPanel();
+    loadEmails();
+  } else {
+    alert('Senha incorreta');
+    $pass.value='';
   }
 });
-
-$btnClear.addEventListener('click', () => { $pass.value = ''; $pass.focus(); });
 
 $btnLogout.addEventListener('click', () => {
   localStorage.removeItem('linktour_admin_logged');
-  $panel.style.display = 'none';
-  $login.style.display = 'block';
-  $output.textContent = 'Nenhum registro carregado.';
-  $pass.value = '';
+  $panel.style.display='none';
+  $login.style.display='block';
+  $output.textContent='Nenhum registro carregado.';
+  $count.textContent='Total de emails: 0';
+  $pass.value='';
 });
 
-function showPanel() {
-  $login.style.display = 'none';
-  $panel.style.display = 'block';
+function showPanel(){
+  $login.style.display='none';
+  $panel.style.display='block';
 }
 
-// auto-login se já marcado
-if (localStorage.getItem('linktour_admin_logged') === '1') {
+if(localStorage.getItem('linktour_admin_logged')==='1'){
   showPanel();
+  loadEmails();
 }
 
-// tenta buscar registros na API /api/emails ou /api/list (retorno JSON esperado: array)
-$btnFetch.addEventListener('click', async () => {
-  $output.textContent = 'Buscando...';
-  try {
-    // tenta ambas as rotas comuns (você pode alterar)
-    const routes = ['/api/emails', '/api/list', '/api/register/list', '/api/get-emails'];
-    let data = null;
-    for (const r of routes) {
-      try {
-        const res = await fetch(r);
-        if (!res.ok) continue;
-        const json = await res.json();
-        if (Array.isArray(json)) { data = json; break; }
-        // pode ser {result: [...]}
-        if (json.result && Array.isArray(json.result)) { data = json.result; break; }
-        // pode ser {ok:true, gistId:..., content: "..."} - ignore
-      } catch(e) { /* ignore and try next */ }
-    }
-
-    if (!data) {
-      $output.textContent = 'Nenhuma API responde nas rotas testadas. Use "Carregar do localStorage" se os registros estiverem salvos no navegador.';
-      return;
-    }
-
-    renderData(data);
-  } catch (err) {
-    console.error(err);
-    $output.textContent = 'Erro ao buscar registros: ' + (err.message || err);
-  }
-});
-
-// carrega do localStorage (chaves comuns: "usuario", "email", ou uma chave "linktour_leads")
-$btnLocal.addEventListener('click', () => {
-  // tenta várias chaves
-  const candidates = ['linktour_leads', 'leads', 'registered_emails', 'usuarios'];
-  let found = null;
-  for (const k of candidates) {
-    const v = localStorage.getItem(k);
-    if (v) { found = {key: k, value: v}; break; }
-  }
-
-  if (found) {
-    // se for JSON array, parse; senao só mostrar raw
-    try {
-      const parsed = JSON.parse(found.value);
-      if (Array.isArray(parsed)) {
-        renderData(parsed);
-        return;
-      }
-      $output.textContent = `Conteúdo da chave "${found.key}":\n\n` + JSON.stringify(parsed, null, 2);
-    } catch (err) {
-      $output.textContent = `Conteúdo da chave "${found.key}" (texto):\n\n` + found.value;
-    }
-  } else {
-    // fallback: tenta montar a partir de campos individuais (ex: usuario, email)
-    const u = localStorage.getItem('usuario');
-    const em = localStorage.getItem('email');
-    const a = localStorage.getItem('arroba');
-    const desc = localStorage.getItem('descricao');
-    if (em || u) {
-      const arr = [{ nome: u||'', arroba: a||'', email: em||'', descricao: desc||'' }];
-      renderData(arr);
-    } else {
-      $output.textContent = 'Nenhuma chave de registros encontrada no localStorage.';
-    }
-  }
-});
-
-function renderData(arr) {
-  // arr esperado: array de objetos ou strings
-  const normalized = arr.map(item => {
-    if (typeof item === 'string') return item;
-    if (item.email || item.nome) return `${item.created_at || ''} | ${item.nome || ''} | ${item.arroba || ''} | ${item.email || ''} | ${item.descricao || ''}`.trim();
-    return JSON.stringify(item);
-  });
-
-  $output.textContent = normalized.join('\n');
+// carrega emails de todos os cadastros
+function loadEmails(){
+  const emails = [];
+  const storedEmail = localStorage.getItem('email');
+  if(storedEmail) emails.push(storedEmail);
+  
+  $output.textContent = emails.join('\n');
+  $count.textContent = 'Total de emails: ' + emails.length;
 }
-
-// baixar como .txt
-$btnDownload.addEventListener('click', () => {
-  const text = $output.textContent || '';
-  if (!text) return alert('Nenhum conteúdo para baixar.');
-  const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'emails_linktour.txt';
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(url);
-});
-
-// copiar para clipboard
-$btnCopy.addEventListener('click', async () => {
-  try {
-    await navigator.clipboard.writeText($output.textContent || '');
-    alert('Copiado para a área de transferência.');
-  } catch (err) {
-    alert('Falha ao copiar: ' + (err.message || err));
-  }
-});
 </script>
 </body>
 </html>
