@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel de Sugestões</title>
+<style>
+  body { font-family: Arial, sans-serif; margin:20px; background:#f9f9f9; }
+  h2 { color:#333; }
+  .sugestao { 
+    border:1px solid #ddd; 
+    padding:15px; 
+    margin-bottom:12px; 
+    border-radius:8px; 
+    background:#fff; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+  .sugestao strong { color:#444; }
+  .campo { margin-bottom:8px; }
+  .info { font-size: 14px; color:#555; margin-top:6px; }
+</style>
+</head>
+<body>
+  <h2>🔒 Painel de Sugestões (Admin)</h2>
+  <div id="login-area">
+    <p>Digite a senha de administrador:</p>
+    <input type="password" id="senha" placeholder="Senha">
+    <button id="entrar">Entrar</button>
+  </div>
+
+  <div id="painel" style="display:none;">
+    <h3>Lista de Sugestões:</h3>
+    <div id="lista-sugestoes"></div>
+  </div>
+
+<script>
+  document.getElementById("entrar").addEventListener("click", ()=>{
+    const senha = document.getElementById("senha").value;
+    if(senha === "linktouLDTA"){
+      document.getElementById("login-area").style.display="none";
+      document.getElementById("painel").style.display="block";
+
+      const sugestoes = JSON.parse(localStorage.getItem("sugestoes") || "[]");
+      const lista = document.getElementById("lista-sugestoes");
+      lista.innerHTML = "";
+
+      if(sugestoes.length === 0){
+        lista.innerHTML = "<p>Nenhuma sugestão enviada ainda.</p>";
+      } else {
+        sugestoes.forEach((s, i)=>{
+          const div = document.createElement("div");
+          div.className="sugestao";
+          div.innerHTML = `
+            <div class="campo"><strong>Data:</strong> ${s.data}</div>
+            <div class="campo"><strong>Nome:</strong> ${s.nome || "Não informado"}</div>
+            <div class="campo"><strong>Email:</strong> ${s.email || "Não informado"}</div>
+            <div class="campo"><strong>Sugestão:</strong> ${s.texto}</div>
+          `;
+          lista.appendChild(div);
+        });
+      }
+    } else {
+      alert("Senha incorreta!");
+    }
+  });
+</script>
+</body>
+</html>

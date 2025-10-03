@@ -16,8 +16,8 @@
   .perfil-info h2 { margin: 5px 0; font-size: 18px; }
   .perfil-info p { margin: 5px 0; color: #666; font-size: 14px; }
 
-  #editar-perfil { margin-top: 10px; padding: 8px 20px; border: none; border-radius: 8px; background-color: #e60050; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; }
-  #editar-perfil:hover { background-color: #cc0045; }
+  #editar-perfil, #sugestao-btn { margin-top: 10px; padding: 8px 20px; border: none; border-radius: 8px; background-color: #e60050; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; }
+  #editar-perfil:hover, #sugestao-btn:hover { background-color: #cc0045; }
 
   .stats { display: flex; justify-content: center; gap: 40px; margin: 15px 0; }
   .stats div { text-align: center; }
@@ -32,13 +32,13 @@
   .barraInferior { position: fixed; bottom: 0; width: 100%; display: flex; justify-content: space-around; background-color: #fff; padding: 10px 0; border-top: 1px solid #ddd; z-index: 200; }
   .barraInferior img{ width: 30px; height: 30px; }
 
-  #modalEditar { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000; }
-  #modalEditar .conteudo { background: #fff; padding: 20px; border-radius: 12px; width: 90%; max-width: 400px; box-sizing: border-box; }
+  #modalEditar, #modalSugestao { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000; }
+  #modalEditar .conteudo, #modalSugestao .conteudo { background: #fff; padding: 20px; border-radius: 12px; width: 90%; max-width: 400px; box-sizing: border-box; }
 
-  #modalEditar label { display:block; margin-top: 10px; font-weight:bold; }
-  #modalEditar input, #modalEditar textarea { width:100%; padding:8px; margin-top:5px; border-radius:6px; border:1px solid #ccc; box-sizing: border-box; }
-  #modalEditar button { margin-top:15px; padding: 10px; border:none; border-radius:8px; background:#e60050; color:white; cursor:pointer; width:100%; }
-  #modalEditar button:hover { background:#cc0045; }
+  #modalEditar label, #modalSugestao label { display:block; margin-top: 10px; font-weight:bold; }
+  #modalEditar input, #modalEditar textarea, #modalSugestao textarea { width:100%; padding:8px; margin-top:5px; border-radius:6px; border:1px solid #ccc; box-sizing: border-box; }
+  #modalEditar button, #modalSugestao button { margin-top:15px; padding: 10px; border:none; border-radius:8px; background:#e60050; color:white; cursor:pointer; width:100%; }
+  #modalEditar button:hover, #modalSugestao button:hover { background:#cc0045; }
 
   .preview-img { margin-top: 5px; width: 100%; max-height: 150px; object-fit: cover; border-radius: 8px; }
   .preview-foto { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin-top:5px; }
@@ -59,6 +59,7 @@
     <p id="perfil-arroba">@usuario</p>
     <p id="perfil-desc">Descrição do perfil</p>
     <button id="editar-perfil">Editar Perfil</button>
+    <button id="sugestao-btn">Sugestão</button>
   </div>
 
   <!-- Stats -->
@@ -85,38 +86,40 @@
     <a href="/HTML/perfil.html"><img src="/img/icons8-conta-de-teste-50.png" alt=""></a>
   </div>
 
+  <!-- Modal Sugestão -->
+  <div id="modalSugestao">
+    <div class="conteudo">
+      <h3>Enviar Sugestão</h3>
+      <label>Sua sugestão:</label>
+      <textarea id="texto-sugestao"></textarea>
+      <button id="enviar-sugestao">Enviar</button>
+      <button id="fechar-sugestao" style="background:#ccc; color:#000; margin-top:5px;">Cancelar</button>
+    </div>
+  </div>
+
   <!-- Modal de edição -->
   <div id="modalEditar">
     <div class="conteudo">
       <h3>Editar Perfil</h3>
-
       <label>Nome</label>
       <input type="text" id="editar-nome">
-
       <label>@username</label>
       <input type="text" id="editar-arroba">
-
       <label>Descrição</label>
       <textarea id="editar-desc"></textarea>
-
       <label>Foto de Perfil</label>
       <input type="file" id="editar-foto-file" accept="image/*">
       <img id="preview-foto" class="preview-foto" src="https://via.placeholder.com/100">
-
       <label>Banner</label>
       <input type="file" id="editar-banner-file" accept="image/*">
       <img id="preview-banner" class="preview-img" src="https://via.placeholder.com/300x100?text=Banner">
-
       <button id="salvar-edicao">Salvar</button>
       <button id="fechar-edicao" style="background:#ccc; color:#000; margin-top:5px;">Cancelar</button>
     </div>
   </div>
 
-<!-- Lib heic2any -->
-<script src="https://cdn.jsdelivr.net/npm/heic2any/dist/heic2any.min.js"></script>
-
 <script>
-  // Carregar dados do localStorage
+  // Carregar perfil
   window.addEventListener("DOMContentLoaded", () => {
     const usuario = localStorage.getItem("usuario") || "Usuário";
     const arroba = localStorage.getItem("arroba") || "@usuario";
@@ -131,76 +134,27 @@
     document.getElementById("perfil-banner").style.backgroundImage = `url(${banner})`;
   });
 
-  const btnEditar = document.getElementById("editar-perfil");
-  const modal = document.getElementById("modalEditar");
-  const btnFechar = document.getElementById("fechar-edicao");
-  const btnSalvar = document.getElementById("salvar-edicao");
+  // Sugestão
+  const sugestaoBtn = document.getElementById("sugestao-btn");
+  const modalSugestao = document.getElementById("modalSugestao");
+  const fecharSugestao = document.getElementById("fechar-sugestao");
+  const enviarSugestao = document.getElementById("enviar-sugestao");
 
-  const inputFotoFile = document.getElementById("editar-foto-file");
-  const inputBannerFile = document.getElementById("editar-banner-file");
-  const previewFoto = document.getElementById("preview-foto");
-  const previewBanner = document.getElementById("preview-banner");
+  sugestaoBtn.addEventListener("click", ()=> modalSugestao.style.display = "flex");
+  fecharSugestao.addEventListener("click", ()=> modalSugestao.style.display = "none");
 
-  btnEditar.addEventListener("click", () => {
-    modal.style.display = "flex";
-    document.getElementById("editar-nome").value = localStorage.getItem("usuario") || "";
-    document.getElementById("editar-arroba").value = localStorage.getItem("arroba") || "";
-    document.getElementById("editar-desc").value = localStorage.getItem("descricao") || "";
-    previewFoto.src = localStorage.getItem("foto") || "https://via.placeholder.com/100";
-    previewBanner.src = localStorage.getItem("banner") || "https://via.placeholder.com/300x100?text=Banner";
-  });
-
-  btnFechar.addEventListener("click", () => modal.style.display = "none");
-
-  // Função para tratar upload e conversão
-  async function handleImageUpload(file, previewElement){
-    if(!file) return;
-
-    const validTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
-    if(validTypes.includes(file.type)){
-      const reader = new FileReader();
-      reader.onload = e => previewElement.src = e.target.result;
-      reader.readAsDataURL(file);
-    } else if(file.type === "image/heic" || file.name.endsWith(".heic")){
-      try {
-        const convertedBlob = await heic2any({ blob: file, toType: "image/jpeg" });
-        previewElement.src = URL.createObjectURL(convertedBlob);
-      } catch(err){
-        alert("Erro ao converter imagem HEIC.");
-      }
+  enviarSugestao.addEventListener("click", ()=> {
+    const texto = document.getElementById("texto-sugestao").value.trim();
+    if(texto){
+      const sugestoes = JSON.parse(localStorage.getItem("sugestoes") || "[]");
+      sugestoes.push({texto, data: new Date().toLocaleString()});
+      localStorage.setItem("sugestoes", JSON.stringify(sugestoes));
+      alert("Sugestão enviada!");
+      document.getElementById("texto-sugestao").value = "";
+      modalSugestao.style.display = "none";
     } else {
-      alert("Formato não suportado. Use JPG, PNG, GIF ou WEBP.");
+      alert("Escreva algo antes de enviar!");
     }
-  }
-
-  inputFotoFile.addEventListener("change", async () => {
-    await handleImageUpload(inputFotoFile.files[0], previewFoto);
-  });
-
-  inputBannerFile.addEventListener("change", async () => {
-    await handleImageUpload(inputBannerFile.files[0], previewBanner);
-  });
-
-  btnSalvar.addEventListener("click", () => {
-    const nome = document.getElementById("editar-nome").value;
-    const arroba = document.getElementById("editar-arroba").value;
-    const desc = document.getElementById("editar-desc").value;
-    const fotoSrc = previewFoto.src;
-    const bannerSrc = previewBanner.src;
-
-    localStorage.setItem("usuario", nome);
-    localStorage.setItem("arroba", arroba);
-    localStorage.setItem("descricao", desc);
-    localStorage.setItem("foto", fotoSrc);
-    localStorage.setItem("banner", bannerSrc);
-
-    document.getElementById("perfil-nome").textContent = nome;
-    document.getElementById("perfil-arroba").textContent = arroba;
-    document.getElementById("perfil-desc").textContent = desc;
-    document.getElementById("perfil-foto").src = fotoSrc;
-    document.getElementById("perfil-banner").style.backgroundImage = `url(${bannerSrc})`;
-
-    modal.style.display = "none";
   });
 </script>
 </body>
