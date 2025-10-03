@@ -146,8 +146,11 @@
   enviarSugestao.addEventListener("click", ()=> {
     const texto = document.getElementById("texto-sugestao").value.trim();
     if(texto){
+      const usuario = localStorage.getItem("usuario") || "Usuário";
+      const arroba = localStorage.getItem("arroba") || "@usuario";
+
       const sugestoes = JSON.parse(localStorage.getItem("sugestoes") || "[]");
-      sugestoes.push({texto, data: new Date().toLocaleString()});
+      sugestoes.push({texto, data: new Date().toLocaleString(), nome: usuario, email: arroba});
       localStorage.setItem("sugestoes", JSON.stringify(sugestoes));
       alert("Sugestão enviada!");
       document.getElementById("texto-sugestao").value = "";
@@ -155,6 +158,67 @@
     } else {
       alert("Escreva algo antes de enviar!");
     }
+  });
+
+  // Editar Perfil
+  const editarBtn = document.getElementById("editar-perfil");
+  const modalEditar = document.getElementById("modalEditar");
+  const fecharEdicao = document.getElementById("fechar-edicao");
+  const salvarEdicao = document.getElementById("salvar-edicao");
+
+  editarBtn.addEventListener("click", ()=> {
+    document.getElementById("editar-nome").value = localStorage.getItem("usuario") || "";
+    document.getElementById("editar-arroba").value = localStorage.getItem("arroba") || "";
+    document.getElementById("editar-desc").value = localStorage.getItem("descricao") || "";
+    document.getElementById("preview-foto").src = localStorage.getItem("foto") || "https://via.placeholder.com/100";
+    document.getElementById("preview-banner").src = localStorage.getItem("banner") || "https://via.placeholder.com/300x100?text=Banner";
+    modalEditar.style.display = "flex";
+  });
+
+  fecharEdicao.addEventListener("click", ()=> modalEditar.style.display = "none");
+
+  // Preview foto perfil
+  document.getElementById("editar-foto-file").addEventListener("change", function(e){
+    const file = e.target.files[0];
+    if(file){
+      const reader = new FileReader();
+      reader.onload = ()=> document.getElementById("preview-foto").src = reader.result;
+      reader.readAsDataURL(file);
+    }
+  });
+
+  // Preview banner
+  document.getElementById("editar-banner-file").addEventListener("change", function(e){
+    const file = e.target.files[0];
+    if(file){
+      const reader = new FileReader();
+      reader.onload = ()=> document.getElementById("preview-banner").src = reader.result;
+      reader.readAsDataURL(file);
+    }
+  });
+
+  // Salvar edição
+  salvarEdicao.addEventListener("click", ()=> {
+    const nome = document.getElementById("editar-nome").value.trim();
+    const arroba = document.getElementById("editar-arroba").value.trim();
+    const descricao = document.getElementById("editar-desc").value.trim();
+    const foto = document.getElementById("preview-foto").src;
+    const banner = document.getElementById("preview-banner").src;
+
+    if(nome) localStorage.setItem("usuario", nome);
+    if(arroba) localStorage.setItem("arroba", arroba);
+    if(descricao) localStorage.setItem("descricao", descricao);
+    localStorage.setItem("foto", foto);
+    localStorage.setItem("banner", banner);
+
+    // Atualiza perfil
+    document.getElementById("perfil-nome").textContent = nome || "Usuário";
+    document.getElementById("perfil-arroba").textContent = arroba || "@usuario";
+    document.getElementById("perfil-desc").textContent = descricao || "Sem descrição";
+    document.getElementById("perfil-foto").src = foto;
+    document.getElementById("perfil-banner").style.backgroundImage = `url(${banner})`;
+
+    modalEditar.style.display = "none";
   });
 </script>
 </body>
