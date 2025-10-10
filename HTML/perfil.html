@@ -32,13 +32,71 @@
   .barraInferior { position: fixed; bottom: 0; width: 100%; display: flex; justify-content: space-around; background-color: #fff; padding: 10px 0; border-top: 1px solid #ddd; z-index: 200; }
   .barraInferior img{ width: 30px; height: 30px; }
 
-  #modalEditar, #modalSugestao { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000; }
-  #modalEditar .conteudo, #modalSugestao .conteudo { background: #fff; padding: 20px; border-radius: 12px; width: 90%; max-width: 400px; box-sizing: border-box; }
+  #modalEditar,
+#modalSugestao {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  overflow-y: auto; /* Permite rolagem no modal se necessário */
+}
 
-  #modalEditar label, #modalSugestao label { display:block; margin-top: 10px; font-weight:bold; }
-  #modalEditar input, #modalEditar textarea, #modalSugestao textarea { width:100%; padding:8px; margin-top:5px; border-radius:6px; border:1px solid #ccc; box-sizing: border-box; }
-  #modalEditar button, #modalSugestao button { margin-top:15px; padding: 10px; border:none; border-radius:8px; background:#e60050; color:white; cursor:pointer; width:100%; }
-  #modalEditar button:hover, #modalSugestao button:hover { background:#cc0045; }
+/* Conteúdo do modal */
+#modalEditar .conteudo,
+#modalSugestao .conteudo {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  box-sizing: border-box;
+  max-height: 90vh;          /* Impede que ultrapasse a tela */
+  overflow-y: auto;          /* Rolagem interna se passar do limite */
+}
+
+/* Labels */
+#modalEditar label,
+#modalSugestao label {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+/* Inputs e Textareas */
+#modalEditar input,
+#modalEditar textarea,
+#modalSugestao textarea {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+/* Botões */
+#modalEditar button,
+#modalSugestao button {
+  margin-top: 15px;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background: #e60050;
+  color: white;
+  cursor: pointer;
+  width: 100%;
+}
+
+#modalEditar button:hover,
+#modalSugestao button:hover {
+  background: #cc0045;
+}
 
   .preview-img { margin-top: 5px; width: 100%; max-height: 150px; object-fit: cover; border-radius: 8px; }
   .preview-foto { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin-top:5px; }
@@ -107,10 +165,10 @@
       <input type="text" id="editar-arroba">
       <label>Descrição</label>
       <textarea id="editar-desc"></textarea>
-      <label>Foto de Perfil</label>
+      <label>Foto de Perfil (algumas fotos podem nao abrir, só substitua)</label>
       <input type="file" id="editar-foto-file" accept="image/*">
       <img id="preview-foto" class="preview-foto" src="https://via.placeholder.com/100">
-      <label>Banner</label>
+      <label>Banner (algumas fotos podem nao abrir, só substitua)</label>
       <input type="file" id="editar-banner-file" accept="image/*">
       <img id="preview-banner" class="preview-img" src="https://via.placeholder.com/300x100?text=Banner">
       <button id="salvar-edicao">Salvar</button>
