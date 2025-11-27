@@ -246,9 +246,6 @@
     <label>Nome</label>
     <input type="text" id="editar-nome">
     
-    <label>@Usuario</label>
-    <input type="text" id="editar-arroba">
-    
     <label>Bio</label>
     <textarea id="editar-desc" rows="3"></textarea>
     
@@ -330,7 +327,7 @@
     
     // Meta
     document.getElementById("modal-meta").innerHTML = `
-        📍 ${evento.endereco}<br>⏰ ${evento.hora}<br>📅 Postado: ${evento.postadoem}
+         ${evento.endereco}<br> ${evento.hora}<br> Postado: ${evento.postadoem}
     `;
 
     // Valor / Link
