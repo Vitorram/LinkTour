@@ -4,9 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cadastro - LinkTour</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Inter', Arial, sans-serif; /* Atualizei para Inter para combinar com o resto */
       background: #f9f9f9;
       margin: 0;
       padding: 0;
@@ -18,7 +19,7 @@
 
     .container {
       background: #fff;
-      padding: 20px;
+      padding: 25px;
       margin: 20px;
       border-radius: 12px;
       box-shadow: 0 5px 15px rgba(0,0,0,0.1);
@@ -28,59 +29,76 @@
       box-sizing: border-box;
     }
 
-    .container h2 {
-      margin-bottom: 10px;
-      color: #333;
-    }
+    .container h2 { margin-bottom: 10px; color: #333; }
+    .container p { color: #999; margin-bottom: 20px; font-size: 14px; }
 
-    .container p {
-      color: #cfacac;
-      margin-bottom: 20px;
-    }
-
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      text-align: left;
-    }
-
-    .email-group {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-
-    .email-explanation {
-      font-size: 12px;
-      color: #666;
-    }
+    form { display: flex; flex-direction: column; gap: 15px; text-align: left; }
 
     label {
       font-size: 14px;
-      font-weight: bold;
+      font-weight: 600;
       margin-bottom: 5px;
       color: #333;
+      display: block;
     }
 
-    input, textarea {
+    /* Estilo padrão para inputs normais e textarea */
+    input.padrao, textarea {
       padding: 12px;
       border-radius: 8px;
       border: 1px solid #ccc;
       outline: none;
       width: 100%;
       box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
       transition: border 0.2s;
     }
 
-    input:focus, textarea:focus {
-      border: 1px solid #e60050;
+    input.padrao:focus, textarea:focus {
+      border-color: #e60050;
     }
 
-    textarea {
-      resize: none;
-      height: 80px;
+    /* --- NOVA ESTILIZAÇÃO PARA O CAMPO COM @ --- */
+    .input-group {
+      display: flex;
+      align-items: center;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: #fff;
+      transition: border 0.2s;
+      overflow: hidden;
     }
+    
+    /* Efeito de foco no grupo inteiro */
+    .input-group:focus-within {
+      border-color: #e60050;
+    }
+
+    .input-prefix {
+      padding-left: 12px;
+      padding-right: 2px;
+      color: #888;
+      font-weight: bold;
+      font-size: 15px;
+      user-select: none; /* Impede seleção do @ */
+    }
+
+    /* Input sem borda para ficar dentro do grupo */
+    input.sem-borda {
+      border: none;
+      outline: none;
+      padding: 12px 12px 12px 0; /* Remove padding da esquerda */
+      flex: 1;
+      font-size: 14px;
+      color: #333;
+      background: transparent;
+    }
+    /* ------------------------------------------- */
+
+    .email-group { display: flex; flex-direction: column; gap: 5px; }
+    .email-explanation { font-size: 12px; color: #666; }
+
+    textarea { resize: none; height: 80px; }
 
     .btn {
       background: #e60050;
@@ -89,14 +107,13 @@
       border: none;
       border-radius: 8px;
       font-size: 16px;
+      font-weight: bold;
       cursor: pointer;
       transition: 0.3s;
-      text-align: center;
+      width: 100%;
+      margin-top: 10px;
     }
-
-    .btn:hover {
-      background: #cc0045;
-    }
+    .btn:hover { background: #cc0045; }
   </style>
 </head>
 <body>
@@ -107,18 +124,21 @@
     <form id="cadastro-form">
       <div>
         <label for="nome">Nome *</label>
-        <input type="text" id="nome" required>
+        <input type="text" id="nome" class="padrao" required>
       </div>
 
       <div>
-        <label for="arroba">@username *</label>
-        <input type="text" id="arroba" placeholder="@usuario" required>
+        <label for="arroba">Nome de usuário *</label>
+        <div class="input-group">
+            <span class="input-prefix">@</span>
+            <input type="text" id="arroba" class="sem-borda" placeholder="usuario" required>
+        </div>
       </div>
 
       <div class="email-group">
         <label for="email">Email</label>
-        <input type="email" id="email" placeholder="seuemail@email.com">
-        <span class="email-explanation">Queremos seu email apenas para te enviar novidades sobre o desenvolvimento do LinkTour.</span>
+        <input type="email" id="email" class="padrao" placeholder="seuemail@email.com">
+        <span class="email-explanation">Queremos seu email apenas para te enviar novidades.</span>
       </div>
 
       <div>
@@ -131,23 +151,25 @@
   </div>
 
   <script>
-    // Imagens padrão (foto: cinza, banner: cinza)
     const fotoPadrao = "https://via.placeholder.com/100/cccccc?text=Foto";
-    const bannerPadrao = "https://via.placeholder.com/300x120/cccccc?text=Banner";
+    const bannerPadrao = "https://via.placeholder.com/600x200/cccccc?text=Capa";
 
-    // Cadastro
     document.getElementById("cadastro-form").addEventListener("submit", (e) => {
       e.preventDefault();
 
-      // Salva os dados no localStorage
+      // Pega o valor digitado (ex: "joao")
+      const usernameDigitado = document.getElementById("arroba").value.trim();
+      
+      // Adiciona o @ manualmente antes de salvar
+      const usuarioFinal = "@" + usernameDigitado;
+
       localStorage.setItem("usuario", document.getElementById("nome").value);
-      localStorage.setItem("arroba", document.getElementById("arroba").value);
+      localStorage.setItem("arroba", usuarioFinal); // Salva com o @
       localStorage.setItem("email", document.getElementById("email").value);
       localStorage.setItem("descricao", document.getElementById("descricao").value);
       localStorage.setItem("foto", fotoPadrao);
       localStorage.setItem("banner", bannerPadrao);
 
-      // Redireciona para perfil.html
       window.location.href = "perfil.html";
     });
   </script>

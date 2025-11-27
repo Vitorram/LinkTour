@@ -4,280 +4,412 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Perfil</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-  body { margin: 0; font-family: Arial, sans-serif; background-color: #f9f9f9; }
+  /* --- GERAL --- */
+  body { 
+      margin: 0; 
+      font-family: 'Inter', Arial, sans-serif; 
+      background-color: #f0f2f5; /* Fundo cinza claro para destacar o conteúdo */
+      padding-bottom: 70px; 
+  }
 
-  .banner { width: 100%; height: 180px; background: #ccc; background-size: cover; background-position: center; position: relative; }
+  /* Container para centralizar no Desktop */
+  .main-container {
+      max-width: 935px; /* Largura padrão do Instagram web */
+      margin: 0 auto;
+      background: #fff;
+      min-height: 100vh;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  }
 
-  .perfil-foto { width: 100px; height: 100px; border-radius: 50%; border: 3px solid #fff; position: absolute; bottom: -50px; left: 50%; transform: translateX(-50%); overflow: hidden; }
-  .perfil-foto img { width: 100%; height: 100%; object-fit: cover; }
+  /* --- BANNER E CABEÇALHO --- */
+  .banner-container {
+      position: relative;
+      width: 100%;
+      height: 200px; /* Banner com bom tamanho */
+      background-color: #ccc;
+      background-size: cover;
+      background-position: center;
+  }
 
-  .perfil-info { text-align: center; margin-top: 60px; padding: 10px; }
-  .perfil-info h2 { margin: 5px 0; font-size: 18px; }
-  .perfil-info p { margin: 5px 0; color: #666; font-size: 14px; }
+  .profile-section {
+      padding: 0 20px 20px 20px;
+      position: relative;
+  }
 
-  #editar-perfil, #sugestao-btn { margin-top: 10px; padding: 8px 20px; border: none; border-radius: 8px; background-color: #e60050; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; }
-  #editar-perfil:hover, #sugestao-btn:hover { background-color: #cc0045; }
+  /* Foto sobrepondo o banner */
+  .foto-wrapper {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 4px solid #fff; /* Borda branca grossa */
+      margin-top: -60px; /* Sobe a foto */
+      overflow: hidden;
+      background: #fff;
+      position: relative;
+      z-index: 2;
+  }
+  
+  .perfil-foto { 
+      width: 100%; height: 100%; 
+      object-fit: cover; 
+  }
 
-  .stats { display: flex; justify-content: center; gap: 40px; margin: 15px 0; }
-  .stats div { text-align: center; }
-  .stats strong { display: block; font-size: 16px; }
+  .profile-info-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+  }
 
-  .abas { display: flex; justify-content: center; gap: 15px; border-top: 1px solid #ddd; border-bottom: 1px solid #ddd; padding: 10px 0; background: #fff; margin-bottom: 10px; }
-  .abas img{ width: 30px; height: 30px; }
+  .user-texts { margin-top: 10px; }
+  .profile-username { font-size: 24px; font-weight: 700; color: #222; }
+  .profile-handle { font-size: 14px; color: #666; margin-bottom: 10px; }
+  .profile-bio { font-size: 15px; color: #333; line-height: 1.5; max-width: 600px; margin-bottom: 15px; }
 
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; padding: 10px; }
-  .grid img { width: 100%; border-radius: 8px; height: 160px; object-fit: cover; }
+  /* Botões de Ação */
+  .profile-actions { display: flex; gap: 10px; margin-top: 10px; }
+  .btn-action {
+      padding: 8px 20px;
+      border-radius: 20px;
+      border: 1px solid #ddd;
+      background: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 14px;
+      transition: 0.2s;
+  }
+  .btn-action:hover { background: #f0f0f0; }
+  .btn-primary { background: #e60050; color: white; border: none; }
+  .btn-primary:hover { background: #cc0045; }
 
-  .barraInferior { position: fixed; bottom: 0; width: 100%; display: flex; justify-content: space-around; background-color: #fff; padding: 10px 0; border-top: 1px solid #ddd; z-index: 200; }
-  .barraInferior img{ width: 30px; height: 30px; }
+  /* --- STATS --- */
+  .stats-bar {
+      display: flex;
+      gap: 30px;
+      padding: 15px 20px;
+      border-top: 1px solid #eee;
+      border-bottom: 1px solid #eee;
+  }
+  .stat-item { font-size: 16px; color: #333; }
+  .stat-item strong { font-weight: 700; color: #000; }
 
-  #modalEditar,
-#modalSugestao {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.5);
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  overflow-y: auto; /* Permite rolagem no modal se necessário */
-}
+  /* --- GRID DE FOTOS (OTIMIZADA) --- */
+  .grid-container { padding: 10px 0; }
+  
+  .grid { 
+      display: grid; 
+      /* Mobile: 3 colunas */
+      grid-template-columns: repeat(3, 1fr); 
+      gap: 3px; 
+  }
 
-/* Conteúdo do modal */
-#modalEditar .conteudo,
-#modalSugestao .conteudo {
-  background: #fff;
-  padding: 20px;
-  border-radius: 12px;
-  width: 90%;
-  max-width: 400px;
-  box-sizing: border-box;
-  max-height: 90vh;          /* Impede que ultrapasse a tela */
-  overflow-y: auto;          /* Rolagem interna se passar do limite */
-}
+  /* Desktop: 5 colunas para as fotos ficarem menores */
+  @media (min-width: 768px) {
+      .grid {
+          grid-template-columns: repeat(5, 1fr);
+          gap: 15px; /* Mais espaço no desktop */
+          padding: 20px;
+      }
+  }
+  
+  .grid-item { 
+      position: relative; 
+      width: 100%; 
+      padding-top: 100%; /* Quadrado perfeito */
+      background: #eee;
+      cursor: pointer;
+      overflow: hidden;
+  }
+  
+  .grid-item img { 
+      position: absolute; top: 0; left: 0; 
+      width: 100%; height: 100%; 
+      object-fit: cover; 
+      transition: transform 0.3s;
+  }
+  .grid-item:hover img { transform: scale(1.05); }
 
-/* Labels */
-#modalEditar label,
-#modalSugestao label {
-  display: block;
-  margin-top: 10px;
-  font-weight: bold;
-}
+  /* Mensagem Vazia */
+  .sem-posts {
+      grid-column: 1 / -1;
+      padding: 60px 0;
+      text-align: center;
+      color: #999;
+  }
 
-/* Inputs e Textareas */
-#modalEditar input,
-#modalEditar textarea,
-#modalSugestao textarea {
-  width: 100%;
-  padding: 8px;
-  margin-top: 5px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-}
+  /* --- MODAL POST --- */
+  .modal-overlay {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8); z-index: 2000;
+      justify-content: center; align-items: center;
+  }
+  .modal-content {
+      background: #fff; width: 90%; max-width: 800px; max-height: 90vh;
+      display: flex; flex-direction: column; overflow: hidden; border-radius: 12px;
+  }
+  /* Layout Modal Desktop (Lado a Lado) */
+  @media (min-width: 768px) {
+      .modal-content { flex-direction: row; }
+      .modal-image-col { width: 60%; background: #000; display:flex; align-items:center; }
+      .modal-info-col { width: 40%; }
+  }
+  
+  .modal-image-col img { width: 100%; height: 100%; object-fit: contain; max-height: 60vh; display:block; }
+  @media (min-width: 768px) { .modal-image-col img { max-height: 80vh; } }
 
-/* Botões */
-#modalEditar button,
-#modalSugestao button {
-  margin-top: 15px;
-  padding: 10px;
-  border: none;
-  border-radius: 8px;
-  background: #e60050;
-  color: white;
-  cursor: pointer;
-  width: 100%;
-}
+  .modal-info-col { padding: 20px; overflow-y: auto; display: flex; flex-direction: column; }
+  .btn-close { align-self: flex-end; font-size: 24px; background:none; border:none; cursor:pointer; }
+  
+  /* --- RODAPÉ --- */
+  .barraInferior { position: fixed; bottom: 0; left: 0; width: 100%; display: flex; justify-content: space-around; background-color: #fff; padding: 12px 0; border-top: 1px solid #ddd; z-index: 1000; }
+  .barraInferior img{ width: 28px; height: 28px; }
 
-#modalEditar button:hover,
-#modalSugestao button:hover {
-  background: #cc0045;
-}
+  /* --- MODAL EDITAR --- */
+  #modalEditar { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 3000; }
+  .conteudo-editar { background: #fff; padding: 25px; border-radius: 12px; width: 90%; max-width: 400px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+  .conteudo-editar label { font-weight: bold; font-size: 13px; display: block; margin-top: 10px; }
+  .conteudo-editar input, .conteudo-editar textarea { width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
+  .conteudo-editar button { width: 100%; padding: 12px; border: none; border-radius: 6px; margin-top: 15px; cursor: pointer; font-weight: bold; }
+  #salvar-edicao { background: #e60050; color: white; }
 
-  .preview-img { margin-top: 5px; width: 100%; max-height: 150px; object-fit: cover; border-radius: 8px; }
-  .preview-foto { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin-top:5px; }
 </style>
 </head>
 <body>
 
-  <!-- Banner e foto -->
-  <div class="banner" id="perfil-banner">
-    <div class="perfil-foto">
-      <img id="perfil-foto" src="https://via.placeholder.com/100" alt="Foto de Perfil">
+<div class="main-container">
+    
+    <div class="banner-container" id="perfil-banner"></div>
+
+    <div class="profile-section">
+        <div class="profile-info-header">
+            <div class="foto-wrapper">
+                <img id="perfil-foto" class="perfil-foto" src="https://via.placeholder.com/150" alt="Foto">
+            </div>
+
+            <div class="profile-actions">
+                <button class="btn-action btn-primary" id="editar-perfil">Editar Perfil</button>
+                <button class="btn-action" id="sugestao-btn">Sugestão</button>
+            </div>
+        </div>
+
+        <div class="user-texts">
+            <div class="profile-username" id="perfil-nome">Usuário</div>
+            <div class="profile-handle" id="perfil-arroba">@usuario</div>
+            <div class="profile-bio" id="perfil-desc">
+                Bem-vindo ao meu perfil! Aqui você encontra meus eventos.
+            </div>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat-item"><strong id="post-count">0</strong> Publicações</div>
+            <div class="stat-item"><strong>1.5k</strong> Seguidores</div>
+            <div class="stat-item"><strong>340</strong> Seguindo</div>
+        </div>
+    </div>
+
+    <div class="grid-container">
+        <div class="grid" id="gridPosts">
+            </div>
+    </div>
+
+</div>
+
+<div class="barraInferior">
+  <a href="/HTML/home.HTML"><img src="/img/icons8-casa-48.png" alt=""></a>
+  <a href="/HTML/mapa.html"><img src="/img/icons8-mapa-50.png" alt=""></a>
+  <a href="/HTML/add.html"><img src="/img/icons8-mais-50.png" alt=""></a>
+  <a href="/HTML/serv.html"><img src="/img/icons8-parceiro-50.png" alt=""></a>
+  <a href="/HTML/perfil.html"><img src="/img/icons8-conta-de-teste-50.png" alt=""></a>
+</div>
+
+<div id="modalPost" class="modal-overlay">
+  <div class="modal-content">
+    <div class="modal-image-col">
+       <img id="modal-img-tag" src="">
+    </div>
+    <div class="modal-info-col">
+       <button class="btn-close" id="fechar-post">×</button>
+       <h2 id="modal-titulo" style="margin-top:0;"></h2>
+       <div id="modal-valor" style="margin-bottom:10px;"></div>
+       <p id="modal-desc" style="color:#555; line-height:1.5;"></p>
+       <div id="modal-meta" style="margin-top:auto; font-size:13px; color:#888; border-top:1px solid #eee; padding-top:10px;"></div>
     </div>
   </div>
+</div>
 
-  <!-- Info perfil -->
-  <div class="perfil-info">
-    <h2 id="perfil-nome">Usuário</h2>
-    <p id="perfil-arroba">@usuario</p>
-    <p id="perfil-desc">Descrição do perfil</p>
-    <button id="editar-perfil">Editar Perfil</button>
-    <button id="sugestao-btn">Sugestão</button>
+<div id="modalEditar">
+  <div class="conteudo-editar">
+    <h3 style="margin-top:0">Editar Perfil</h3>
+    
+    <label>Nome</label>
+    <input type="text" id="editar-nome">
+    
+    <label>@Usuario</label>
+    <input type="text" id="editar-arroba">
+    
+    <label>Bio</label>
+    <textarea id="editar-desc" rows="3"></textarea>
+    
+    <label>Foto de Perfil</label>
+    <input type="file" id="editar-foto-file">
+    
+    <label>Banner de Fundo</label>
+    <input type="file" id="editar-banner-file">
+    
+    <button id="salvar-edicao">Salvar Alterações</button>
+    <button id="fechar-edicao" style="background:#ddd; color:#333;">Cancelar</button>
   </div>
-
-  <!-- Stats -->
-  <div class="stats">
-    <div><strong>0</strong> Seguindo</div>
-    <div><strong>0</strong> Seguidores</div>
-  </div>
-
-  <!-- Abas -->
-  <div class="abas" style="gap: 60px;">
-    <div><img src="/img/icons8-fotos-50.png" alt=""></div>
-    <div><img src="/img/icons8-mais-30.png" alt=""></div>
-  </div>
-
-  <!-- Grid de posts -->
-  <div class="grid" id="gridPosts"></div>
-
-  <!-- Rodapé -->
-  <div class="barraInferior">
-    <a href="/HTML/home.HTML"><img src="/img/icons8-casa-48.png" alt=""></a>
-    <a href="/HTML/mapa.html"><img src="/img/icons8-mapa-50.png" alt=""></a>
-    <a href="/HTML/add.html"><img src="/img/icons8-mais-50.png" alt=""></a>
-    <a href="/HTML/serv.html"><img src="/img/icons8-parceiro-50.png" alt=""></a>
-    <a href="/HTML/perfil.html"><img src="/img/icons8-conta-de-teste-50.png" alt=""></a>
-  </div>
-
-  <!-- Modal Sugestão -->
-  <div id="modalSugestao">
-    <div class="conteudo">
-      <h3>Enviar Sugestão</h3>
-      <label>Sua sugestão:</label>
-      <textarea id="texto-sugestao"></textarea>
-      <button id="enviar-sugestao">Enviar</button>
-      <button id="fechar-sugestao" style="background:#ccc; color:#000; margin-top:5px;">Cancelar</button>
-    </div>
-  </div>
-
-  <!-- Modal de edição -->
-  <div id="modalEditar">
-    <div class="conteudo">
-      <h3>Editar Perfil</h3>
-      <label>Nome</label>
-      <input type="text" id="editar-nome">
-      <label>@username</label>
-      <input type="text" id="editar-arroba">
-      <label>Descrição</label>
-      <textarea id="editar-desc"></textarea>
-      <label>Foto de Perfil (algumas fotos podem nao abrir, só substitua)</label>
-      <input type="file" id="editar-foto-file" accept="image/*">
-      <img id="preview-foto" class="preview-foto" src="https://via.placeholder.com/100">
-      <label>Banner (algumas fotos podem nao abrir, só substitua)</label>
-      <input type="file" id="editar-banner-file" accept="image/*">
-      <img id="preview-banner" class="preview-img" src="https://via.placeholder.com/300x100?text=Banner">
-      <button id="salvar-edicao">Salvar</button>
-      <button id="fechar-edicao" style="background:#ccc; color:#000; margin-top:5px;">Cancelar</button>
-    </div>
-  </div>
+</div>
 
 <script>
-  // Carregar perfil
   window.addEventListener("DOMContentLoaded", () => {
-    const usuario = localStorage.getItem("usuario") || "Usuário";
+    carregarPerfil();
+    carregarMeusPosts();
+  });
+
+  // 1. CARREGAR DADOS
+  function carregarPerfil() {
+    const nome = localStorage.getItem("usuario") || "Usuário";
     const arroba = localStorage.getItem("arroba") || "@usuario";
-    const descricao = localStorage.getItem("descricao") || "Sem descrição";
-    const foto = localStorage.getItem("foto") || "https://via.placeholder.com/100";
-    const banner = localStorage.getItem("banner") || "https://via.placeholder.com/300x100?text=Banner";
+    const desc = localStorage.getItem("descricao") || "Sem descrição";
+    const foto = localStorage.getItem("foto") || "https://via.placeholder.com/150";
+    const banner = localStorage.getItem("banner") || "https://via.placeholder.com/800x300";
 
-    document.getElementById("perfil-nome").textContent = usuario;
+    document.getElementById("perfil-nome").textContent = nome;
     document.getElementById("perfil-arroba").textContent = arroba;
-    document.getElementById("perfil-desc").textContent = descricao;
+    document.getElementById("perfil-desc").textContent = desc;
     document.getElementById("perfil-foto").src = foto;
     document.getElementById("perfil-banner").style.backgroundImage = `url(${banner})`;
-  });
 
-  // Sugestão
-  const sugestaoBtn = document.getElementById("sugestao-btn");
-  const modalSugestao = document.getElementById("modalSugestao");
-  const fecharSugestao = document.getElementById("fechar-sugestao");
-  const enviarSugestao = document.getElementById("enviar-sugestao");
+    // Inputs Editar
+    document.getElementById("editar-nome").value = nome;
+    document.getElementById("editar-arroba").value = arroba;
+    document.getElementById("editar-desc").value = desc;
+  }
 
-  sugestaoBtn.addEventListener("click", ()=> modalSugestao.style.display = "flex");
-  fecharSugestao.addEventListener("click", ()=> modalSugestao.style.display = "none");
+  // 2. GRID DE POSTS (Lógica de tamanho)
+  function carregarMeusPosts() {
+    const grid = document.getElementById("gridPosts");
+    const countEl = document.getElementById("post-count");
+    
+    const todosEventos = JSON.parse(localStorage.getItem("eventos")) || [];
+    const meuNome = localStorage.getItem("usuario") || "Usuário";
 
-  enviarSugestao.addEventListener("click", ()=> {
-    const texto = document.getElementById("texto-sugestao").value.trim();
-    if(texto){
-      const usuario = localStorage.getItem("usuario") || "Usuário";
-      const arroba = localStorage.getItem("arroba") || "@usuario";
+    // Filtra
+    const meusPosts = todosEventos.filter(ev => ev.usuario.trim() === meuNome.trim());
+    countEl.textContent = meusPosts.length;
+    grid.innerHTML = "";
 
-      const sugestoes = JSON.parse(localStorage.getItem("sugestoes") || "[]");
-      sugestoes.push({texto, data: new Date().toLocaleString(), nome: usuario, email: arroba});
-      localStorage.setItem("sugestoes", JSON.stringify(sugestoes));
-      alert("Sugestão enviada!");
-      document.getElementById("texto-sugestao").value = "";
-      modalSugestao.style.display = "none";
+    if (meusPosts.length === 0) {
+      grid.innerHTML = `<div class="sem-posts">
+          <p>Nenhuma publicação ainda.</p>
+      </div>`;
+      return;
+    }
+
+    meusPosts.forEach(evento => {
+      const item = document.createElement("div");
+      item.className = "grid-item";
+      // Imagem
+      item.innerHTML = `<img src="${evento.imagem}" alt="${evento.nome}">`;
+      // Click
+      item.onclick = () => abrirPostDetalhe(evento);
+      grid.appendChild(item);
+    });
+  }
+
+  // 3. ABRIR DETALHE (Modal Lado a Lado no Desktop)
+  const modalPost = document.getElementById("modalPost");
+  
+  function abrirPostDetalhe(evento) {
+    document.getElementById("modal-img-tag").src = evento.imagem;
+    document.getElementById("modal-titulo").textContent = evento.nome;
+    document.getElementById("modal-desc").textContent = evento.desc;
+    
+    // Meta
+    document.getElementById("modal-meta").innerHTML = `
+        📍 ${evento.endereco}<br>⏰ ${evento.hora}<br>📅 Postado: ${evento.postadoem}
+    `;
+
+    // Valor / Link
+    const valorDiv = document.getElementById("modal-valor");
+    if (evento.valor && evento.valor.trim() !== "") {
+        if (evento.link && evento.link.trim() !== "") {
+             let linkUrl = evento.link;
+             if(!linkUrl.startsWith('http')) linkUrl = 'https://' + linkUrl;
+             valorDiv.innerHTML = `<a href="${linkUrl}" target="_blank" style="background:#28a745; color:#fff; padding:5px 10px; border-radius:5px; text-decoration:none; font-weight:bold;">${evento.valor} (Comprar)</a>`;
+        } else {
+             valorDiv.innerHTML = `<span style="background:#28a745; color:#fff; padding:5px 10px; border-radius:5px; font-weight:bold;">${evento.valor}</span>`;
+        }
     } else {
-      alert("Escreva algo antes de enviar!");
+        valorDiv.innerHTML = "";
     }
-  });
 
-  // Editar Perfil
-  const editarBtn = document.getElementById("editar-perfil");
+    modalPost.style.display = "flex";
+    document.body.style.overflow = "hidden";
+  }
+
+  document.getElementById("fechar-post").onclick = () => {
+    modalPost.style.display = "none";
+    document.body.style.overflow = "auto";
+  };
+  modalPost.onclick = (e) => {
+    if(e.target === modalPost) {
+       modalPost.style.display = "none";
+       document.body.style.overflow = "auto";
+    }
+  };
+
+  // 4. EDIÇÃO (Com Banner)
   const modalEditar = document.getElementById("modalEditar");
-  const fecharEdicao = document.getElementById("fechar-edicao");
-  const salvarEdicao = document.getElementById("salvar-edicao");
+  document.getElementById("editar-perfil").onclick = () => modalEditar.style.display = "flex";
+  document.getElementById("fechar-edicao").onclick = () => modalEditar.style.display = "none";
 
-  editarBtn.addEventListener("click", ()=> {
-    document.getElementById("editar-nome").value = localStorage.getItem("usuario") || "";
-    document.getElementById("editar-arroba").value = localStorage.getItem("arroba") || "";
-    document.getElementById("editar-desc").value = localStorage.getItem("descricao") || "";
-    document.getElementById("preview-foto").src = localStorage.getItem("foto") || "https://via.placeholder.com/100";
-    document.getElementById("preview-banner").src = localStorage.getItem("banner") || "https://via.placeholder.com/300x100?text=Banner";
-    modalEditar.style.display = "flex";
+  // Leitura de Arquivos (Foto e Banner)
+  let novaFoto = "", novoBanner = "";
+  
+  document.getElementById("editar-foto-file").addEventListener("change", e => {
+      const file = e.target.files[0];
+      if(file){
+        const reader = new FileReader();
+        reader.onload = (evt) => novaFoto = evt.target.result;
+        reader.readAsDataURL(file);
+      }
   });
 
-  fecharEdicao.addEventListener("click", ()=> modalEditar.style.display = "none");
-
-  // Preview foto perfil
-  document.getElementById("editar-foto-file").addEventListener("change", function(e){
-    const file = e.target.files[0];
-    if(file){
-      const reader = new FileReader();
-      reader.onload = ()=> document.getElementById("preview-foto").src = reader.result;
-      reader.readAsDataURL(file);
-    }
+  document.getElementById("editar-banner-file").addEventListener("change", e => {
+      const file = e.target.files[0];
+      if(file){
+        const reader = new FileReader();
+        reader.onload = (evt) => novoBanner = evt.target.result;
+        reader.readAsDataURL(file);
+      }
   });
 
-  // Preview banner
-  document.getElementById("editar-banner-file").addEventListener("change", function(e){
-    const file = e.target.files[0];
-    if(file){
-      const reader = new FileReader();
-      reader.onload = ()=> document.getElementById("preview-banner").src = reader.result;
-      reader.readAsDataURL(file);
-    }
-  });
+  document.getElementById("salvar-edicao").onclick = () => {
+      const nome = document.getElementById("editar-nome").value;
+      const arroba = document.getElementById("editar-arroba").value;
+      const desc = document.getElementById("editar-desc").value;
 
-  // Salvar edição
-  salvarEdicao.addEventListener("click", ()=> {
-    const nome = document.getElementById("editar-nome").value.trim();
-    const arroba = document.getElementById("editar-arroba").value.trim();
-    const descricao = document.getElementById("editar-desc").value.trim();
-    const foto = document.getElementById("preview-foto").src;
-    const banner = document.getElementById("preview-banner").src;
+      if(nome) localStorage.setItem("usuario", nome);
+      if(arroba) localStorage.setItem("arroba", arroba);
+      if(desc) localStorage.setItem("descricao", desc);
+      if(novaFoto) localStorage.setItem("foto", novaFoto);
+      if(novoBanner) localStorage.setItem("banner", novoBanner);
 
-    if(nome) localStorage.setItem("usuario", nome);
-    if(arroba) localStorage.setItem("arroba", arroba);
-    if(descricao) localStorage.setItem("descricao", descricao);
-    localStorage.setItem("foto", foto);
-    localStorage.setItem("banner", banner);
-
-    // Atualiza perfil
-    document.getElementById("perfil-nome").textContent = nome || "Usuário";
-    document.getElementById("perfil-arroba").textContent = arroba || "@usuario";
-    document.getElementById("perfil-desc").textContent = descricao || "Sem descrição";
-    document.getElementById("perfil-foto").src = foto;
-    document.getElementById("perfil-banner").style.backgroundImage = `url(${banner})`;
-
-    modalEditar.style.display = "none";
-  });
+      carregarPerfil();
+      carregarMeusPosts();
+      modalEditar.style.display = "none";
+  };
+  
+  // Sugestão
+  document.getElementById("sugestao-btn").onclick = () => {
+      const t = prompt("Sua sugestão:");
+      if(t) alert("Enviado!");
+  };
 </script>
+
 </body>
 </html>

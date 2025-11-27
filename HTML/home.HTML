@@ -2,197 +2,193 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Home - LinkTour</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f2f2f2;
-    padding-bottom: 60px;
+/* --- GERAL --- */
+body { margin: 0; font-family: 'Inter', Arial, sans-serif; background-color: #f8f9fa; padding-bottom: 70px; color: #333; }
+
+/* Layout Grid Responsivo Centralizado */
+.container { 
+    display: grid; 
+    grid-template-columns: 1fr minmax(300px, 600px) 350px; 
+    gap: 30px; 
+    width: 100%; 
+    max-width: 1200px; 
+    margin: 0 auto; 
+    align-items: start;
 }
-.container {
-    display: grid;
-    grid-template-columns: 1fr minmax(300px, 600px) 350px;
-    gap: 20px;
-    width: 100%;
-    max-width: 1600px;
-    margin: 0 auto;
+@media (max-width: 1000px) { .container { grid-template-columns: 1fr; max-width: 600px; } .painelDireita, .painelEsquerda { display: none; } }
+
+/* --- HEADER --- */
+header { 
+    display:flex; align-items:center; padding:15px 20px; gap:15px; background-color:#fff; 
+    position:sticky; top:0; z-index:100; box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
 }
-@media (max-width: 1200px) { .container { grid-template-columns: 1fr minmax(300px, 600px); } }
-@media (max-width: 768px) { .container { grid-template-columns: 1fr; } .painelDireita { display: none; } }
-
-/* Header */
-header { display:flex; align-items:center; padding:10px 15px; gap:10px; background-color:#fff; position:sticky; top:0; z-index:100; }
-header input { flex:1; padding:8px 12px; border-radius:20px; border:1px solid #ccc; }
-
-/* Abas */
-.abas { display:flex; justify-content:space-around; background-color:#fff; padding:10px 0; border-bottom:1px solid #ddd; position:sticky; top:60px; z-index:99; }
-.abas div { font-weight:bold; cursor:pointer; }
-
-/* Feed */
-.feed { padding:10px; }
-.poste { background-color:#fff; border-radius:10px; padding:10px; margin-bottom:15px; box-shadow:0 2px 5px rgba(0,0,0,0.05); position:relative; }
-
-.usuario { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
-.fotoUsuario { width:40px; height:40px; border-radius:50%; background-color:#ccc; margin-right:10px; }
-.fotoUsuario img { width:100%; height:100%; border-radius:50%; }
-.infoUsuario { flex:1; }
-.nomeUsuario { font-weight:bold; }
-.postadoem { font-size:12px; color:#888; }
-
-/* Botão de 3 pontinhos */
-.menuPost { position:relative; }
-.menuBtn { background:none; border:none; font-size:20px; cursor:pointer; }
-.menuOpcoes { 
-    display:none; 
-    position:absolute; 
-    right:0; 
-    top:25px; 
-    background:#fff; 
-    border:1px solid #ddd; 
-    border-radius:8px; 
-    box-shadow:0 2px 5px rgba(0,0,0,0.1); 
-    overflow:hidden;
-    z-index:10;
+.search-bar-header {
+    flex: 1; display: flex; align-items: center; background: #f0f2f5; 
+    padding: 8px 15px; border-radius: 25px; 
 }
-.menuOpcoes div { padding:10px 15px; cursor:pointer; font-size:14px; }
-.menuOpcoes div:hover { background:#f2f2f2; }
+.search-bar-header input { 
+    border: none; background: transparent; outline: none; flex: 1; margin-left: 10px; font-size: 15px; 
+}
 
-/* Publicação */
-.fotoPubli { position:relative; width:100%; border-radius:10px; overflow:hidden; margin-bottom:10px; }
-.fotoPubli img { width:100%; height:auto; display:block; }
-.acoesPost { position:absolute; bottom:10px; right:10px; display:flex; gap:12px; }
+/* --- ABAS (Pills) --- */
+.abas { 
+    display:flex; gap: 10px; padding: 15px 20px; background-color: transparent; 
+    overflow-x: auto; white-space: nowrap; scrollbar-width: none;
+}
+.aba-pill {
+    padding: 8px 16px; border-radius: 20px; background: #fff; border: 1px solid #ddd;
+    font-weight: 600; font-size: 14px; cursor: pointer; transition: 0.2s;
+}
+.aba-pill.ativo { background: #000; color: #fff; border-color: #000; }
+.aba-pill:hover:not(.ativo) { background: #eee; }
+
+/* --- POST CARD --- */
+.feed { padding: 0 10px; }
+.poste { 
+    background-color:#fff; border-radius: 16px; margin-bottom: 20px; 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06); overflow: hidden; position: relative;
+    border: 1px solid #eee;
+}
+
+.usuario { display:flex; align-items:center; justify-content:space-between; padding: 15px; }
+.fotoUsuario { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; margin-right: 12px; }
+.nomeUsuario { font-weight: 700; font-size: 15px; color: #111; }
+.postadoem { font-size: 12px; color: #888; margin-top: 2px; }
+
+/* Mantendo a estrutura da imagem e ícones como pediu */
+.fotoPubli { position:relative; width:100%; background: #f0f0f0; }
+.fotoPubli img { width:100%; height: auto; display:block; max-height: 500px; object-fit: cover; }
+
+.acoesPost { position:absolute; bottom:10px; right:10px; display:flex; gap:10px; }
+/* Botões redondos sobre a imagem */
 .botaoAcao { 
-    width:40px; 
-    height:40px; 
-    border-radius:50%; 
-    background:rgba(255,255,255,0.9); 
-    display:flex; 
-    justify-content:center; 
-    align-items:center; 
-    box-shadow:0 2px 5px rgba(0,0,0,0.1); 
-    cursor:pointer; 
-    transition:transform 0.2s ease; 
+    width:42px; height:42px; border-radius:50%; 
+    background: rgba(255,255,255,0.95); 
+    display:flex; justify-content:center; align-items:center; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15); 
+    cursor:pointer; transition: transform 0.2s ease, background 0.2s;
 }
-.botaoAcao:hover { transform:scale(1.1); }
-.botaoAcao img { width:22px; height:22px; }
+.botaoAcao:hover { transform:scale(1.1); background: #fff; }
+.botaoAcao img { width:22px; height:22px; transition: 0.2s; }
 
-.desc { font-size:14px; color:#333; margin-top:10px; }
+/* Estados ativos (Curtido/Salvo) */
+.botaoAcao.liked img { filter: invert(16%) sepia(96%) saturate(6879%) hue-rotate(343deg) brightness(98%) contrast(106%); /* Vermelho */ }
+.botaoAcao.saved img { filter: brightness(0); /* Preto */ }
 
-/* Rodapé fixo */
-.barraInferior { position:fixed; bottom:0; left:0; width:100%; display:flex; justify-content:space-around; align-items:center; background-color:#fff; padding:10px 0; border-top:1px solid #ddd; z-index:999; }
-.barraInferior a { display:flex; justify-content:center; align-items:center; text-decoration:none; }
-.barraInferior img { width:30px; height:30px; }
-.barraInferior a.ativo img { filter:brightness(1.2); }
+/* Descrição e Info */
+.desc { padding: 15px; font-size: 14px; color: #444; line-height: 1.5; }
+.desc strong { color: #000; font-size: 15px; display: block; margin-bottom: 5px; }
+.meta-info { margin-top: 8px; font-size: 12px; color: #777; background: #f9f9f9; padding: 8px; border-radius: 8px; display: inline-block; }
 
-/* Painel lateral */
-.painelDireita { position:sticky; top:10px; align-self:start; padding:10px; }
-.search-box { background:#fff; padding:8px; border-radius:20px; display:flex; align-items:center; border:1px solid #ddd; margin-bottom:20px; }
-.search-box input { border:none; outline:none; flex:1; padding:5px 8px; }
-.card-sugestoes { background:#fff; border-radius:12px; padding:15px; margin-bottom:20px; box-shadow:0 2px 5px rgba(0,0,0,0.05); }
-.card-sugestoes h3 { margin-top:0; margin-bottom:10px; font-size:16px; }
-.sugestao { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
-.sugestao:last-child { margin-bottom:0; }
-.sugestao .fotoUsuario { margin:0 10px 0 0; }
-
-/* Modal Edição - corrigido */
-#modalEditar {
-    display:none;
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background:rgba(0,0,0,0.5);
-    justify-content:center;
-    align-items:center;
-    z-index:9999;
+/* Comentários (Demo) */
+.comentarios-area { 
+    display: none; padding: 10px 15px; background: #fbfbfb; border-top: 1px solid #eee; 
 }
-#modalEditar .conteudo {
-    background:#fff;
-    padding:20px;
-    border-radius:12px;
-    width:90%;
-    max-width:450px;
-    max-height:90%;
-    overflow-y:auto;
-    box-sizing:border-box;
+.input-comentario {
+    width: 100%; border: 1px solid #ddd; padding: 10px; border-radius: 20px; outline: none; font-family: 'Inter', sans-serif;
 }
-#modalEditar h3 { margin-top:0; text-align:center; }
-#modalEditar label { display:block; margin-top:10px; font-weight:bold; }
-#modalEditar input, #modalEditar textarea { width:100%; padding:8px; margin-top:5px; border-radius:6px; border:1px solid #ccc; box-sizing:border-box; }
-#modalEditar button { margin-top:15px; padding:10px; border:none; border-radius:8px; background:#e60050; color:white; cursor:pointer; width:100%; }
-#modalEditar button:hover { background:#cc0045; }
-#modalEditar #fechar-edicao { background:#ccc; color:#000; margin-top:5px; }
+
+/* Painel Direita (Sugestões) */
+.painelDireita { position: sticky; top: 90px; }
+.card-sugestoes { background: #fff; border-radius: 16px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+.card-sugestoes h3 { margin: 0 0 15px 0; font-size: 14px; color: #888; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+.sugestao { display:flex; align-items:center; justify-content:space-between; margin-bottom: 15px; }
+.btn-seguir { border: none; background: transparent; color: #0095f6; font-weight: bold; cursor: pointer; font-size: 13px; }
+.btn-seguir:hover { color: #0074cc; }
+
+/* Rodapé */
+.barraInferior { position:fixed; bottom:0; left:0; width:100%; display:flex; justify-content:space-around; align-items:center; background-color:#fff; padding:12px 0; border-top:1px solid #eee; z-index:999; box-shadow: 0 -2px 10px rgba(0,0,0,0.03); }
+.barraInferior img { width:28px; height:28px; transition: 0.2s; }
+.barraInferior a.ativo img { filter: brightness(0) saturate(100%) invert(18%) sepia(90%) saturate(3000%) hue-rotate(330deg) brightness(90%) contrast(100%); }
+
+/* Modal Edição Clean */
+#modalEditar { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); backdrop-filter: blur(4px); justify-content:center; align-items:center; z-index:9999; }
+.conteudo-modal { background:#fff; padding:25px; border-radius:16px; width:90%; max-width:450px; max-height:90vh; overflow-y:auto; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+.conteudo-modal input, .conteudo-modal textarea { width:100%; padding:10px; margin-top:5px; border-radius:8px; border:1px solid #ccc; box-sizing:border-box; margin-bottom: 15px; font-family: 'Inter', sans-serif; }
+.conteudo-modal button { padding:12px; border:none; border-radius:8px; background:#e60050; color:white; font-weight: bold; cursor:pointer; width:100%; margin-top: 5px; }
+.conteudo-modal #fechar-edicao { background:#eee; color:#333; margin-top:10px; }
 
 </style>
 </head>
 <body>
 
 <div class="container">
+  
+  <div class="painelEsquerda"></div>
 
-  <!-- Feed central -->
   <div>
     <header>
-        <img src="/img/icons8-pesquisa-50.png" alt="" style="width:30px;height:30px;">
-        <input type="text" placeholder="Busca">
-    </header>
+    <div class="search-bar-header">
+        <img src="/img/icons8-pesquisa-50.png" style="width:20px; opacity:0.5;">
+        <input type="text" id="searchInput" placeholder="Buscar eventos...">
+    </div>
+    <a href="/HTML/chat.html" style="margin-left: 15px; text-decoration: none;">
+        <img src="/img/icons8-comentários-50.png" style="width: 28px; height: 28px; display: block;">
+    </a>
+</header>
 
     <div class="abas">
-        <div>Todos</div>
-        <div>Para você</div>
-        <div>Seguindo</div>
+        <div class="aba-pill ativo">Todos</div>
+        <div class="aba-pill">Para você</div>
+        <div class="aba-pill">Seguindo</div>
+        <div class="aba-pill">Perto</div>
     </div>
 
-    <div class="feed" id="feedHome"></div>
+    <div class="feed" id="feedHome">
+        </div>
   </div>
 
-  <!-- Painel lateral -->
   <div class="painelDireita">
-    <div class="search-box">
-      <img src="/img/icons8-pesquisa-50.png" alt="" style="width:30px;height:30px;"> 
-      <input type="text" placeholder="Pesquisar">
-    </div>
-
     <div class="card-sugestoes">
-      <h3>Quem seguir</h3>
+      <h3>Sugestões para você</h3>
+      
       <div class="sugestao">
         <div style="display:flex; align-items:center;">
-          <div class="fotoUsuario"><img src="https://i.pinimg.com/736x/99/18/d7/9918d7ad96f25dede0628dc9b12086c8.jpg" alt=""></div>
-          <div>@eventosSP</div>
+          <img src="https://via.placeholder.com/40" style="border-radius:50%; margin-right:10px;">
+          <div>
+              <div style="font-weight:bold; font-size:14px;">Eventos SP</div>
+              <div style="font-size:12px; color:#888;">Popular</div>
+          </div>
         </div>
-        <button class="seguir">Seguir</button>
+        <button class="btn-seguir">Seguir</button>
       </div>
+
       <div class="sugestao">
         <div style="display:flex; align-items:center;">
-          <div class="fotoUsuario"><img src="https://i.pinimg.com/736x/9a/cc/83/9acc8359bcb7ca9e6b299b0bf3c0517c.jpg" alt=""></div>
-          <div>@festasRJ</div>
+          <img src="https://via.placeholder.com/40" style="border-radius:50%; margin-right:10px;">
+          <div>
+              <div style="font-weight:bold; font-size:14px;">Baladas RJ</div>
+              <div style="font-size:12px; color:#888;">Novo</div>
+          </div>
         </div>
-        <button class="seguir">Seguir</button>
+        <button class="btn-seguir">Seguir</button>
       </div>
+      
+      <div style="margin-top:20px; font-size:12px; color:#ccc;">© 2024 LinkTour App</div>
     </div>
   </div>
 
 </div>
 
-<!-- Rodapé -->
 <div class="barraInferior">
-  <a href="/HTML/home.HTML" class="ativo"><img src="/img/icons8-casa-48.png" alt=""></a>
-  <a href="/HTML/mapa.html"><img src="/img/icons8-mapa-50.png" alt=""></a>
-  <a href="/HTML/add.html"><img src="/img/icons8-mais-50.png" alt=""></a>
-  <a href="/HTML/serv.html"><img src="/img/icons8-parceiro-50.png" alt=""></a>
-  <a href="/HTML/perfil.html"><img src="/img/icons8-conta-de-teste-50.png" alt=""></a>
+  <a href="/HTML/home.HTML" class="ativo"><img src="/img/icons8-casa-48.png"></a>
+  <a href="/HTML/mapa.html"><img src="/img/icons8-mapa-50.png"></a>
+  <a href="/HTML/add.html"><img src="/img/icons8-mais-50.png"></a>
+  <a href="/HTML/serv.html"><img src="/img/icons8-parceiro-50.png"></a>
+  <a href="/HTML/perfil.html"><img src="/img/icons8-conta-de-teste-50.png"></a>
 </div>
 
-<!-- Modal Edição -->
 <div id="modalEditar">
-  <div class="conteudo">
-    <h3>Editar Evento</h3>
-    <label>Nome do Evento</label>
+  <div class="conteudo-modal">
+    <h3 style="margin-top:0;">Editar Evento</h3>
+    <label>Nome</label>
     <input type="text" id="editar-nome">
     <label>Descrição</label>
-    <textarea id="editar-desc"></textarea>
+    <textarea id="editar-desc" rows="3"></textarea>
     <label>Endereço</label>
     <input type="text" id="editar-endereco">
     <label>Hora</label>
@@ -201,86 +197,138 @@ header input { flex:1; padding:8px 12px; border-radius:20px; border:1px solid #c
     <input type="text" id="editar-valor">
     <label>Imagem</label>
     <input type="file" id="editar-imagem" accept="image/*">
-    <img id="preview-imagem" style="width:100%; margin-top:10px; border-radius:8px;">
-    <button id="salvar-edicao">Salvar</button>
+    <img id="preview-imagem" style="width:100%; border-radius:8px; height:150px; object-fit:cover;">
+    <button id="salvar-edicao">Salvar Alterações</button>
     <button id="fechar-edicao">Cancelar</button>
   </div>
 </div>
 
 <script>
-// Nome e foto do usuário logado
+// Dados do Usuário
 const nomeUsuarioLogado = localStorage.getItem("usuario") || "Você";
 const fotoUsuarioLogado = localStorage.getItem("foto") || "https://via.placeholder.com/40";
-
 let eventos = JSON.parse(localStorage.getItem("eventos")) || [];
 
-// Função para criar o HTML do post
-function renderizarEventos() {
+// 1. RENDERIZAÇÃO DO FEED
+function renderizarEventos(listaEventos = eventos) {
     const feed = document.getElementById("feedHome");
     feed.innerHTML = "";
-    eventos.forEach((ev, idx) => {
+
+    if(listaEventos.length === 0) {
+        feed.innerHTML = "<div style='text-align:center; padding:40px; color:#888;'>Nenhum evento encontrado.</div>";
+        return;
+    }
+
+    listaEventos.forEach((ev, idx) => {
         const div = document.createElement("div");
         div.className = "poste";
+        // Atributo para busca
+        div.dataset.content = (ev.nome + " " + ev.desc + " " + ev.endereco).toLowerCase();
+
         div.innerHTML = `
             <div class="usuario">
                 <div style="display:flex; align-items:center;">
-                    <div class="fotoUsuario"><img src="${fotoUsuarioLogado}" alt=""></div>
-                    <div class="infoUsuario">
+                    <img class="fotoUsuario" src="${fotoUsuarioLogado}">
+                    <div>
                         <div class="nomeUsuario">${ev.usuario}</div>
-                        <div class="postadoem">Agora</div>
+                        <div class="postadoem">${ev.postadoem || 'Recentemente'}</div>
                     </div>
                 </div>
-                <div class="menuPost">
-                    <button class="menuBtn">⋮</button>
-                    <div class="menuOpcoes">
-                        <div onclick="editarEvento(${idx})">Editar</div>
-                        <div onclick="apagarEvento(${idx})">Remover</div>
+                <div style="position:relative;">
+                    <button style="border:none; background:transparent; font-size:20px; cursor:pointer;" onclick="toggleMenu(${idx})">⋮</button>
+                    <div id="menu-${idx}" style="display:none; position:absolute; right:0; top:25px; background:#fff; border:1px solid #eee; border-radius:8px; box-shadow:0 5px 15px rgba(0,0,0,0.1); width:130px; z-index:10;">
+                        <div onclick="editarEvento(${idx})" style="padding:12px; cursor:pointer; font-size:14px; border-bottom:1px solid #f0f0f0;"> Editar</div>
+                        <div onclick="apagarEvento(${idx})" style="padding:12px; cursor:pointer; font-size:14px; color:red;"> Remover</div>
                     </div>
                 </div>
             </div>
+
             <div class="fotoPubli">
-                <img src="${ev.imagem}" alt="">
+                <img src="${ev.imagem}" alt="${ev.nome}">
+                
                 <div class="acoesPost">
-                    <div class="botaoAcao"><img src="/img/icons8-coração-50.png" alt="Curtir"></div>
-                    <div class="botaoAcao"><img src="/img/icons8-fita-de-bookmark-50.png" alt="Salvar"></div>
-                    <div class="botaoAcao"><img src="/img/icons8-comentários-50.png" alt="Comentar"></div>
-                    <div class="botaoAcao"><img src="/img/icons8-compartilhar-50.png" alt="Compartilhar"></div>
+                    <div class="botaoAcao" onclick="curtirPost(this)"><img src="/img/icons8-coração-50.png"></div>
+                    <div class="botaoAcao" onclick="toggleComentarios(this)"><img src="/img/icons8-comentários-50.png"></div>
+                    <div class="botaoAcao"><img src="/img/icons8-compartilhar-50.png"></div>
+                    <div class="botaoAcao" onclick="salvarPost(this)"><img src="/img/icons8-fita-de-bookmark-50.png"></div>
                 </div>
             </div>
+
             <div class="desc">
-                <strong>${ev.nome}</strong><br>
-                ${ev.desc}<br><br>
-                Endereço: ${ev.endereco}<br>
-                Hora: ${ev.hora}<br>
-                Valor: ${ev.valor}
+                <strong>${ev.nome}</strong>
+                ${ev.desc}
+                <br>
+                <div class="meta-info"> ${ev.endereco} •  ${ev.hora} • valor:  ${ev.valor || 'Gratuito'}</div>
+            </div>
+
+            <div class="comentarios-area">
+                <input type="text" class="input-comentario" placeholder="Escreva um comentário..." onkeypress="postarComentario(event, this)">
+                <div class="lista-comentarios" style="margin-top:10px; font-size:13px; color:#555;"></div>
             </div>
         `;
         feed.appendChild(div);
-
-        // Ativar menu de 3 pontinhos
-        const menuBtn = div.querySelector(".menuBtn");
-        const menuOpcoes = div.querySelector(".menuOpcoes");
-        menuBtn.addEventListener("click", () => {
-            menuOpcoes.style.display = menuOpcoes.style.display === "block" ? "none" : "block";
-        });
-        document.addEventListener("click", (e) => {
-            if (!div.contains(e.target)) menuOpcoes.style.display = "none";
-        });
     });
 }
 
-// Apagar evento
-function apagarEvento(idx){
-    if(confirm("Deseja realmente apagar este evento?")){
-        eventos.splice(idx,1);
-        localStorage.setItem("eventos", JSON.stringify(eventos));
-        renderizarEventos();
+// 2. FUNÇÕES DE INTERAÇÃO (DEMO)
+window.curtirPost = function(btn) {
+    btn.classList.toggle("liked");
+    if(navigator.vibrate) navigator.vibrate(50);
+}
+
+window.salvarPost = function(btn) {
+    btn.classList.toggle("saved");
+    if(btn.classList.contains("saved")) alert("Salvo nos favoritos!");
+}
+
+window.toggleComentarios = function(btn) {
+    const postDiv = btn.closest('.poste');
+    const area = postDiv.querySelector('.comentarios-area');
+    area.style.display = area.style.display === 'block' ? 'none' : 'block';
+}
+
+window.postarComentario = function(e, input) {
+    if(e.key === 'Enter' && input.value.trim() !== "") {
+        const area = input.parentElement.querySelector('.lista-comentarios');
+        const novo = document.createElement('div');
+        novo.innerHTML = `<b>Você:</b> ${input.value}`;
+        novo.style.marginBottom = "5px";
+        area.appendChild(novo);
+        input.value = "";
     }
 }
 
-// Editar evento
+window.toggleMenu = function(idx) {
+    const menu = document.getElementById(`menu-${idx}`);
+    // Fecha outros menus abertos
+    document.querySelectorAll('[id^="menu-"]').forEach(m => {
+        if(m.id !== `menu-${idx}`) m.style.display = 'none';
+    });
+    menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+}
+
+// 3. BUSCA
+document.getElementById('searchInput').addEventListener('keyup', function(e) {
+    const termo = e.target.value.toLowerCase();
+    const posts = document.querySelectorAll('.poste');
+    posts.forEach(post => {
+        const conteudo = post.dataset.content;
+        post.style.display = conteudo.includes(termo) ? "block" : "none";
+    });
+});
+
+// 4. CRUD
+window.apagarEvento = function(idx){
+    if(confirm("Apagar evento?")){
+        eventos.splice(idx,1);
+        localStorage.setItem("eventos", JSON.stringify(eventos));
+        location.reload(); 
+    }
+}
+
 let eventoEditarIdx = null;
-function editarEvento(idx){
+window.editarEvento = function(idx){
+    document.getElementById(`menu-${idx}`).style.display = 'none';
     eventoEditarIdx = idx;
     const ev = eventos[idx];
     document.getElementById("editar-nome").value = ev.nome;
@@ -292,10 +340,7 @@ function editarEvento(idx){
     document.getElementById("modalEditar").style.display = "flex";
 }
 
-document.getElementById("fechar-edicao").addEventListener("click", () => {
-    document.getElementById("modalEditar").style.display = "none";
-});
-
+document.getElementById("fechar-edicao").onclick = () => document.getElementById("modalEditar").style.display = "none";
 document.getElementById("editar-imagem").addEventListener("change", e => {
     const file = e.target.files[0];
     if(file){
@@ -304,8 +349,7 @@ document.getElementById("editar-imagem").addEventListener("change", e => {
         reader.readAsDataURL(file);
     }
 });
-
-document.getElementById("salvar-edicao").addEventListener("click", () => {
+document.getElementById("salvar-edicao").onclick = () => {
     if(eventoEditarIdx !== null){
         const ev = eventos[eventoEditarIdx];
         ev.nome = document.getElementById("editar-nome").value;
@@ -315,12 +359,10 @@ document.getElementById("salvar-edicao").addEventListener("click", () => {
         ev.valor = document.getElementById("editar-valor").value;
         ev.imagem = document.getElementById("preview-imagem").src;
         localStorage.setItem("eventos", JSON.stringify(eventos));
-        renderizarEventos();
-        document.getElementById("modalEditar").style.display = "none";
+        location.reload();
     }
-});
+};
 
-// Inicializa feed
 renderizarEventos();
 </script>
 

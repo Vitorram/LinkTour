@@ -2,170 +2,257 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Parceiros LinkTour</title>
-
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #fff;
-    padding-bottom: 80px; /* espaço para o rodapé fixo */
-}
+/* --- GERAL --- */
+body { margin: 0; font-family: 'Inter', Arial, sans-serif; background-color: #f8f9fa; padding-bottom: 80px; color: #333; }
 
-/* HEADER */
+/* --- HEADER --- */
 header {
-    padding: 15px;
+    background: #fff; padding: 15px 20px; position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+.search-container {
+    display: flex; align-items: center; background: #f0f2f5; 
+    border-radius: 25px; padding: 10px 15px;
+}
+.search-container input {
+    border: none; background: transparent; outline: none; flex: 1; 
+    margin-left: 10px; font-size: 15px; color: #333;
 }
 
-.search {
+/* --- HERO BANNER (Seja Parceiro) --- */
+.hero-parceiro {
+    background: linear-gradient(135deg, #3b4cca 0%, #5d6dff 100%);
+    color: white;
+    margin: 20px;
+    padding: 20px;
+    border-radius: 16px;
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    background: #f1f1f1;
-    border-radius: 20px;
-    padding: 10px 15px;
-    max-width: 500px;
-    margin: 0 auto;
+    box-shadow: 0 8px 20px rgba(59, 76, 202, 0.25);
 }
-.search input {
-    border: none;
-    outline: none;
-    flex: 1;
-    background: transparent;
-    font-size: 15px;
+.hero-text h2 { margin: 0 0 5px 0; font-size: 18px; }
+.hero-text p { margin: 0; font-size: 13px; opacity: 0.9; }
+.hero-btn {
+    background: #fff; color: #3b4cca; border: none; padding: 10px 16px;
+    border-radius: 20px; font-weight: bold; font-size: 13px; cursor: pointer;
+    white-space: nowrap; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
+.hero-btn:hover { transform: scale(1.05); }
 
-/* TÍTULO E BOTÃO */
-.titulo {
-    text-align: center;
-    margin: 15px 0;
-    font-weight: bold;
-    font-size: 20px;
-    color: #333;
+/* --- SEÇÕES --- */
+.secao { margin-bottom: 30px; }
+.secao-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0 20px 10px 20px;
 }
+.secao-header h3 { font-size: 18px; font-weight: 700; margin: 0; color: #222; }
+.btn-ver-tudo { color: #3b4cca; text-decoration: none; font-size: 13px; font-weight: 600; }
 
-.btnParceiro {
-    display: block;
-    margin: 0 auto 25px;
-    padding: 12px 25px;
-    background: #3b4cca;
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 15px;
+/* --- CARROSSEL DE CARDS --- */
+.cards-row {
+    display: flex; overflow-x: auto; gap: 15px; padding: 0 20px 20px 20px;
+    scrollbar-width: none; /* Firefox */
 }
+.cards-row::-webkit-scrollbar { display: none; } /* Chrome */
 
-/* SEÇÕES DE CARDS COM CARROSSEL */
-.secao {
-    margin-bottom: 30px;
-    max-width: 1000px;
-    margin-left: auto;
-    margin-right: auto;
-}
-.secao h3 {
-    font-size: 18px;
-    margin: 10px;
-    font-weight: bold;
-    color: #333;
-}
-
-/* Carrossel horizontal */
-.cards {
-    display: flex;
-    overflow-x: auto;
-    gap: 15px;
-    padding: 0 10px;
-    scroll-behavior: smooth;
-}
-.cards::-webkit-scrollbar {
-    display: none; /* esconde a barra de rolagem no Chrome/Safari */
-}
-.card {
-    flex: 0 0 auto; /* mantém o tamanho do card */
-    width: 250px;
-    height: 180px;
+.card-servico {
+    flex: 0 0 160px; /* Largura fixa */
+    height: 240px;
+    background: #fff;
     border-radius: 12px;
     overflow: hidden;
-    background: #eee;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    position: relative;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    cursor: pointer;
+    transition: transform 0.2s;
 }
-.card img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+.card-servico:hover { transform: translateY(-3px); }
+
+.card-img { width: 100%; height: 100%; object-fit: cover; }
+
+/* Overlay escuro embaixo para ler o texto */
+.card-info {
+    position: absolute; bottom: 0; left: 0; width: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+    padding: 20px 10px 10px 10px;
+    box-sizing: border-box;
+    color: white;
+}
+
+.servico-nome { font-weight: bold; font-size: 14px; margin-bottom: 2px; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+.servico-prestador { font-size: 11px; opacity: 0.8; display: block; margin-bottom: 5px; }
+
+.servico-meta { display: flex; justify-content: space-between; align-items: center; font-size: 11px; }
+.rating { color: #ffc107; font-weight: bold; display: flex; align-items: center; gap: 2px; }
+.preco { background: rgba(255,255,255,0.2); padding: 2px 6px; border-radius: 4px; }
+
+/* Badge de Categoria */
+.badge-cat {
+    position: absolute; top: 10px; left: 10px;
+    background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+    color: #fff; font-size: 10px; padding: 4px 8px; border-radius: 10px;
+    font-weight: 600; text-transform: uppercase;
 }
 
 /* RODAPÉ FIXO */
 .barraInferior {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    background-color: #fff;
-    padding: 12px 0;
-    border-top: 1px solid #ddd;
-    z-index: 100;
+    position: fixed; bottom: 0; left: 0; width: 100%;
+    display: flex; justify-content: space-around; align-items: center;
+    background-color: #fff; padding: 12px 0; border-top: 1px solid #ddd; z-index: 100;
 }
-.barraInferior a {
-    text-decoration: none;
-    font-size: 26px;
-    color: #444;
+.barraInferior img { width: 28px; height: 28px; transition: 0.2s; }
+.barraInferior a.ativo img { 
+    /* Filtro para ficar azul (#3b4cca) */
+    filter: invert(24%) sepia(61%) saturate(2379%) hue-rotate(228deg) brightness(92%) contrast(89%);
 }
-.barraInferior a.ativo {
-    color: #3b4cca; /* azul para o item ativo */
-}
-.barraInferior img {
-    width: 30px;
-    height: 30px;
-}
+
 </style>
 </head>
 <body>
 
 <header>
-    <div class="search" style="gap: 40px;">
-         <img src="/img/icons8-pesquisa-50.png" alt="" style="width: 30px; height: 30px;"><input type="text" placeholder="Buscar parceiros">
+    <div class="search-container">
+         <img src="/img/icons8-pesquisa-50.png" style="width: 20px; opacity: 0.5;">
+         <input type="text" id="buscaServicos" placeholder="Buscar buffets, DJs, locais...">
     </div>
 </header>
 
-<div class="titulo">Parceiros</div>
-<button class="btnParceiro">SEJA PARCEIRO</button>
+<div class="hero-parceiro">
+    <div class="hero-text">
+        <h2>Trabalhe Conosco!</h2>
+        <p>Divulgue seus serviços para a comunidade.</p>
+    </div>
+    <button class="hero-btn" onclick="alert('Formulário de cadastro abriria aqui!')">Criar Anúncio</button>
+</div>
 
-<!-- SEÇÕES DE PARCEIROS -->
 <div class="secao">
-    <h3>Locação</h3>
-    <div class="cards">
-        <div class="card"><img src="https://picsum.photos/500/300?11"></div>
-        <div class="card"><img src="https://picsum.photos/500/300?12"></div>
-        <div class="card"><img src="https://picsum.photos/500/300?13"></div>
+    <div class="secao-header">
+        <h3>Espaços & Locação</h3>
+        <a href="#" class="btn-ver-tudo">Ver tudo</a>
+    </div>
+    <div class="cards-row">
+        <div class="card-servico" onclick="verDetalhe('Salão Imperial', 'R$ 500/h')">
+            <span class="badge-cat">Salão</span>
+            <img class="card-img" src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?q=80&w=400&auto=format&fit=crop">
+            <div class="card-info">
+                <div class="servico-nome">Salão Imperial</div>
+                <span class="servico-prestador">por Eventos Gold</span>
+                <div class="servico-meta">
+                    <span class="rating">★ 4.9</span>
+                    <span class="preco">$$$</span>
+                </div>
+            </div>
+        </div>
+        <div class="card-servico" onclick="verDetalhe('Chácara Sol', 'R$ 1200/dia')">
+            <span class="badge-cat">Sítio</span>
+            <img class="card-img" src="https://images.unsplash.com/photo-1587595431973-160d0d94add1?q=80&w=400&auto=format&fit=crop">
+            <div class="card-info">
+                <div class="servico-nome">Chácara Sol</div>
+                <span class="servico-prestador">por Família Silva</span>
+                <div class="servico-meta">
+                    <span class="rating">★ 4.7</span>
+                    <span class="preco">$$</span>
+                </div>
+            </div>
+        </div>
+        <div class="card-servico">
+            <span class="badge-cat">Estúdio</span>
+            <img class="card-img" src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=400&auto=format&fit=crop">
+            <div class="card-info">
+                <div class="servico-nome">Estúdio 54</div>
+                <span class="servico-prestador">por Studio Art</span>
+                <div class="servico-meta">
+                    <span class="rating">★ 5.0</span>
+                    <span class="preco">$</span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
 <div class="secao">
-    <h3>Buffets</h3>
-    <div class="cards">
-        <div class="card"><img src="https://picsum.photos/500/300?21"></div>
-        <div class="card"><img src="https://picsum.photos/500/300?22"></div>
-        <div class="card"><img src="https://picsum.photos/500/300?23"></div>
+    <div class="secao-header">
+        <h3>Gastronomia & Buffet</h3>
+        <a href="#" class="btn-ver-tudo">Ver tudo</a>
+    </div>
+    <div class="cards-row">
+        <div class="card-servico">
+            <span class="badge-cat">Salgados</span>
+            <img class="card-img" src="https://images.unsplash.com/photo-1555244162-803834f70033?q=80&w=400&auto=format&fit=crop">
+            <div class="card-info">
+                <div class="servico-nome">Kit Festa 100</div>
+                <span class="servico-prestador">por Dona Maria</span>
+                <div class="servico-meta">
+                    <span class="rating">★ 4.8</span>
+                    <span class="preco">$</span>
+                </div>
+            </div>
+        </div>
+        <div class="card-servico">
+            <span class="badge-cat">Buffet</span>
+            <img class="card-img" src="https://images.unsplash.com/photo-1576867757603-05b134ebc379?q=80&w=400&auto=format&fit=crop">
+            <div class="card-info">
+                <div class="servico-nome">Jantar Completo</div>
+                <span class="servico-prestador">por Chef Pierre</span>
+                <div class="servico-meta">
+                    <span class="rating">★ 4.9</span>
+                    <span class="preco">$$$$</span>
+                </div>
+            </div>
+        </div>
+        <div class="card-servico">
+            <span class="badge-cat">Doces</span>
+            <img class="card-img" src="https://images.unsplash.com/photo-1587314168485-3236d6710814?q=80&w=400&auto=format&fit=crop">
+            <div class="card-info">
+                <div class="servico-nome">Brigadeiros Gourmet</div>
+                <span class="servico-prestador">por Sweet Dreams</span>
+                <div class="servico-meta">
+                    <span class="rating">★ 5.0</span>
+                    <span class="preco">$$</span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
 <div class="secao">
-    <h3>Música</h3>
-    <div class="cards">
-        <div class="card"><img src="https://picsum.photos/500/300?31"></div>
-        <div class="card"><img src="https://picsum.photos/500/300?32"></div>
-        <div class="card"><img src="https://picsum.photos/500/300?33"></div>
+    <div class="secao-header">
+        <h3>Música & Animação</h3>
+        <a href="#" class="btn-ver-tudo">Ver tudo</a>
+    </div>
+    <div class="cards-row">
+        <div class="card-servico">
+            <span class="badge-cat">DJ</span>
+            <img class="card-img" src="https://images.unsplash.com/photo-1571266028243-3716f02d2d2e?q=80&w=400&auto=format&fit=crop">
+            <div class="card-info">
+                <div class="servico-nome">DJ Alex Beat</div>
+                <span class="servico-prestador">por Alex Souza</span>
+                <div class="servico-meta">
+                    <span class="rating">★ 4.9</span>
+                    <span class="preco">$$</span>
+                </div>
+            </div>
+        </div>
+        <div class="card-servico">
+            <span class="badge-cat">Banda</span>
+            <img class="card-img" src="https://images.unsplash.com/photo-1501386761578-eac5c94b800a?q=80&w=400&auto=format&fit=crop">
+            <div class="card-info">
+                <div class="servico-nome">Banda Rock'n Roll</div>
+                <span class="servico-prestador">por Os Rochas</span>
+                <div class="servico-meta">
+                    <span class="rating">★ 4.6</span>
+                    <span class="preco">$$$</span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
-<!-- RODAPÉ FIXO -->
 <div class="barraInferior">
   <a href="/HTML/home.HTML"><img src="/img/icons8-casa-48.png" alt=""></a>
   <a href="/HTML/mapa.html"><img src="/img/icons8-mapa-50.png" alt=""></a>
@@ -173,6 +260,29 @@ header {
   <a href="/HTML/serv.html" class="ativo"><img src="/img/icons8-parceiro-50.png" alt=""></a>
   <a href="/HTML/perfil.html"><img src="/img/icons8-conta-de-teste-50.png" alt=""></a>
 </div>
+
+<script>
+    // Filtro simples de busca
+    const buscaInput = document.getElementById('buscaServicos');
+    const cards = document.querySelectorAll('.card-servico');
+
+    buscaInput.addEventListener('keyup', function(e) {
+        const termo = e.target.value.toLowerCase();
+        cards.forEach(card => {
+            const nome = card.querySelector('.servico-nome').textContent.toLowerCase();
+            const cat = card.querySelector('.badge-cat').textContent.toLowerCase();
+            if(nome.includes(termo) || cat.includes(termo)){
+                card.style.display = "block";
+            } else {
+                card.style.display = "none";
+            }
+        });
+    });
+
+    function verDetalhe(nome, preco) {
+        alert(`Você clicou em: ${nome}\nPreço estimado: ${preco}\n\nAqui abriria o perfil do parceiro para contato.`);
+    }
+</script>
 
 </body>
 </html>

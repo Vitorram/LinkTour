@@ -2,206 +2,261 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Mapa e Descobrir</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
+/* --- GERAL --- */
 body, html {
-    margin:0;
-    padding:0;
-    height:100%;
-    width:100%;
-    font-family: Arial, sans-serif;
-    overflow-x:hidden;
+    margin: 0; padding: 0;
+    height: 100%; width: 100%;
+    font-family: 'Inter', Arial, sans-serif;
+    background-color: #f8f9fa;
+    overflow: hidden; /* Importante para o mapa ocupar tudo */
+    -webkit-tap-highlight-color: transparent;
 }
-/* HEADER */
+
+/* --- HEADER FIXO --- */
 header {
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    gap:10px;
-    padding:10px;
-    background:#fff;
-    position: sticky;
-    top:0;
-    z-index:100;
-    box-shadow:0 1px 5px rgba(0,0,0,0.1);
+    background: #fff;
+    padding: 10px 15px;
+    position: absolute; /* Absoluto para ficar sobre o mapa se quiser, ou fixo */
+    top: 0; left: 0; right: 0;
+    z-index: 1000; /* Acima do mapa */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
 }
+
+/* Barra de Busca no Mapa */
+.map-search-box {
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    align-items: center;
+    background: #f0f2f5;
+    padding: 8px 15px;
+    border-radius: 25px;
+    box-sizing: border-box;
+}
+.map-search-box input {
+    border: none; background: transparent; outline: none; 
+    flex: 1; margin-left: 10px; font-size: 14px; color: #333;
+}
+.map-search-btn {
+    background: none; border: none; cursor: pointer; padding: 0;
+    display: flex; align-items: center; justify-content: center;
+}
+
+/* Controle de Abas (Mapa / Descobrir) */
+.segmented-control {
+    background: #eee;
+    padding: 4px;
+    border-radius: 25px;
+    display: flex;
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+}
+
 .headerBtn {
-    padding:8px 15px;
-    border:none;
-    border-radius:20px;
-    background:#3b4cca;
-    color:#fff;
-    font-weight:bold;
-    cursor:pointer;
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 6px 0;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 13px;
+    color: #777;
+    cursor: pointer;
+    z-index: 2;
+    transition: color 0.3s;
 }
-.headerBtn.ativo { background:#222; }
-/* MAPA */
+
+.headerBtn.ativo {
+    color: #000;
+    background: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* --- MAPA --- */
 #mapContainer {
     position: absolute;
-    top: 60px;
-    bottom: 60px;
+    top: 100px; /* Altura do header ajustada */
+    bottom: 60px; /* Altura do rodapé */
     left: 0;
     right: 0;
+    background: #e5e5e5;
+    z-index: 1;
 }
-#map { width:100%; height:100%; }
-/* DISCOVER */
-#discoverSection {
-    display:none;
-    column-count: 2;
-    column-gap: 12px;
-    padding:15px;
-}
-@media(min-width:600px){ #discoverSection { column-count: 3; } }
-@media(min-width:900px){ #discoverSection { column-count: 4; } }
-#discoverSection .card {
-    break-inside: avoid;
-    margin-bottom: 12px;
-    cursor:pointer;
-    border-radius:12px;
-    overflow:hidden;
-    background:#fff;
-    box-shadow:0 2px 6px rgba(0,0,0,0.1);
-}
-#discoverSection .card img {
-    width:100%;
-    height:auto;
-    display:block;
-    border-radius:12px;
-    object-fit:cover;
-}
-/* MODAL */
-.feedModal {
-    display:none;
-    position: fixed;
-    top:0; left:0;
-    width:100%; height:100%;
-    background:rgba(255,255,255,0.95);
-    z-index:1000;
-    flex-direction: column;
-    overflow-y:auto;
-    padding:20px;
-    box-sizing:border-box;
-}
-.feedHeader {
-    display:flex;
-    align-items:center;
-    padding-bottom:10px;
-    border-bottom:1px solid #ddd;
-    margin-bottom:10px;
-}
-.feedBackBtn {
-    font-size:24px;
-    font-weight:bold;
-    cursor:pointer;
-    margin-right:10px;
-    background:none;
-    border:none;
-}
-.feedContent { display:flex; flex-direction:column; gap:20px; }
-/* POST */
-.poste {
-    border:1px solid #ddd;
-    border-radius:12px;
-    overflow:hidden;
-    background:#fff;
-    max-width:500px;
-    width:100%;
-    margin:0 auto;
-    box-shadow:0 2px 6px rgba(0,0,0,0.1);
-}
-.poste .usuario {
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:10px;
-}
-.poste .usuario .infoUsuario { margin-left:10px; }
-.poste .usuario .nomeUsuario { font-weight:bold; font-size:14px; }
-.poste .usuario .postadoem { font-size:12px; color:gray; }
-.poste .fotoPubli img {
-    width:100%; max-height:300px;
-    object-fit:cover; border-radius:8px;
-}
-.poste .desc { font-size:14px; padding:10px; }
-.poste .usuario button {
-    font-size:13px; padding:5px 10px;
-    border:none; border-radius:5px;
-    background:#0095f6; color:white;
-    cursor:pointer;
-}
-/* RODAPÉ */
-.barraInferior {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    display:flex;
-    justify-content: space-around;
-    align-items:center;
-    background-color:#fff;
-    padding:12px 0;
-    border-top:1px solid #ddd;
-    z-index:100;
-}
-.barraInferior a img { width:30px; height:30px; }
-.barraInferior a.ativo img { filter: brightness(1.2); }
-/* MARKERS */
+#map { width: 100%; height: 100%; }
+
+/* --- MARCADORES --- */
 .blob {
-    width: 50px; height: 50px;
-    border-radius:100%;
-    overflow:hidden;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:#000;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #fff;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+    background: #222;
+    transition: transform 0.2s;
 }
-.blob img { width:100%; height:100%; object-fit:cover; }
+.blob:active { transform: scale(1.2); }
+.blob img { width: 100%; height: 100%; object-fit: cover; }
+
+/* --- SECTION DESCOBRIR --- */
+#discoverSection {
+    display: none;
+    position: absolute;
+    top: 100px; bottom: 60px; left: 0; right: 0;
+    padding: 15px;
+    overflow-y: auto;
+    column-count: 2;
+    column-gap: 15px;
+    background: #f8f9fa;
+    z-index: 500; /* Sobre o mapa quando ativo */
+}
+@media(min-width: 600px){ #discoverSection { column-count: 3; } }
+
+.card {
+    break-inside: avoid;
+    margin-bottom: 15px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    cursor: pointer;
+    position: relative;
+}
+.card img { width: 100%; display: block; }
+.card-info { padding: 10px; }
+.card-title { font-weight: 700; font-size: 13px; margin-bottom: 2px; color: #333; }
+.card-sub { font-size: 11px; color: #888; }
+
+/* ETIQUETA DE VALOR (Verde) */
+.etiqueta-valor {
+    display: inline-block;
+    background-color: #28a745;
+    color: white;
+    font-weight: bold;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    text-decoration: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+a.etiqueta-valor:hover { background-color: #218838; transform: scale(1.05); }
+
+/* Posicionamento da etiqueta */
+.card .etiqueta-valor { position: absolute; top: 8px; right: 8px; z-index: 2; }
+.fotoPubli .etiqueta-valor { position: absolute; top: 15px; right: 15px; z-index: 5; font-size: 14px; padding: 6px 12px; }
+
+/* --- MODAL --- */
+.feedModal {
+    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 2000;
+    justify-content: center; align-items: flex-end; /* Mobile bottom */
+}
+@media(min-width:600px){ .feedModal{ align-items:center; } }
+
+.modal-wrapper {
+    background: #fff; width: 100%; max-width: 500px; height: 90%;
+    border-radius: 20px 20px 0 0; display: flex; flex-direction: column;
+    overflow: hidden; animation: slideUp 0.3s ease-out;
+}
+@media(min-width:600px){ .modal-wrapper{ height:auto; max-height:85vh; border-radius:16px; } }
+
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+.feedHeader { display: flex; align-items: center; padding: 15px; border-bottom: 1px solid #eee; }
+.feedBackBtn { background: #f0f0f0; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; margin-right: 15px; font-weight: bold; }
+.feedContent { flex: 1; overflow-y: auto; }
+
+/* Post Detail */
+.poste .usuario { display: flex; justify-content: space-between; align-items: center; padding: 15px; }
+.fotoUsuario img { width: 40px; height: 40px; border-radius: 50%; margin-right: 10px; object-fit: cover; }
+.nomeUsuario { font-weight: 700; font-size: 14px; }
+.postadoem { font-size: 12px; color: #999; }
+.btnSeguir { background: #e60050; color: #fff; border: none; border-radius: 6px; padding: 6px 12px; font-size: 12px; font-weight: bold; cursor: pointer; }
+.fotoPubli { position: relative; }
+.fotoPubli img { width: 100%; display: block; }
+.desc { padding: 15px; font-size: 14px; color: #444; line-height: 1.5; }
+.info-extra { margin-top: 10px; font-size: 13px; color: #666; background: #f9f9f9; padding: 10px; border-radius: 8px; }
+
+/* --- RODAPÉ --- */
+.barraInferior {
+    position: fixed; bottom: 0; left: 0; width: 100%;
+    display: flex; justify-content: space-around; align-items: center;
+    background-color: #fff; padding: 12px 0; border-top: 1px solid #eee; z-index: 2000;
+}
+.barraInferior img { width: 28px; height: 28px; }
+.barraInferior a.ativo img { filter: brightness(0) saturate(100%) invert(18%) sepia(90%) saturate(3000%) hue-rotate(330deg) brightness(90%) contrast(100%); }
+
 </style>
 </head>
 <body>
 
 <header>
-  <button id="btnMapa" class="headerBtn ativo">MAPA</button>
-  <button id="btnDescobrir" class="headerBtn">DESCOBRIR</button>
+  <div class="map-search-box">
+      <button class="map-search-btn" onclick="buscarNoMapa()">
+        <img src="/img/icons8-pesquisa-50.png" style="width:18px; opacity:0.6;">
+      </button>
+      <input type="text" id="inputBuscaMapa" placeholder="Buscar lugar (ex: MASP, Av. Paulista)...">
+  </div>
+
+  <div class="segmented-control">
+    <button id="btnMapa" class="headerBtn ativo">Mapa</button>
+    <button id="btnDescobrir" class="headerBtn">Descobrir</button>
+  </div>
 </header>
 
 <div id="mapContainer"><div id="map"></div></div>
 
-<div id="discoverSection"></div>
-
-<!-- MODAL -->
-<div id="feedModal" class="feedModal">
-  <div class="feedHeader">
-    <button id="feedBackBtn" class="feedBackBtn">&#8592;</button>
-    <span>Explorar</span>
+<div id="discoverSection">
   </div>
-  <div class="feedContent" id="feedModalInner"></div>
+
+<div id="feedModal" class="feedModal">
+  <div class="modal-wrapper">
+      <div class="feedHeader">
+        <button id="feedBackBtn" class="feedBackBtn">✕</button>
+        <span style="font-weight:700;">Detalhes</span>
+      </div>
+      <div class="feedContent" id="feedModalInner">
+        </div>
+  </div>
 </div>
 
 <div class="barraInferior">
-  <a href="/HTML/home.HTML"><img src="/img/icons8-casa-48.png" alt=""></a>
-  <a href="/HTML/mapa.html" class="ativo"><img src="/img/icons8-mapa-50.png" alt=""></a>
-  <a href="/HTML/add.html"><img src="/img/icons8-mais-50.png" alt=""></a>
-  <a href="/HTML/serv.html"><img src="/img/icons8-parceiro-50.png" alt=""></a>
-  <a href="/HTML/perfil.html"><img src="/img/icons8-conta-de-teste-50.png" alt=""></a>
+  <a href="/HTML/home.HTML"><img src="/img/icons8-casa-48.png"></a>
+  <a href="/HTML/mapa.html" class="ativo"><img src="/img/icons8-mapa-50.png"></a>
+  <a href="/HTML/add.html"><img src="/img/icons8-mais-50.png"></a>
+  <a href="/HTML/serv.html"><img src="/img/icons8-parceiro-50.png"></a>
+  <a href="/HTML/perfil.html"><img src="/img/icons8-conta-de-teste-50.png"></a>
 </div>
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
-// Referências
+// --- ELEMENTOS ---
 const mapContainer = document.getElementById('mapContainer');
 const discoverSection = document.getElementById('discoverSection');
 const btnMapa = document.getElementById('btnMapa');
 const btnDescobrir = document.getElementById('btnDescobrir');
+const feedModal = document.getElementById('feedModal');
+const feedModalInner = document.getElementById('feedModalInner');
+const inputBuscaMapa = document.getElementById('inputBuscaMapa');
 
-// Alternar abas
+// --- ABAS ---
 btnMapa.addEventListener('click', ()=>{
     mapContainer.style.display='block';
     discoverSection.style.display='none';
     btnMapa.classList.add('ativo');
     btnDescobrir.classList.remove('ativo');
+    setTimeout(() => { map.invalidateSize(); ajustarZoom(); }, 100);
 });
+
 btnDescobrir.addEventListener('click', ()=>{
     mapContainer.style.display='none';
     discoverSection.style.display='block';
@@ -209,85 +264,155 @@ btnDescobrir.addEventListener('click', ()=>{
     btnMapa.classList.remove('ativo');
 });
 
-// Inicia mapa
-var map = L.map('map').setView([-23.6226, -45.4167], 13);
+// --- INICIA MAPA ---
+// Coordenada padrão (Brasil)
+var map = L.map('map').setView([-14.235, -51.925], 4);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19, attribution: '© OpenStreetMap'
 }).addTo(map);
 
-// Função marker personalizado
-function blobMarker(lat, lng, imgUrl, htmlContent){
-    return L.marker([lat,lng],{
-        icon: L.divIcon({
-            className:"",
-            html:`<div class="blob"><img src="${imgUrl}"></div>`,
-            iconSize:[50,50], iconAnchor:[25,25]
-        })
-    }).addTo(map).on('click',()=>openFeed(htmlContent));
+var markersGroup = new L.featureGroup();
+
+// --- FUNÇÃO DE BUSCA (GEOCODING) ---
+async function buscarNoMapa() {
+    const query = inputBuscaMapa.value;
+    if(!query) return;
+
+    // Usa a API Nominatim do OpenStreetMap
+    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`;
+    
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if(data && data.length > 0) {
+            const lat = parseFloat(data[0].lat);
+            const lon = parseFloat(data[0].lon);
+            
+            // Voa para o local
+            map.setView([lat, lon], 16);
+            
+            // (Opcional) Adiciona um marcador temporário ou popup
+            L.popup()
+                .setLatLng([lat, lon])
+                .setContent(`<b>${query}</b><br>Local encontrado`)
+                .openOn(map);
+        } else {
+            alert("Local não encontrado. Tente um nome mais específico.");
+        }
+    } catch(e) {
+        console.error(e);
+        alert("Erro ao buscar local.");
+    }
 }
 
-// Modal
-const feedModal = document.getElementById('feedModal');
-const feedModalInner = document.getElementById('feedModalInner');
-const feedBackBtn = document.getElementById('feedBackBtn');
+// Busca ao dar Enter
+inputBuscaMapa.addEventListener('keypress', (e) => {
+    if(e.key === 'Enter') buscarNoMapa();
+});
 
-function openFeed(html){
-    feedModalInner.innerHTML = html;
-    feedModal.style.display = 'flex';
-    document.body.style.overflow='hidden';
-}
-function closeFeed(){
-    feedModal.style.display='none';
-    document.body.style.overflow='auto';
-}
-feedBackBtn.addEventListener('click',closeFeed);
 
-// Carregar eventos do localStorage
+// --- RENDERIZA EVENTOS ---
 const eventos = JSON.parse(localStorage.getItem("eventos")) || [];
-
-// Pega a foto do usuário logado
 const fotoUsuarioAtual = localStorage.getItem("foto") || "https://via.placeholder.com/100";
 
-// Renderizar eventos
+// Função Marcador
+function blobMarker(lat, lng, imgUrl, htmlContent){
+    const icon = L.divIcon({
+        className: "",
+        html: `<div class="blob"><img src="${imgUrl}"></div>`,
+        iconSize: [40, 40],
+        iconAnchor: [20, 20]
+    });
+    const marker = L.marker([lat,lng], {icon: icon});
+    marker.on('click', () => openFeed(htmlContent));
+    marker.addTo(map);
+    markersGroup.addLayer(marker);
+}
+
+// Ajuste de Zoom
+function ajustarZoom() {
+    if (markersGroup.getLayers().length > 0) {
+        map.fitBounds(markersGroup.getBounds(), { padding: [50, 50] });
+    }
+}
+
+// Render Loop
 eventos.forEach(ev => {
     const fotoUsuario = ev.fotoUsuario || fotoUsuarioAtual;
 
-    const card = document.createElement("div");
-    card.classList.add("card");
-    card.innerHTML = `<img src="${ev.imagem}" alt="${ev.nome}">`;
-    
+    // Etiqueta
+    let htmlValor = "";
+    if (ev.valor && ev.valor.trim() !== "") {
+        if (ev.link && ev.link.trim() !== "") {
+            let linkUrl = ev.link;
+            if(!linkUrl.startsWith('http')) linkUrl = 'https://' + linkUrl;
+            htmlValor = `<a href="${linkUrl}" target="_blank" class="etiqueta-valor">${ev.valor}</a>`;
+        } else {
+            htmlValor = `<span class="etiqueta-valor">${ev.valor}</span>`;
+        }
+    }
+
+    // HTML Detalhe
     const htmlPost = `
     <div class="poste">
       <div class="usuario">
         <div style="display:flex; align-items:center;">
-          <div class="fotoUsuario">
-            <img src="${fotoUsuario}" 
-                 style="width:40px;height:40px;border-radius:50%;">
-          </div>
-          <div class="infoUsuario">
+          <img src="${fotoUsuario}" style="width:40px; height:40px; border-radius:50%; margin-right:10px; object-fit:cover;">
+          <div>
             <div class="nomeUsuario">${ev.usuario}</div>
-            <div class="postadoem">${ev.postadoem}</div>
+            <div class="postadoem">Agora</div>
           </div>
         </div>
-        <button>Seguir</button>
+        <button class="btnSeguir">Seguir</button>
       </div>
       <div class="fotoPubli">
         <img src="${ev.imagem}">
+        ${htmlValor}
       </div>
       <div class="desc">
-        <b>${ev.nome}</b><br>${ev.desc}<br>
-        <small>${ev.endereco} - ${ev.hora} - ${ev.valor}</small>
+        <strong>${ev.nome}</strong>
+        ${ev.desc}
+        <div class="info-extra">${ev.endereco} • ${ev.hora}</div>
       </div>
     </div>`;
 
-    card.addEventListener("click", ()=>openFeed(htmlPost));
+    // Card Descobrir
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+        <img src="${ev.imagem}">
+        ${htmlValor}
+        <div class="card-info">
+            <div class="card-title">${ev.nome}</div>
+            <div class="card-sub">${ev.usuario}</div>
+        </div>
+    `;
+    card.onclick = () => openFeed(htmlPost);
     discoverSection.appendChild(card);
 
+    // Marcador no Mapa
     if(ev.lat && ev.lng){
         blobMarker(ev.lat, ev.lng, ev.imagem, htmlPost);
     }
 });
-</script>
 
+// Inicia com zoom nos eventos (se houver)
+setTimeout(ajustarZoom, 500);
+
+// --- MODAL ---
+function openFeed(html){
+    feedModalInner.innerHTML = html;
+    feedModal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+function closeFeed(){
+    feedModal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+document.getElementById('feedBackBtn').onclick = closeFeed;
+feedModal.onclick = (e) => { if(e.target === feedModal) closeFeed(); };
+
+</script>
 </body>
 </html>

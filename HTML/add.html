@@ -5,76 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Criar Evento</title>
 <style>
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0 15px 60px 15px;
-    background-color: #f2f2f2;
-}
+body { font-family: Arial, sans-serif; margin: 0; padding: 0 15px 60px 15px; background-color: #f2f2f2; }
 h2 { text-align: center; margin-top: 15px; }
-form {
-    background: #fff;
-    padding: 20px;
-    border-radius: 12px;
-    max-width: 500px;
-    margin: 20px auto;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
+form { background: #fff; padding: 20px; border-radius: 12px; max-width: 500px; margin: 20px auto; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
 label { display: block; margin-top: 10px; font-weight: bold; }
-input, textarea {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-}
-button {
-    margin-top: 15px;
-    padding: 10px;
-    border: none;
-    border-radius: 8px;
-    background: #e60050;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    width: 100%;
-}
+input, textarea { width: 100%; padding: 8px; margin-top: 5px; border-radius: 6px; border: 1px solid #ccc; box-sizing: border-box; }
+button { margin-top: 15px; padding: 10px; border: none; border-radius: 8px; background: #e60050; color: white; font-weight: bold; cursor: pointer; width: 100%; }
 button:hover { background: #cc0045; }
-.preview-img {
-    margin-top: 10px;
-    width: 100%;
-    max-height: 200px;
-    object-fit: cover;
-    border-radius: 8px;
-}
+.preview-img { margin-top: 10px; width: 100%; max-height: 200px; object-fit: cover; border-radius: 8px; }
 /* Rodapé fixo */
-.barraInferior {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    background-color: #fff; 
-    padding: 10px 0;
-    border-top: 1px solid #ddd;
-    z-index: 999;
-}
-.barraInferior a {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-decoration: none;
-}
-.barraInferior img {
-    width: 30px;
-    height: 30px;
-}
-.barraInferior a.ativo img {
-    filter: brightness(1.2);
-}
+.barraInferior { position: fixed; bottom: 0; left: 0; width: 100%; display: flex; justify-content: space-around; align-items: center; background-color: #fff; padding: 10px 0; border-top: 1px solid #ddd; z-index: 999; }
+.barraInferior a { display: flex; justify-content: center; align-items: center; text-decoration: none; }
+.barraInferior img { width: 30px; height: 30px; }
+.barraInferior a.ativo img { filter: brightness(1.2); }
 </style>
 </head>
 <body>
@@ -94,10 +37,13 @@ button:hover { background: #cc0045; }
   <label>Hora</label>
   <input type="time" id="horaEvento" required>
 
-  <label>Valor</label>
+  <label>Valor (Ex: R$ 50,00 ou Gratuito)</label>
   <input type="text" id="valorEvento">
 
-  <label>Foto do Evento (algumas fotos podem nao abrir, só substitua)</label>
+  <label>Link de Compra / Mais Info (Opcional)</label>
+  <input type="url" id="linkEvento" placeholder="https://...">
+
+  <label>Foto do Evento</label>
   <input type="file" id="fotoEvento" accept="image/*" required>
   <img id="previewFoto" class="preview-img" src="https://via.placeholder.com/300x150">
 
@@ -105,7 +51,6 @@ button:hover { background: #cc0045; }
 </form>
 
 <script>
-// Preview da imagem
 const fotoInput = document.getElementById("fotoEvento");
 const preview = document.getElementById("previewFoto");
 let imagemBase64 = "";
@@ -114,51 +59,40 @@ fotoInput.addEventListener("change", () => {
   const file = fotoInput.files[0];
   if(file){
     const reader = new FileReader();
-    reader.onload = e => {
-      preview.src = e.target.result;
-      imagemBase64 = e.target.result;
-    };
+    reader.onload = e => { preview.src = e.target.result; imagemBase64 = e.target.result; };
     reader.readAsDataURL(file);
   }
 });
 
-// Função para buscar lat/lng pelo endereço (Nominatim OSM)
 async function getLatLng(endereco) {
-  const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(endereco)}`;
-  const response = await fetch(url);
-  const data = await response.json();
-  if (data.length > 0) {
-    return {
-      lat: parseFloat(data[0].lat),
-      lng: parseFloat(data[0].lon)
-    };
-  } else {
-    return null;
-  }
+  try {
+    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(endereco)}`;
+    const response = await fetch(url);
+    const data = await response.json();
+    return (data.length > 0) ? { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) } : null;
+  } catch (e) { return null; }
 }
 
-// Salvar evento
 document.getElementById("formEvento").addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const eventos = JSON.parse(localStorage.getItem("eventos")) || [];
   const endereco = document.getElementById("enderecoEvento").value;
-
-  // Converte endereço em coordenadas
   const coords = await getLatLng(endereco);
 
   if (!coords) {
-    alert("Endereço não encontrado. Tente ser mais específico (Rua + Cidade).");
+    alert("Endereço não encontrado. Tente ser mais específico.");
     return;
   }
 
   const novoEvento = {
-    usuario: localStorage.getItem("usuario") || "Você",
+    usuario: localStorage.getItem("usuario") || "Usuário",
     nome: document.getElementById("nomeEvento").value,
     desc: document.getElementById("descEvento").value,
     endereco: endereco,
     hora: document.getElementById("horaEvento").value,
     valor: document.getElementById("valorEvento").value || "Gratuito",
+    link: document.getElementById("linkEvento").value || "", // Salva o link
     lat: coords.lat,
     lng: coords.lng,
     imagem: imagemBase64,
@@ -173,7 +107,6 @@ document.getElementById("formEvento").addEventListener("submit", async (e) => {
 });
 </script>
 
-<!-- Rodapé fixo -->
 <div class="barraInferior">
   <a href="/HTML/home.HTML"><img src="/img/icons8-casa-48.png" alt=""></a>
   <a href="/HTML/mapa.html"><img src="/img/icons8-mapa-50.png" alt=""></a>
